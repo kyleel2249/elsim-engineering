@@ -18,28 +18,75 @@
 - SEO-ready metadata, semantic HTML
 - Multi-step quotation form with client-side validation (dev-mode submit)
 
+**Works on Windows, macOS, and Linux** with Node.js 18+ and npm 9+.
+
 ---
 
-## Quick Start
+## Prerequisites (Windows)
 
-```bash
+1. **Install Node.js** (LTS recommended)  
+   Download from: https://nodejs.org/  
+   Choose the **Windows Installer (.msi)** – this also installs npm.
+
+2. Verify installation (open **Command Prompt** or **PowerShell**):
+
+   ```cmd
+   node -v
+   npm -v
+   ```
+
+   You should see Node `v18.x` or higher and npm `9.x` or higher.
+
+3. **Optional but recommended**: Install Git for Windows  
+   https://git-scm.com/download/win  
+   (Use the default options; this provides `git` in Command Prompt / PowerShell.)
+
+---
+
+## Quick Start (Windows)
+
+### Option A – Command Prompt / PowerShell
+
+```cmd
 git clone https://github.com/kyleel2249/elsim-engineering.git
 cd elsim-engineering
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Then open your browser at: **http://localhost:3000**
 
-### Scripts
+### Option B – Without Git (download ZIP)
 
-| Command          | Description                |
-|------------------|----------------------------|
-| `npm run dev`    | Development server         |
-| `npm run build`  | Production build           |
-| `npm run start`  | Start production server    |
-| `npm run lint`   | ESLint                     |
-| `npm run typecheck` | TypeScript check        |
+1. Go to https://github.com/kyleel2249/elsim-engineering
+2. Click the green **Code** button → **Download ZIP**
+3. Extract the ZIP to a folder (e.g. `C:\Projects\elsim-engineering`)
+4. Open Command Prompt or PowerShell in that folder:
+
+   ```cmd
+   cd C:\Projects\elsim-engineering
+   npm install
+   npm run dev
+   ```
+
+### Stopping the server
+
+Press `Ctrl + C` in the terminal window.
+
+---
+
+## Scripts (all platforms)
+
+| Command             | Description                     |
+|---------------------|---------------------------------|
+| `npm install`       | Install all dependencies        |
+| `npm run dev`       | Start development server        |
+| `npm run build`     | Create production build         |
+| `npm run start`     | Run production server           |
+| `npm run lint`      | Run ESLint                      |
+| `npm run typecheck` | TypeScript type check           |
+
+All scripts use standard `npm` / Node commands and work identically on Windows, macOS, and Linux. No Unix-only tools are required.
 
 ---
 
@@ -68,6 +115,7 @@ types/                # Shared TypeScript interfaces
 | Item                         | Status                                      |
 |------------------------------|---------------------------------------------|
 | Core architecture            | ✅ Complete                                 |
+| Windows / npm compatibility  | ✅ Verified                                 |
 | 3D hero + reduced-motion     | ✅ Complete                                 |
 | Navigation + responsive      | ✅ Complete                                 |
 | Services pages               | ✅ Provisional content                      |
@@ -90,13 +138,24 @@ types/                # Shared TypeScript interfaces
 
 ---
 
+## Troubleshooting (Windows)
+
+| Problem | Solution |
+|---------|----------|
+| `npm` is not recognized | Re-install Node.js from nodejs.org and restart the terminal |
+| `EPERM` or permission errors | Run Command Prompt / PowerShell **as Administrator**, or move the project out of a protected folder |
+| Port 3000 already in use | `npm run dev -- -p 3001` (uses port 3001) |
+| Slow `npm install` | Ensure you have a stable internet connection; antivirus can sometimes slow installs |
+| Line-ending warnings from Git | Already handled by `.gitattributes` (LF) |
+
+---
+
 ## Environment Variables
 
-Copy `.env.example` (to be added) for future backend:
+Create a file named `.env.local` in the project root if needed later:
 
 ```
-# Example – not yet required
-NEXT_PUBLIC_SITE_URL=https://your-domain.com
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
 # SUPABASE_URL=
 # SUPABASE_ANON_KEY=
 ```
@@ -107,10 +166,12 @@ NEXT_PUBLIC_SITE_URL=https://your-domain.com
 
 Recommended: **Vercel** or **Cloudflare Pages**.
 
-```bash
+```cmd
 npm run build
-# Deploy the .next output / connect the GitHub repo for automatic deploys
+npm run start
 ```
+
+Or connect the GitHub repository for automatic deploys.
 
 ---
 
