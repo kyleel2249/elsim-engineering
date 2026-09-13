@@ -38,39 +38,44 @@ export function Header() {
       className={clsx(
         'sticky top-0 z-40 w-full transition-all duration-300',
         scrolled
-          ? 'bg-navy-950/95 backdrop-blur-md border-b border-steel-800 shadow-lg'
-          : 'bg-transparent'
+          ? 'bg-white/95 backdrop-blur-md border-b border-metal-300 shadow-sm'
+          : 'bg-white/80 backdrop-blur-sm'
       )}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between lg:h-20">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group" aria-label="ELSIM Engineering Home">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-energy-500/10 border border-energy-500/30 group-hover:bg-energy-500/20 transition-colors">
-              <span className="font-display text-lg font-bold text-energy-400">E</span>
+          {/* Logo – preserve official mark when available; temporary lettermark */}
+          <Link href="/" className="flex items-center gap-2.5 group" aria-label="ELSIM Engineering Home">
+            <div className="flex h-10 w-10 items-center justify-center rounded bg-burgundy text-white group-hover:bg-burgundy-600 transition-colors">
+              <span className="font-display text-lg font-bold tracking-tight">E</span>
             </div>
             <div className="hidden sm:block">
-              <span className="font-display text-lg font-semibold tracking-tight text-white">
+              <span className="font-display text-lg font-semibold tracking-tight text-charcoal">
                 ELSIM
               </span>
-              <span className="block text-xs text-steel-400 -mt-0.5">Engineering</span>
+              <span className="block text-[11px] uppercase tracking-widest text-charcoal-500 -mt-0.5">
+                Engineering
+              </span>
             </div>
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
+          <nav className="hidden lg:flex items-center gap-0.5" aria-label="Main navigation">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={clsx(
-                  'px-3 py-2 text-sm font-medium rounded-md transition-colors',
+                  'px-3 py-2 text-sm font-medium transition-colors relative',
                   pathname === item.href
-                    ? 'text-energy-400 bg-energy-500/10'
-                    : 'text-steel-300 hover:text-white hover:bg-steel-800/50'
+                    ? 'text-burgundy'
+                    : 'text-charcoal-600 hover:text-burgundy'
                 )}
               >
                 {item.label}
+                {pathname === item.href && (
+                  <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-burgundy" aria-hidden="true" />
+                )}
               </Link>
             ))}
           </nav>
@@ -79,14 +84,14 @@ export function Header() {
           <div className="flex items-center gap-3">
             <Link
               href="/quotation"
-              className="hidden sm:inline-flex items-center justify-center rounded-md bg-energy-500 px-4 py-2 text-sm font-semibold text-navy-950 shadow-sm hover:bg-energy-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-energy-500 transition-colors"
+              className="hidden sm:inline-flex items-center justify-center rounded bg-burgundy px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-burgundy-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-burgundy transition-colors"
             >
-              Request Quotation
+              Request Consultation
             </Link>
 
             <button
               type="button"
-              className="lg:hidden inline-flex items-center justify-center rounded-md p-2 text-steel-300 hover:bg-steel-800 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-energy-500"
+              className="lg:hidden inline-flex items-center justify-center rounded p-2 text-charcoal-600 hover:bg-metal-100 hover:text-burgundy focus:outline-none focus-visible:ring-2 focus-visible:ring-burgundy"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-expanded={mobileOpen}
               aria-controls="mobile-menu"
@@ -116,7 +121,7 @@ export function Header() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
-            className="lg:hidden border-t border-steel-800 bg-navy-950"
+            className="lg:hidden border-t border-metal-300 bg-white"
           >
             <nav className="space-y-1 px-4 py-4" aria-label="Mobile navigation">
               {navItems.map((item) => (
@@ -124,10 +129,10 @@ export function Header() {
                   key={item.href}
                   href={item.href}
                   className={clsx(
-                    'block rounded-md px-3 py-2.5 text-base font-medium',
+                    'block rounded px-3 py-2.5 text-base font-medium',
                     pathname === item.href
-                      ? 'bg-energy-500/10 text-energy-400'
-                      : 'text-steel-300 hover:bg-steel-800 hover:text-white'
+                      ? 'bg-burgundy/5 text-burgundy'
+                      : 'text-charcoal-700 hover:bg-metal-100 hover:text-burgundy'
                   )}
                 >
                   {item.label}
@@ -135,9 +140,9 @@ export function Header() {
               ))}
               <Link
                 href="/quotation"
-                className="mt-3 block w-full rounded-md bg-energy-500 px-3 py-2.5 text-center text-base font-semibold text-navy-950"
+                className="mt-3 block w-full rounded bg-burgundy px-3 py-2.5 text-center text-base font-semibold text-white"
               >
-                Request Quotation
+                Request Consultation
               </Link>
             </nav>
           </motion.div>
