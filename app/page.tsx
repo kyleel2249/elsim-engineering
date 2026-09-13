@@ -1,28 +1,40 @@
 import Link from 'next/link';
-import { HeroEnergyField } from '@/components/3d/HeroEnergyField';
+import dynamic from 'next/dynamic';
 import { services } from '@/lib/data/services';
 import { getPublishedProjects } from '@/lib/data/projects';
 import { company } from '@/lib/data/company';
+
+// Lazy-load 3D so first paint is not blocked
+const HeroHumanScene = dynamic(
+  () => import('@/components/3d/HeroHumanScene').then((m) => m.HeroHumanScene),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="absolute inset-0 bg-gradient-to-br from-white via-metal-50 to-metal-100" aria-hidden="true" />
+    ),
+  }
+);
 
 export default function HomePage() {
   const projects = getPublishedProjects().slice(0, 6);
 
   return (
     <>
-      {/* Hero – Light industrial environment */}
-      <section className="relative min-h-[88vh] flex items-center overflow-hidden bg-gradient-to-br from-white via-metal-50 to-metal-100 eng-grid">
-        <HeroEnergyField />
-        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24">
-          <div className="max-w-2xl">
+      {/* Hero — People-first: engineers at work */}
+      <section className="relative min-h-[88vh] flex items-center overflow-hidden bg-gradient-to-br from-white via-metal-50 to-metal-100">
+        <HeroHumanScene />
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 w-full">
+          <div className="max-w-xl">
             <p className="text-xs font-semibold tracking-[0.2em] text-burgundy uppercase mb-4">
-              Electrical Engineering • Ghana & West Africa
+              People Powering Engineering • Ghana & West Africa
             </p>
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.25rem] font-bold tracking-tight text-charcoal leading-[1.15]">
-              Engineering Systems Built for{' '}
+            <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.1rem] font-bold tracking-tight text-charcoal leading-[1.15]">
+              Engineers. Systems.{' '}
               <span className="text-burgundy">Real-World Performance.</span>
             </h1>
-            <p className="mt-6 text-lg text-charcoal-600 max-w-xl leading-relaxed">
-              ELSIM Engineering delivers electrical, energy, industrial and technical solutions designed around safety, reliability and professional execution.
+            {/* Semantic content — always available without 3D */}
+            <p className="mt-6 text-lg text-charcoal-600 max-w-lg leading-relaxed">
+              ELSIM Engineering teams design, install, test and maintain electrical and energy systems across Ghana and West Africa — with safety, reliability and professional execution at the centre of every project.
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
               <Link
@@ -33,7 +45,7 @@ export default function HomePage() {
               </Link>
               <Link
                 href="/projects"
-                className="inline-flex items-center justify-center rounded border border-charcoal/20 bg-white px-6 py-3.5 text-sm font-semibold text-charcoal hover:border-burgundy hover:text-burgundy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-burgundy transition-colors"
+                className="inline-flex items-center justify-center rounded border border-charcoal/20 bg-white/90 backdrop-blur-sm px-6 py-3.5 text-sm font-semibold text-charcoal hover:border-burgundy hover:text-burgundy transition-colors"
               >
                 Explore Our Projects
               </Link>
@@ -97,9 +109,9 @@ export default function HomePage() {
             <p className="text-xs font-semibold tracking-[0.2em] text-burgundy uppercase mb-3">
               02 — Capabilities
             </p>
-            <h2 className="font-display text-3xl font-bold text-charcoal">Core Services</h2>
+            <h2 className="font-display text-3xl font-bold text-charcoal">What Our Teams Deliver</h2>
             <p className="mt-3 text-charcoal-600">
-              Professional electrical and energy solutions for commercial, industrial and institutional clients.
+              From electrical installation and solar systems to power distribution and maintenance — executed by trained engineers and technicians.
             </p>
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -142,7 +154,7 @@ export default function HomePage() {
             <p className="text-xs font-semibold tracking-[0.2em] text-burgundy uppercase mb-3">
               03 — Projects
             </p>
-            <h2 className="font-display text-3xl font-bold text-charcoal">Selected Projects</h2>
+            <h2 className="font-display text-3xl font-bold text-charcoal">Where Our Engineers Have Worked</h2>
             <p className="mt-3 text-charcoal-600">
               Verified project experience across Ghana and West Africa. Photography and detailed case studies pending approved assets.
             </p>
@@ -183,7 +195,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Why ELSIM – dark technical section */}
+      {/* Why ELSIM */}
       <section className="py-20 bg-charcoal eng-grid-dark">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12">
@@ -191,7 +203,7 @@ export default function HomePage() {
               04 — Why ELSIM
             </p>
             <h2 className="font-display text-3xl font-bold text-white">
-              Why Work With ELSIM
+              Why Clients Trust Our Teams
             </h2>
           </div>
           <div className="grid gap-8 md:grid-cols-3">
@@ -202,7 +214,7 @@ export default function HomePage() {
               },
               {
                 title: 'Regional Experience',
-                text: 'Project delivery across Ghana, Togo, Côte d\'Ivoire, Burkina Faso, Senegal and Niger.',
+                text: "Project delivery across Ghana, Togo, Côte d'Ivoire, Burkina Faso, Senegal and Niger.",
               },
               {
                 title: 'Technical Discipline',
@@ -228,7 +240,7 @@ export default function HomePage() {
             Ready to discuss your next project?
           </h2>
           <p className="mt-4 text-charcoal-600">
-            Request a consultation or quotation. Our team will respond with the information you need.
+            Speak with the ELSIM team about electrical installation, solar, power distribution or maintenance support.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
