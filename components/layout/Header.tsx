@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { clsx } from 'clsx';
+import { ElsimLogo } from '@/components/brand/ElsimLogo';
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -44,22 +45,14 @@ export function Header() {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between lg:h-20">
-          {/* Logo – preserve official mark when available; temporary lettermark */}
-          <Link href="/" className="flex items-center gap-2.5 group" aria-label="ELSIM Engineering Home">
-            <div className="flex h-10 w-10 items-center justify-center rounded bg-burgundy text-white group-hover:bg-burgundy-600 transition-colors">
-              <span className="font-display text-lg font-bold tracking-tight">E</span>
-            </div>
-            <div className="hidden sm:block">
-              <span className="font-display text-lg font-semibold tracking-tight text-charcoal">
-                ELSIM
-              </span>
-              <span className="block text-[11px] uppercase tracking-widest text-charcoal-500 -mt-0.5">
-                Engineering
-              </span>
-            </div>
+          <Link
+            href="/"
+            className="flex items-center group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-burgundy rounded"
+            aria-label="ELSIM Engineering Home"
+          >
+            <ElsimLogo size="md" withWordmark priority animated={false} />
           </Link>
 
-          {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-0.5" aria-label="Main navigation">
             {navItems.map((item) => (
               <Link
@@ -80,7 +73,6 @@ export function Header() {
             ))}
           </nav>
 
-          {/* CTA + Mobile toggle */}
           <div className="flex items-center gap-3">
             <Link
               href="/quotation"
@@ -112,7 +104,6 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
