@@ -19,12 +19,10 @@ body {
   @apply bg-white text-charcoal-950 antialiased;
 }
 
-/* Focus styles for accessibility – burgundy signature */
 :focus-visible {
   @apply outline-2 outline-offset-2 outline-burgundy;
 }
 
-/* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -38,7 +36,6 @@ body {
   }
 }
 
-/* Custom scrollbar – industrial */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -52,7 +49,6 @@ body {
   @apply bg-burgundy;
 }
 
-/* Technical grid utility */
 .eng-grid {
   background-image:
     linear-gradient(to right, rgba(209, 209, 209, 0.15) 1px, transparent 1px),
@@ -65,4 +61,24 @@ body {
     linear-gradient(to right, rgba(148, 26, 29, 0.08) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(148, 26, 29, 0.08) 1px, transparent 1px);
   background-size: 40px 40px;
+}
+
+/* Subtle logo energy — only when .logo-spin-slow is applied */
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.logo-spin-slow {
+  animation: logo-spin 28s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-spin-slow {
+    animation: none;
+  }
 }
