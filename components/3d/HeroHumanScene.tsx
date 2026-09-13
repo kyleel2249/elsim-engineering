@@ -1,11 +1,13 @@
 'use client';
 
 import { useRef, useState, useEffect, Suspense } from 'react';
+import Image from 'next/image';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { HumanFigure, ElectricalPanel } from '@/components/3d/humans/HumanFigure';
 import { detectQualityTier, type QualitySettings } from '@/lib/3d/quality';
 import { BRAND_3D } from '@/lib/3d/config';
+import { media } from '@/lib/data/media';
 import { useWebGLSupport, useReducedMotion } from '@/hooks/useWebGLSupport';
 
 function Floor() {
@@ -19,10 +21,7 @@ function Floor() {
 
 function GridHelper() {
   return (
-    <gridHelper
-      args={[12, 24, BRAND_3D.metal, '#e8e8e8']}
-      position={[0, 0.01, 0]}
-    />
+    <gridHelper args={[12, 24, BRAND_3D.metal, '#e8e8e8']} position={[0, 0.01, 0]} />
   );
 }
 
@@ -56,7 +55,6 @@ function SceneContent({ quality }: { quality: QualitySettings }) {
   }, []);
 
   useFrame(() => {
-    // Documentary-style subtle camera parallax
     camera.position.x += (mouse.current.x * 0.5 - camera.position.x) * 0.02;
     camera.position.y += (1.4 + mouse.current.y * 0.2 - camera.position.y) * 0.02;
     camera.lookAt(0.3, 1.1, 0);
@@ -65,12 +63,7 @@ function SceneContent({ quality }: { quality: QualitySettings }) {
   return (
     <>
       <ambientLight intensity={0.55} />
-      <directionalLight
-        position={[4, 6, 3]}
-        intensity={0.9}
-        color="#ffffff"
-        castShadow={quality.shadows}
-      />
+      <directionalLight position={[4, 6, 3]} intensity={0.9} color="#ffffff" castShadow={quality.shadows} />
       <pointLight position={[-2, 3, 2]} intensity={0.35} color={BRAND_3D.burgundy} />
       <pointLight position={[2, 2.5, 1]} intensity={0.25} color={BRAND_3D.engblue} />
 
@@ -78,7 +71,6 @@ function SceneContent({ quality }: { quality: QualitySettings }) {
       {quality.tier !== 'LOW' && <GridHelper />}
       {quality.tier !== 'LOW' && <CableRun />}
 
-      {/* Primary: engineer inspecting electrical panel */}
       <HumanFigure
         position={[-0.15, 0, 0.15]}
         rotation={[0, 0.35, 0]}
@@ -90,7 +82,6 @@ function SceneContent({ quality }: { quality: QualitySettings }) {
       />
       <ElectricalPanel position={[0.85, 0, 0]} />
 
-      {/* Secondary technician on HIGH quality only */}
       {quality.maxCharacters >= 2 && (
         <HumanFigure
           position={[-1.4, 0, -0.8]}
@@ -106,30 +97,23 @@ function SceneContent({ quality }: { quality: QualitySettings }) {
   );
 }
 
+/** Photo fallback when WebGL unavailable or reduced motion */
 function StaticFallback() {
   return (
-    <div
-      className="absolute inset-0 bg-gradient-to-br from-white via-metal-50 to-metal-100 eng-grid flex items-center justify-center"
-      aria-hidden="true"
-    >
-      <div className="text-center px-6">
-        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-burgundy/10 border border-burgundy/20">
-          <span className="text-2xl text-burgundy">⚡</span>
-        </div>
-        <p className="text-sm font-medium text-charcoal-600 max-w-xs">
-          Engineers at work — electrical installation, testing and commissioning across West Africa.
-        </p>
-      </div>
+    <div className="absolute inset-0" aria-hidden="true">
+      <Image
+        src={media.photography.engineerPanelInspection}
+        alt=""
+        fill
+        className="object-cover object-center opacity-90"
+        sizes="100vw"
+        priority
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-transparent" />
     </div>
   );
 }
 
-/**
- * Hero scene: people-first engineering documentary composition.
- * Engineer + electrical panel is the focal point.
- * Adaptive quality for desktop / tablet / mobile.
- * Semantic content remains on the page regardless of 3D.
- */
 export function HeroHumanScene() {
   const webgl = useWebGLSupport();
   const reducedMotion = useReducedMotion();
