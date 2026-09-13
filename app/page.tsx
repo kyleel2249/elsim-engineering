@@ -6,8 +6,10 @@ import { getPublishedProjects } from '@/lib/data/projects';
 import { company } from '@/lib/data/company';
 import { media } from '@/lib/data/media';
 
-const HeroHumanScene = dynamic(
-  () => import('@/components/3d/HeroHumanScene').then((m) => m.HeroHumanScene),
+// Real-photo 3D scene: engineers, solar, panels, poles
+const PhotoEngineeringScene = dynamic(
+  () =>
+    import('@/components/3d/PhotoEngineeringScene').then((m) => m.PhotoEngineeringScene),
   {
     ssr: false,
     loading: () => (
@@ -33,10 +35,11 @@ export default function HomePage() {
 
   return (
     <>
+      {/* Hero — real people & infrastructure in responsive 3D */}
       <section className="relative min-h-[88vh] flex items-center overflow-hidden bg-gradient-to-br from-white via-metal-50 to-metal-100">
-        <HeroHumanScene />
-        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 w-full">
-          <div className="max-w-xl">
+        <PhotoEngineeringScene />
+        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 w-full pointer-events-none">
+          <div className="max-w-xl pointer-events-auto">
             <p className="text-xs font-semibold tracking-[0.2em] text-burgundy uppercase mb-4">
               People Powering Engineering • Ghana & West Africa
             </p>
@@ -65,7 +68,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 3D animated brand mark */}
       <section className="py-10 bg-white border-t border-metal-200" aria-label="ELSIM Engineering brand">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center justify-center gap-2">
@@ -108,7 +110,10 @@ export default function HomePage() {
                 label: 'Site engineering',
               },
             ].map((item) => (
-              <figure key={item.label} className="group relative aspect-[4/5] overflow-hidden rounded border border-metal-200 bg-metal-100">
+              <figure
+                key={item.label}
+                className="group relative aspect-[4/5] overflow-hidden rounded border border-metal-200 bg-metal-100"
+              >
                 <Image
                   src={item.src}
                   alt={item.alt}
@@ -153,14 +158,19 @@ export default function HomePage() {
               <p className="text-xs font-semibold tracking-[0.2em] text-burgundy uppercase mb-3">01 — Company</p>
               <h2 className="font-display text-3xl font-bold text-charcoal">About ELSIM Engineering</h2>
               <p className="mt-4 text-charcoal-600 leading-relaxed">{company.description}</p>
-              <Link href="/about" className="mt-6 inline-flex items-center text-sm font-semibold text-burgundy hover:text-burgundy-600 transition-colors">
+              <Link
+                href="/about"
+                className="mt-6 inline-flex items-center text-sm font-semibold text-burgundy hover:text-burgundy-600 transition-colors"
+              >
                 Meet the team →
               </Link>
             </div>
             <div className="grid grid-cols-2 gap-4">
               {company.values.slice(0, 4).map((v) => (
                 <div key={v.id} className="rounded border border-metal-200 bg-metal-50 p-5">
-                  <h3 className="font-display text-sm font-semibold text-burgundy uppercase tracking-wide">{v.title}</h3>
+                  <h3 className="font-display text-sm font-semibold text-burgundy uppercase tracking-wide">
+                    {v.title}
+                  </h3>
                   <p className="mt-2 text-sm text-charcoal-600">{v.description}</p>
                 </div>
               ))}
@@ -201,7 +211,9 @@ export default function HomePage() {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {projects.map((project) => (
               <div key={project.slug} className="rounded border border-metal-200 bg-metal-50 p-5">
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-burgundy">{project.location}</span>
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-burgundy">
+                  {project.location}
+                </span>
                 <h3 className="font-display text-base font-semibold text-charcoal mt-1">{project.title}</h3>
                 <p className="mt-2 text-sm text-charcoal-600 line-clamp-2">{project.shortDescription}</p>
               </div>
@@ -216,12 +228,20 @@ export default function HomePage() {
       <section className="py-20 bg-charcoal eng-grid-dark">
         <div className="mx-auto max-w-3xl px-4 text-center">
           <h2 className="font-display text-3xl font-bold text-white">Ready to discuss your next project?</h2>
-          <p className="mt-4 text-metal-400">Speak with the ELSIM team about electrical, solar or maintenance support.</p>
+          <p className="mt-4 text-metal-400">
+            Speak with the ELSIM team about electrical, solar or maintenance support.
+          </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link href="/quotation" className="rounded bg-burgundy px-6 py-3.5 text-sm font-semibold text-white hover:bg-burgundy-600">
+            <Link
+              href="/quotation"
+              className="rounded bg-burgundy px-6 py-3.5 text-sm font-semibold text-white hover:bg-burgundy-600"
+            >
               Request a Quotation
             </Link>
-            <Link href="/contact" className="rounded border border-metal-600 px-6 py-3.5 text-sm font-semibold text-white hover:border-burgundy">
+            <Link
+              href="/contact"
+              className="rounded border border-metal-600 px-6 py-3.5 text-sm font-semibold text-white hover:border-burgundy"
+            >
               Contact Us
             </Link>
           </div>
