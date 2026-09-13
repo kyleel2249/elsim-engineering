@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { company } from '@/lib/data/company';
+import { media } from '@/lib/data/media';
 
 export const metadata: Metadata = {
   title: 'About ELSIM Engineering',
@@ -20,11 +22,21 @@ export default function AboutPage() {
         <div className="mt-8 space-y-5 text-charcoal-600 leading-relaxed">
           <p>{company.description}</p>
           <p>
-            Based in Accra, Ghana, with verified project experience across Ghana, Togo, Côte d'Ivoire, Burkina Faso, Senegal and Niger.
+            Operating from Accra, Ghana, with verified project experience across Ghana, Togo, Côte d'Ivoire, Burkina Faso, Senegal and Niger.
           </p>
         </div>
 
-        {/* Vision & Mission */}
+        <div className="mt-10 relative aspect-[16/10] w-full overflow-hidden rounded border border-metal-200 bg-metal-100">
+          <Image
+            src={media.photography.technicianPanelWork}
+            alt="ELSIM technician working on an electrical control panel"
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 896px"
+            priority
+          />
+        </div>
+
         <div className="mt-14 grid gap-8 md:grid-cols-2">
           <div className="rounded border border-metal-200 bg-metal-50 p-6">
             <h2 className="font-display text-lg font-semibold text-burgundy uppercase tracking-wide">
@@ -40,7 +52,6 @@ export default function AboutPage() {
           </div>
         </div>
 
-        {/* Core Values */}
         <section className="mt-14">
           <h2 className="font-display text-2xl font-bold text-charcoal mb-6">Core Values</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -58,39 +69,29 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Leadership */}
         <section className="mt-14">
-          <h2 className="font-display text-2xl font-bold text-charcoal mb-6">Leadership</h2>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {company.leadership.map((person) => (
-              <div
-                key={person.name}
-                className="rounded border border-metal-200 bg-white p-5 flex gap-4 items-start"
-              >
-                <div className="h-12 w-12 shrink-0 rounded bg-burgundy/10 flex items-center justify-center">
-                  <span className="text-burgundy font-display font-bold text-sm">
-                    {person.name
-                      .split(' ')
-                      .filter((n) => !n.startsWith('Ing.'))
-                      .map((n) => n[0])
-                      .slice(0, 2)
-                      .join('')}
-                  </span>
-                </div>
-                <div>
-                  <h3 className="font-display font-semibold text-charcoal">{person.name}</h3>
-                  <p className="text-sm text-burgundy mt-0.5">{person.role}</p>
-                  {person.bio ? (
-                    <p className="mt-2 text-sm text-charcoal-600">{person.bio}</p>
-                  ) : (
-                    <p className="mt-2 text-xs text-charcoal-400">
-                      Biography pending approved content.
-                    </p>
-                  )}
-                </div>
-              </div>
-            ))}
+          <h2 className="font-display text-2xl font-bold text-charcoal mb-2">Our Team</h2>
+          <p className="text-sm text-charcoal-500 mb-6">Leadership of ELSIM Engineering</p>
+          <div className="relative w-full overflow-hidden rounded border border-metal-200 bg-white">
+            <Image
+              src={media.leadership.ourTeam}
+              alt="ELSIM Engineering leadership: Ing. Simon Sandy Kununya (CEO), Ella Ankah (General Manager), Ing. Teye Amos Agudey (Engineer/Project Manager), Stephen Doe Agbo (Chief Accounts Officer)"
+              width={900}
+              height={700}
+              className="w-full h-auto"
+              sizes="(max-width: 768px) 100vw, 896px"
+            />
           </div>
+          <ul className="mt-6 grid gap-3 sm:grid-cols-2 text-sm">
+            {company.leadership.map((person) => (
+              <li key={person.name} className="rounded border border-metal-200 px-4 py-3">
+                <span className="font-semibold text-charcoal">{person.name}</span>
+                <span className="block text-burgundy text-xs uppercase tracking-wide mt-0.5">
+                  {person.role}
+                </span>
+              </li>
+            ))}
+          </ul>
         </section>
 
         <div className="mt-14">
