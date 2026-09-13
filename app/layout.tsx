@@ -37,6 +37,11 @@ export const metadata: Metadata = {
     'engineering services West Africa',
   ],
   authors: [{ name: 'ELSIM Engineering' }],
+  icons: {
+    icon: [{ url: '/assets/elsim/logo.png', type: 'image/png' }],
+    apple: [{ url: '/assets/elsim/logo.png' }],
+    shortcut: '/assets/elsim/logo.png',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_GH',
@@ -45,6 +50,7 @@ export const metadata: Metadata = {
     title: 'ELSIM Engineering | Engineering Precision. Industrial Strength. Safe Execution.',
     description:
       'Electrical, energy, industrial and technical solutions designed around safety, reliability and professional execution across Ghana and West Africa.',
+    images: [{ url: '/assets/elsim/logo.png', width: 512, height: 512, alt: 'ELSIM Engineering Firm' }],
   },
   robots: {
     index: true,
