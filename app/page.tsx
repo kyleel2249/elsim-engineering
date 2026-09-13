@@ -16,6 +16,18 @@ const HeroHumanScene = dynamic(
   }
 );
 
+const Logo3D = dynamic(
+  () => import('@/components/3d/Logo3D').then((m) => m.Logo3D),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-40 items-center justify-center" aria-hidden="true">
+        <div className="h-16 w-16 rounded-full bg-metal-100" />
+      </div>
+    ),
+  }
+);
+
 export default function HomePage() {
   const projects = getPublishedProjects().slice(0, 6);
 
@@ -53,7 +65,18 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* People at work — authentic photography */}
+      {/* 3D animated brand mark */}
+      <section className="py-10 bg-white border-t border-metal-200" aria-label="ELSIM Engineering brand">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center justify-center gap-2">
+            <Logo3D height={140} className="w-full max-w-[220px] sm:max-w-[280px]" />
+            <p className="text-[10px] uppercase tracking-[0.25em] text-charcoal-400 font-medium">
+              ELSIM Engineering Firm
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section className="py-16 bg-white border-t border-metal-200">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <p className="text-xs font-semibold tracking-[0.2em] text-burgundy uppercase mb-3">
@@ -102,7 +125,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Infrastructure strip */}
       <section className="grid sm:grid-cols-2 border-t border-metal-200">
         <div className="relative aspect-[16/9] sm:aspect-auto sm:min-h-[280px]">
           <Image
@@ -128,9 +150,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <p className="text-xs font-semibold tracking-[0.2em] text-burgundy uppercase mb-3">
-                01 — Company
-              </p>
+              <p className="text-xs font-semibold tracking-[0.2em] text-burgundy uppercase mb-3">01 — Company</p>
               <h2 className="font-display text-3xl font-bold text-charcoal">About ELSIM Engineering</h2>
               <p className="mt-4 text-charcoal-600 leading-relaxed">{company.description}</p>
               <Link href="/about" className="mt-6 inline-flex items-center text-sm font-semibold text-burgundy hover:text-burgundy-600 transition-colors">
