@@ -31,6 +31,9 @@ const initialState: FormState = {
   consent: false,
 };
 
+const inputClass =
+  'w-full rounded border border-metal-300 bg-white px-3 py-2 text-charcoal placeholder-charcoal-400 focus:border-burgundy focus:outline-none focus:ring-1 focus:ring-burgundy';
+
 export function QuotationForm() {
   const [form, setForm] = useState<FormState>(initialState);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
@@ -68,11 +71,8 @@ export function QuotationForm() {
       return;
     }
     setStatus('submitting');
-
-    // DEVELOPMENT MODE: Log to console. Replace with secure API / Supabase / Firebase in production.
     try {
       console.info('[ELSIM Quotation – DEV MODE]', form);
-      // Simulate network
       await new Promise((r) => setTimeout(r, 800));
       setStatus('success');
       setForm(initialState);
@@ -84,15 +84,15 @@ export function QuotationForm() {
 
   if (status === 'success') {
     return (
-      <div className="rounded-xl border border-energy-500/30 bg-energy-500/5 p-8 text-center" role="status">
-        <h3 className="font-display text-xl font-semibold text-white">Request received</h3>
-        <p className="mt-2 text-steel-300">
-          Thank you. In production this will notify the ELSIM team. (Currently running in development mode.)
+      <div className="rounded border border-burgundy/30 bg-burgundy/5 p-8 text-center" role="status">
+        <h3 className="font-display text-xl font-semibold text-charcoal">Request received</h3>
+        <p className="mt-2 text-charcoal-600">
+          Thank you. Your project information has been received. In production this will notify the ELSIM team.
         </p>
         <button
           type="button"
           onClick={() => setStatus('idle')}
-          className="mt-6 text-energy-400 hover:text-energy-300 text-sm font-medium"
+          className="mt-6 text-burgundy hover:text-burgundy-600 text-sm font-medium"
         >
           Submit another request
         </button>
@@ -102,78 +102,49 @@ export function QuotationForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-      {/* Progress */}
       <div className="flex gap-2 mb-8" aria-hidden="true">
         {[1, 2, 3].map((s) => (
           <div
             key={s}
-            className={`h-1 flex-1 rounded-full ${s <= step ? 'bg-energy-500' : 'bg-steel-700'}`}
+            className={`h-1 flex-1 rounded-full ${s <= step ? 'bg-burgundy' : 'bg-metal-300'}`}
           />
         ))}
       </div>
 
       {step === 1 && (
         <div className="space-y-4">
-          <h2 className="font-display text-lg font-semibold text-white">Your details</h2>
+          <h2 className="font-display text-lg font-semibold text-charcoal">Your details</h2>
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-steel-300 mb-1">
+            <label htmlFor="name" className="block text-sm font-medium text-charcoal-600 mb-1">
               Full name *
             </label>
-            <input
-              id="name"
-              type="text"
-              value={form.name}
-              onChange={(e) => update('name', e.target.value)}
-              className="w-full rounded-md border border-steel-700 bg-navy-900 px-3 py-2 text-white placeholder-steel-500 focus:border-energy-500 focus:outline-none focus:ring-1 focus:ring-energy-500"
-              autoComplete="name"
-            />
-            {errors.name && <p className="mt-1 text-sm text-red-400">{errors.name}</p>}
+            <input id="name" type="text" value={form.name} onChange={(e) => update('name', e.target.value)} className={inputClass} autoComplete="name" />
+            {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
           </div>
           <div>
-            <label htmlFor="company" className="block text-sm font-medium text-steel-300 mb-1">
+            <label htmlFor="company" className="block text-sm font-medium text-charcoal-600 mb-1">
               Company
             </label>
-            <input
-              id="company"
-              type="text"
-              value={form.company}
-              onChange={(e) => update('company', e.target.value)}
-              className="w-full rounded-md border border-steel-700 bg-navy-900 px-3 py-2 text-white placeholder-steel-500 focus:border-energy-500 focus:outline-none focus:ring-1 focus:ring-energy-500"
-              autoComplete="organization"
-            />
+            <input id="company" type="text" value={form.company} onChange={(e) => update('company', e.target.value)} className={inputClass} autoComplete="organization" />
           </div>
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-steel-300 mb-1">
+            <label htmlFor="email" className="block text-sm font-medium text-charcoal-600 mb-1">
               Email *
             </label>
-            <input
-              id="email"
-              type="email"
-              value={form.email}
-              onChange={(e) => update('email', e.target.value)}
-              className="w-full rounded-md border border-steel-700 bg-navy-900 px-3 py-2 text-white placeholder-steel-500 focus:border-energy-500 focus:outline-none focus:ring-1 focus:ring-energy-500"
-              autoComplete="email"
-            />
-            {errors.email && <p className="mt-1 text-sm text-red-400">{errors.email}</p>}
+            <input id="email" type="email" value={form.email} onChange={(e) => update('email', e.target.value)} className={inputClass} autoComplete="email" />
+            {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
           </div>
           <div>
-            <label htmlFor="telephone" className="block text-sm font-medium text-steel-300 mb-1">
+            <label htmlFor="telephone" className="block text-sm font-medium text-charcoal-600 mb-1">
               Telephone *
             </label>
-            <input
-              id="telephone"
-              type="tel"
-              value={form.telephone}
-              onChange={(e) => update('telephone', e.target.value)}
-              className="w-full rounded-md border border-steel-700 bg-navy-900 px-3 py-2 text-white placeholder-steel-500 focus:border-energy-500 focus:outline-none focus:ring-1 focus:ring-energy-500"
-              autoComplete="tel"
-            />
-            {errors.telephone && <p className="mt-1 text-sm text-red-400">{errors.telephone}</p>}
+            <input id="telephone" type="tel" value={form.telephone} onChange={(e) => update('telephone', e.target.value)} className={inputClass} autoComplete="tel" />
+            {errors.telephone && <p className="mt-1 text-sm text-red-600">{errors.telephone}</p>}
           </div>
           <button
             type="button"
             onClick={() => validateStep1() && setStep(2)}
-            className="w-full sm:w-auto rounded-md bg-energy-500 px-5 py-2.5 text-sm font-semibold text-navy-950 hover:bg-energy-400 transition-colors"
+            className="w-full sm:w-auto rounded bg-burgundy px-5 py-2.5 text-sm font-semibold text-white hover:bg-burgundy-600 transition-colors"
           >
             Continue
           </button>
@@ -182,39 +153,25 @@ export function QuotationForm() {
 
       {step === 2 && (
         <div className="space-y-4">
-          <h2 className="font-display text-lg font-semibold text-white">Project details</h2>
+          <h2 className="font-display text-lg font-semibold text-charcoal">Project details</h2>
           <div>
-            <label htmlFor="serviceRequired" className="block text-sm font-medium text-steel-300 mb-1">
+            <label htmlFor="serviceRequired" className="block text-sm font-medium text-charcoal-600 mb-1">
               Service required *
             </label>
-            <select
-              id="serviceRequired"
-              value={form.serviceRequired}
-              onChange={(e) => update('serviceRequired', e.target.value)}
-              className="w-full rounded-md border border-steel-700 bg-navy-900 px-3 py-2 text-white focus:border-energy-500 focus:outline-none focus:ring-1 focus:ring-energy-500"
-            >
+            <select id="serviceRequired" value={form.serviceRequired} onChange={(e) => update('serviceRequired', e.target.value)} className={inputClass}>
               <option value="">Select a service</option>
               {services.map((s) => (
-                <option key={s.slug} value={s.slug}>
-                  {s.title}
-                </option>
+                <option key={s.slug} value={s.slug}>{s.title}</option>
               ))}
               <option value="other">Other / Not sure</option>
             </select>
-            {errors.serviceRequired && (
-              <p className="mt-1 text-sm text-red-400">{errors.serviceRequired}</p>
-            )}
+            {errors.serviceRequired && <p className="mt-1 text-sm text-red-600">{errors.serviceRequired}</p>}
           </div>
           <div>
-            <label htmlFor="projectType" className="block text-sm font-medium text-steel-300 mb-1">
+            <label htmlFor="projectType" className="block text-sm font-medium text-charcoal-600 mb-1">
               Project type
             </label>
-            <select
-              id="projectType"
-              value={form.projectType}
-              onChange={(e) => update('projectType', e.target.value)}
-              className="w-full rounded-md border border-steel-700 bg-navy-900 px-3 py-2 text-white focus:border-energy-500 focus:outline-none focus:ring-1 focus:ring-energy-500"
-            >
+            <select id="projectType" value={form.projectType} onChange={(e) => update('projectType', e.target.value)} className={inputClass}>
               <option value="">Select type</option>
               <option value="new-installation">New installation</option>
               <option value="upgrade">Upgrade / expansion</option>
@@ -224,50 +181,24 @@ export function QuotationForm() {
             </select>
           </div>
           <div>
-            <label htmlFor="projectLocation" className="block text-sm font-medium text-steel-300 mb-1">
+            <label htmlFor="projectLocation" className="block text-sm font-medium text-charcoal-600 mb-1">
               Project location *
             </label>
-            <input
-              id="projectLocation"
-              type="text"
-              value={form.projectLocation}
-              onChange={(e) => update('projectLocation', e.target.value)}
-              placeholder="City / region"
-              className="w-full rounded-md border border-steel-700 bg-navy-900 px-3 py-2 text-white placeholder-steel-500 focus:border-energy-500 focus:outline-none focus:ring-1 focus:ring-energy-500"
-            />
-            {errors.projectLocation && (
-              <p className="mt-1 text-sm text-red-400">{errors.projectLocation}</p>
-            )}
+            <input id="projectLocation" type="text" value={form.projectLocation} onChange={(e) => update('projectLocation', e.target.value)} placeholder="City / region" className={inputClass} />
+            {errors.projectLocation && <p className="mt-1 text-sm text-red-600">{errors.projectLocation}</p>}
           </div>
           <div>
-            <label htmlFor="projectDescription" className="block text-sm font-medium text-steel-300 mb-1">
+            <label htmlFor="projectDescription" className="block text-sm font-medium text-charcoal-600 mb-1">
               Project description *
             </label>
-            <textarea
-              id="projectDescription"
-              rows={4}
-              value={form.projectDescription}
-              onChange={(e) => update('projectDescription', e.target.value)}
-              className="w-full rounded-md border border-steel-700 bg-navy-900 px-3 py-2 text-white placeholder-steel-500 focus:border-energy-500 focus:outline-none focus:ring-1 focus:ring-energy-500"
-              placeholder="Briefly describe the scope, current situation and what you need"
-            />
-            {errors.projectDescription && (
-              <p className="mt-1 text-sm text-red-400">{errors.projectDescription}</p>
-            )}
+            <textarea id="projectDescription" rows={4} value={form.projectDescription} onChange={(e) => update('projectDescription', e.target.value)} className={inputClass} placeholder="Briefly describe the scope, current situation and what you need" />
+            {errors.projectDescription && <p className="mt-1 text-sm text-red-600">{errors.projectDescription}</p>}
           </div>
           <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={() => setStep(1)}
-              className="rounded-md border border-steel-600 px-4 py-2 text-sm text-steel-300 hover:bg-steel-800"
-            >
+            <button type="button" onClick={() => setStep(1)} className="rounded border border-metal-300 px-4 py-2 text-sm text-charcoal-600 hover:bg-metal-100">
               Back
             </button>
-            <button
-              type="button"
-              onClick={() => validateStep2() && setStep(3)}
-              className="rounded-md bg-energy-500 px-5 py-2.5 text-sm font-semibold text-navy-950 hover:bg-energy-400"
-            >
+            <button type="button" onClick={() => validateStep2() && setStep(3)} className="rounded bg-burgundy px-5 py-2.5 text-sm font-semibold text-white hover:bg-burgundy-600">
               Continue
             </button>
           </div>
@@ -276,17 +207,12 @@ export function QuotationForm() {
 
       {step === 3 && (
         <div className="space-y-4">
-          <h2 className="font-display text-lg font-semibold text-white">Timeline & consent</h2>
+          <h2 className="font-display text-lg font-semibold text-charcoal">Timeline & consent</h2>
           <div>
-            <label htmlFor="estimatedTimeline" className="block text-sm font-medium text-steel-300 mb-1">
+            <label htmlFor="estimatedTimeline" className="block text-sm font-medium text-charcoal-600 mb-1">
               Estimated timeline
             </label>
-            <select
-              id="estimatedTimeline"
-              value={form.estimatedTimeline}
-              onChange={(e) => update('estimatedTimeline', e.target.value)}
-              className="w-full rounded-md border border-steel-700 bg-navy-900 px-3 py-2 text-white focus:border-energy-500 focus:outline-none focus:ring-1 focus:ring-energy-500"
-            >
+            <select id="estimatedTimeline" value={form.estimatedTimeline} onChange={(e) => update('estimatedTimeline', e.target.value)} className={inputClass}>
               <option value="">Select</option>
               <option value="urgent">Urgent (within weeks)</option>
               <option value="1-3months">1–3 months</option>
@@ -296,15 +222,10 @@ export function QuotationForm() {
             </select>
           </div>
           <div>
-            <label htmlFor="budgetRange" className="block text-sm font-medium text-steel-300 mb-1">
+            <label htmlFor="budgetRange" className="block text-sm font-medium text-charcoal-600 mb-1">
               Budget range (optional)
             </label>
-            <select
-              id="budgetRange"
-              value={form.budgetRange}
-              onChange={(e) => update('budgetRange', e.target.value)}
-              className="w-full rounded-md border border-steel-700 bg-navy-900 px-3 py-2 text-white focus:border-energy-500 focus:outline-none focus:ring-1 focus:ring-energy-500"
-            >
+            <select id="budgetRange" value={form.budgetRange} onChange={(e) => update('budgetRange', e.target.value)} className={inputClass}>
               <option value="">Prefer not to say</option>
               <option value="under-50k">Under GHS 50,000</option>
               <option value="50-200k">GHS 50,000 – 200,000</option>
@@ -313,45 +234,31 @@ export function QuotationForm() {
             </select>
           </div>
           <div className="flex items-start gap-3">
-            <input
-              id="consent"
-              type="checkbox"
-              checked={form.consent}
-              onChange={(e) => update('consent', e.target.checked)}
-              className="mt-1 h-4 w-4 rounded border-steel-600 text-energy-500 focus:ring-energy-500"
-            />
-            <label htmlFor="consent" className="text-sm text-steel-300">
+            <input id="consent" type="checkbox" checked={form.consent} onChange={(e) => update('consent', e.target.checked)} className="mt-1 h-4 w-4 rounded border-metal-400 text-burgundy focus:ring-burgundy" />
+            <label htmlFor="consent" className="text-sm text-charcoal-600">
               I consent to be contacted by ELSIM Engineering regarding this enquiry. *
             </label>
           </div>
-          {errors.consent && <p className="text-sm text-red-400">{errors.consent}</p>}
+          {errors.consent && <p className="text-sm text-red-600">{errors.consent}</p>}
 
           <div className="flex gap-3 pt-2">
-            <button
-              type="button"
-              onClick={() => setStep(2)}
-              className="rounded-md border border-steel-600 px-4 py-2 text-sm text-steel-300 hover:bg-steel-800"
-            >
+            <button type="button" onClick={() => setStep(2)} className="rounded border border-metal-300 px-4 py-2 text-sm text-charcoal-600 hover:bg-metal-100">
               Back
             </button>
-            <button
-              type="submit"
-              disabled={status === 'submitting'}
-              className="rounded-md bg-energy-500 px-5 py-2.5 text-sm font-semibold text-navy-950 hover:bg-energy-400 disabled:opacity-60 transition-colors"
-            >
+            <button type="submit" disabled={status === 'submitting'} className="rounded bg-burgundy px-5 py-2.5 text-sm font-semibold text-white hover:bg-burgundy-600 disabled:opacity-60 transition-colors">
               {status === 'submitting' ? 'Submitting…' : 'Submit request'}
             </button>
           </div>
           {status === 'error' && (
-            <p className="text-sm text-red-400" role="alert">
+            <p className="text-sm text-red-600" role="alert">
               Something went wrong. Please try again or contact us directly.
             </p>
           )}
         </div>
       )}
 
-      <p className="text-xs text-steel-500 pt-4">
-        Development mode: submissions are logged to the console only. Connect a secure backend (Supabase / Firebase / custom API) for production.
+      <p className="text-xs text-charcoal-400 pt-4">
+        Development mode: submissions are logged to the console only. Connect a secure backend for production.
       </p>
     </form>
   );
