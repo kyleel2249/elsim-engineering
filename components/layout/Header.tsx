@@ -37,13 +37,18 @@ export function Header() {
   return (
     <header
       className={clsx(
-        'sticky top-0 z-40 w-full transition-all duration-300',
-        scrolled
-          ? 'bg-white/95 backdrop-blur-md border-b border-metal-300 shadow-sm'
-          : 'bg-white/80 backdrop-blur-sm'
+        'sticky top-0 z-40 w-full transition-all duration-300 border-b',
+        scrolled ? 'shadow-sm' : ''
       )}
+      style={{
+        backgroundColor: 'var(--theme-header-bg)',
+        borderColor: 'var(--theme-border)',
+        color: 'var(--theme-text)',
+        backdropFilter: 'blur(12px)',
+      }}
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* Left padding so logo clears the theme switcher */}
+      <div className="mx-auto max-w-7xl pl-14 pr-4 sm:pl-16 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between lg:h-20">
           <Link
             href="/"
@@ -62,8 +67,9 @@ export function Header() {
                   'px-3 py-2 text-sm font-medium transition-colors relative',
                   pathname === item.href
                     ? 'text-burgundy'
-                    : 'text-charcoal-600 hover:text-burgundy'
+                    : 'hover:text-burgundy'
                 )}
+                style={pathname === item.href ? undefined : { color: 'var(--theme-text-muted)' }}
               >
                 {item.label}
                 {pathname === item.href && (
@@ -83,7 +89,8 @@ export function Header() {
 
             <button
               type="button"
-              className="lg:hidden inline-flex items-center justify-center rounded p-2 text-charcoal-600 hover:bg-metal-100 hover:text-burgundy focus:outline-none focus-visible:ring-2 focus-visible:ring-burgundy"
+              className="lg:hidden inline-flex items-center justify-center rounded p-2 hover:bg-[var(--theme-hover)] focus:outline-none focus-visible:ring-2 focus-visible:ring-burgundy"
+              style={{ color: 'var(--theme-text-muted)' }}
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-expanded={mobileOpen}
               aria-controls="mobile-menu"
@@ -112,7 +119,11 @@ export function Header() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
-            className="lg:hidden border-t border-metal-300 bg-white"
+            className="lg:hidden border-t"
+            style={{
+              borderColor: 'var(--theme-border)',
+              backgroundColor: 'var(--theme-surface)',
+            }}
           >
             <nav className="space-y-1 px-4 py-4" aria-label="Mobile navigation">
               {navItems.map((item) => (
@@ -122,9 +133,10 @@ export function Header() {
                   className={clsx(
                     'block rounded px-3 py-2.5 text-base font-medium',
                     pathname === item.href
-                      ? 'bg-burgundy/5 text-burgundy'
-                      : 'text-charcoal-700 hover:bg-metal-100 hover:text-burgundy'
+                      ? 'bg-burgundy/10 text-burgundy'
+                      : 'hover:bg-[var(--theme-hover)]'
                   )}
+                  style={pathname === item.href ? undefined : { color: 'var(--theme-text)' }}
                 >
                   {item.label}
                 </Link>
