@@ -97,20 +97,20 @@ function SceneContent({ quality }: { quality: QualitySettings }) {
   );
 }
 
-/** Full photo fallback — no crop */
 function StaticFallback() {
   return (
-    <div className="absolute inset-0 flex items-center justify-center bg-metal-50" aria-hidden="true">
+    <div className="absolute inset-0 flex items-center justify-center bg-metal-50">
       <Image
-        src={media.photography.engineerPanelInspection}
-        alt=""
+        src={media.photography.engineerPanelInspection.src}
+        alt={media.photography.engineerPanelInspection.alt}
         width={1200}
         height={800}
         className="max-h-full max-w-full w-auto h-auto object-contain opacity-95"
         sizes="100vw"
+        quality={85}
         priority
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent pointer-events-none" aria-hidden="true" />
     </div>
   );
 }
