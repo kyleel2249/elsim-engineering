@@ -63,7 +63,6 @@ body {
   background-size: 40px 40px;
 }
 
-/* Subtle logo energy — only when .logo-spin-slow is applied */
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
@@ -77,8 +76,23 @@ body {
   animation: logo-spin 28s linear infinite;
 }
 
+/* Hero slideshow progress bar (5s cycle matches INTERVAL_MS) */
+@keyframes slideshow-progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.animate-slideshow-progress {
+  animation: slideshow-progress 5s linear forwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .logo-spin-slow {
+  .logo-spin-slow,
+  .animate-slideshow-progress {
     animation: none;
   }
 }
