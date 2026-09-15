@@ -9,20 +9,25 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:cf": "rm -rf app/api && CF_PAGES_STATIC=1 next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.1",
     "@react-three/drei": "^9.117.3",
     "@react-three/fiber": "^8.17.10",
     "clsx": "^2.1.1",
     "framer-motion": "^11.11.17",
+    "lucide-react": "^0.460.0",
     "next": "14.2.18",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hook-form": "^7.53.2",
     "tailwind-merge": "^2.5.4",
-    "three": "^0.170.0"
+    "three": "^0.170.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20.17.6",
