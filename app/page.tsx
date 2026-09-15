@@ -5,17 +5,8 @@ import { services } from '@/lib/data/services';
 import { getPublishedProjects } from '@/lib/data/projects';
 import { company } from '@/lib/data/company';
 import { media } from '@/lib/data/media';
-
-const PhotoEngineeringScene = dynamic(
-  () =>
-    import('@/components/3d/PhotoEngineeringScene').then((m) => m.PhotoEngineeringScene),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="absolute inset-0 bg-gradient-to-br from-white via-metal-50 to-metal-100" aria-hidden="true" />
-    ),
-  }
-);
+import { cdnUrl } from '@/lib/cdn';
+import { HeroSlideshow } from '@/components/hero/HeroSlideshow';
 
 const Logo3D = dynamic(
   () => import('@/components/3d/Logo3D').then((m) => m.Logo3D),
@@ -30,22 +21,10 @@ const Logo3D = dynamic(
 );
 
 const peoplePhotos = [
-  {
-    ...media.photography.engineerPanelInspection,
-    label: 'Electrical inspection',
-  },
-  {
-    ...media.photography.solarTeamReview,
-    label: 'Solar installation',
-  },
-  {
-    ...media.photography.technicianPanelWork,
-    label: 'Panel works',
-  },
-  {
-    ...media.photography.siteEngineerLaptop,
-    label: 'Site engineering',
-  },
+  { ...media.photography.engineerPanelInspection, label: 'Electrical inspection' },
+  { ...media.photography.solarTeamReview, label: 'Solar installation' },
+  { ...media.photography.technicianPanelWork, label: 'Panel works' },
+  { ...media.photography.siteEngineerLaptop, label: 'Site engineering' },
 ] as const;
 
 export default function HomePage() {
@@ -53,33 +32,41 @@ export default function HomePage() {
 
   return (
     <>
-      <section className="relative min-h-[88vh] flex items-center overflow-hidden bg-gradient-to-br from-white via-metal-50 to-metal-100">
-        <PhotoEngineeringScene />
-        <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 w-full pointer-events-none">
-          <div className="max-w-xl pointer-events-auto">
-            <p className="text-xs font-semibold tracking-[0.2em] text-burgundy uppercase mb-4">
-              People Powering Engineering • Ghana & West Africa
-            </p>
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.1rem] font-bold tracking-tight text-charcoal leading-[1.15]">
-              Engineers. Systems.{' '}
-              <span className="text-burgundy">Real-World Performance.</span>
-            </h1>
-            <p className="mt-6 text-lg text-charcoal-600 max-w-lg leading-relaxed">
-              ELSIM Engineering teams design, install, test and maintain electrical and energy systems across Ghana and West Africa — with safety, reliability and professional execution at the centre of every project.
-            </p>
-            <div className="mt-10 flex flex-wrap gap-4">
-              <Link
-                href="/quotation"
-                className="inline-flex items-center justify-center rounded bg-burgundy px-6 py-3.5 text-sm font-semibold text-white shadow-md hover:bg-burgundy-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-burgundy transition-colors"
-              >
-                Request a Project Consultation
-              </Link>
-              <Link
-                href="/projects"
-                className="inline-flex items-center justify-center rounded border border-charcoal/20 bg-white/90 backdrop-blur-sm px-6 py-3.5 text-sm font-semibold text-charcoal hover:border-burgundy hover:text-burgundy transition-colors"
-              >
-                Explore Our Projects
-              </Link>
+      {/* Split hero: professional slideshow (left) + content (right) */}
+      <section className="relative bg-white border-b border-metal-200">
+        <div className="mx-auto max-w-7xl lg:grid lg:grid-cols-2 lg:min-h-[min(88vh,720px)]">
+          {/* Left — fills empty space with slideshow */}
+          <div className="relative order-2 lg:order-1 h-[42vh] min-h-[280px] sm:h-[48vh] lg:h-auto lg:min-h-[520px]">
+            <HeroSlideshow />
+          </div>
+
+          {/* Right — messaging & CTAs */}
+          <div className="order-1 lg:order-2 flex items-center bg-gradient-to-br from-white via-metal-50 to-metal-100">
+            <div className="w-full px-4 sm:px-8 lg:px-12 py-12 lg:py-16">
+              <p className="text-xs font-semibold tracking-[0.2em] text-burgundy uppercase mb-4">
+                People Powering Engineering • Ghana & West Africa
+              </p>
+              <h1 className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-tight text-charcoal leading-[1.15]">
+                Engineers. Systems.{' '}
+                <span className="text-burgundy">Real-World Performance.</span>
+              </h1>
+              <p className="mt-5 text-base sm:text-lg text-charcoal-600 max-w-lg leading-relaxed">
+                ELSIM Engineering teams design, install, test and maintain electrical and energy systems across Ghana and West Africa — with safety, reliability and professional execution at the centre of every project.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-4">
+                <Link
+                  href="/quotation"
+                  className="inline-flex items-center justify-center rounded bg-burgundy px-6 py-3.5 text-sm font-semibold text-white shadow-md hover:bg-burgundy-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-burgundy transition-colors"
+                >
+                  Request a Project Consultation
+                </Link>
+                <Link
+                  href="/projects"
+                  className="inline-flex items-center justify-center rounded border border-charcoal/20 bg-white px-6 py-3.5 text-sm font-semibold text-charcoal hover:border-burgundy hover:text-burgundy transition-colors"
+                >
+                  Explore Our Projects
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -112,7 +99,7 @@ export default function HomePage() {
               >
                 <div className="relative w-full bg-metal-100 flex items-center justify-center p-2 sm:p-4">
                   <Image
-                    src={item.src}
+                    src={cdnUrl(item.src)}
                     alt={item.alt}
                     width={1200}
                     height={900}
@@ -136,7 +123,7 @@ export default function HomePage() {
           <figure className="flex flex-col rounded border border-metal-200 overflow-hidden bg-metal-50">
             <div className="p-2 sm:p-4 flex items-center justify-center bg-metal-100">
               <Image
-                src={media.infrastructure.powerTransmission.src}
+                src={cdnUrl(media.infrastructure.powerTransmission.src)}
                 alt={media.infrastructure.powerTransmission.alt}
                 width={1200}
                 height={600}
@@ -153,7 +140,7 @@ export default function HomePage() {
           <figure className="flex flex-col rounded border border-metal-200 overflow-hidden bg-metal-50">
             <div className="p-2 sm:p-4 flex items-center justify-center bg-metal-100">
               <Image
-                src={media.infrastructure.electricalPole.src}
+                src={cdnUrl(media.infrastructure.electricalPole.src)}
                 alt={media.infrastructure.electricalPole.alt}
                 width={1200}
                 height={600}
