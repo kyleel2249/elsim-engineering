@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { Inter, Space_Grotesk } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
@@ -15,6 +16,8 @@ const spaceGrotesk = Space_Grotesk({
   variable: '--font-space-grotesk',
   display: 'swap',
 });
+
+const GA_MEASUREMENT_ID = 'G-E8Z0XCC54Q';
 
 export const metadata: Metadata = {
   title: {
@@ -50,7 +53,7 @@ export const metadata: Metadata = {
     title: 'ELSIM Engineering | Engineering Precision. Industrial Strength. Safe Execution.',
     description:
       'Electrical, energy, industrial and technical solutions designed around safety, reliability and professional execution across Ghana and West Africa.',
-    images: [{ url: '/assets/elsim/logo.png', width: 512, height: 512, alt: 'ELSIM Engineering Firm' }],
+    images: [{ url: '/assets/elsim/logo.png', width: 512, height: 512, alt: 'ELSIM Engineering Firm logo' }],
   },
   robots: {
     index: true,
@@ -65,6 +68,21 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+      <head>
+        {/* Google tag (gtag.js) — single instance for all pages */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}');
+          `}
+        </Script>
+      </head>
       <body className="min-h-screen flex flex-col bg-white text-charcoal">
         <a
           href="#main-content"
