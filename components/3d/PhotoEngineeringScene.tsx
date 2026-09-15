@@ -4,54 +4,48 @@ import { useRef, useState, useEffect, Suspense, useMemo } from 'react';
 import { Canvas, useFrame, useThree, useLoader } from '@react-three/fiber';
 import * as THREE from 'three';
 import { detectQualityTier, type QualitySettings } from '@/lib/3d/quality';
-import { media } from '@/lib/data/media';
+import { media, mediaUrls } from '@/lib/data/media';
 import { useWebGLSupport, useReducedMotion } from '@/hooks/useWebGLSupport';
-
-/**
- * Real ELSIM photography as textured planes in 3D.
- * Planes keep natural image aspect ratio — no crop, no stretch.
- */
 
 const PHOTO_SET = [
   {
     id: 'engineer-panel',
-    url: media.photography.engineerPanelInspection,
+    url: mediaUrls.photography.engineerPanelInspection,
     position: [-1.5, 0.2, 0.15] as [number, number, number],
-    /** Base width; height computed from texture aspect */
     baseWidth: 1.7,
     rotation: [0, 0.22, 0] as [number, number, number],
   },
   {
     id: 'solar-team',
-    url: media.photography.solarTeamReview,
+    url: mediaUrls.photography.solarTeamReview,
     position: [1.55, 0.35, -0.25] as [number, number, number],
     baseWidth: 2.1,
     rotation: [0, -0.28, 0] as [number, number, number],
   },
   {
     id: 'technician',
-    url: media.photography.technicianPanelWork,
+    url: mediaUrls.photography.technicianPanelWork,
     position: [0.05, -0.1, -1.15] as [number, number, number],
     baseWidth: 1.9,
     rotation: [0, 0.04, 0] as [number, number, number],
   },
   {
     id: 'site-engineer',
-    url: media.photography.siteEngineerLaptop,
+    url: mediaUrls.photography.siteEngineerLaptop,
     position: [-2.15, 0.45, -0.75] as [number, number, number],
     baseWidth: 1.2,
     rotation: [0, 0.38, 0] as [number, number, number],
   },
   {
     id: 'power-line',
-    url: media.infrastructure.powerTransmission,
+    url: mediaUrls.infrastructure.powerTransmission,
     position: [2.35, 0.75, -1.45] as [number, number, number],
     baseWidth: 2.2,
     rotation: [0, -0.18, 0] as [number, number, number],
   },
   {
     id: 'pole',
-    url: media.infrastructure.electricalPole,
+    url: mediaUrls.infrastructure.electricalPole,
     position: [-0.75, 0.7, -1.95] as [number, number, number],
     baseWidth: 2.0,
     rotation: [0, 0.12, 0] as [number, number, number],
@@ -76,7 +70,6 @@ function PhotoPlane({
   const meshRef = useRef<THREE.Mesh>(null);
   const texture = useLoader(THREE.TextureLoader, url);
 
-  // Full image on plane — natural aspect ratio (no crop / stretch)
   const aspect = useMemo(() => {
     texture.colorSpace = THREE.SRGBColorSpace;
     texture.minFilter = THREE.LinearFilter;
@@ -184,22 +177,26 @@ function SceneContent({
   );
 }
 
-/** Fallback: full images, no crop */
 function PhotoFallback() {
+  const items = [
+    media.photography.engineerPanelInspection,
+    media.photography.solarTeamReview,
+    media.photography.technicianPanelWork,
+  ];
   return (
-    <div className="absolute inset-0 flex flex-wrap items-center justify-center gap-2 p-3 bg-metal-50" aria-hidden="true">
-      {[media.photography.engineerPanelInspection, media.photography.solarTeamReview, media.photography.technicianPanelWork].map(
-        (src, i) => (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            key={i}
-            src={src}
-            alt=""
-            className="max-h-[40vh] w-auto max-w-[45%] object-contain"
-          />
-        )
-      )}
-      <div className="absolute inset-0 bg-gradient-to-r from-white via-white/75 to-transparent pointer-events-none" />
+    <div className="absolute inset-0 flex flex-wrap items-center justify-center gap-2 p-3 bg-metal-50">
+      {items.map((item) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          key={item.src}
+          src={item.src}
+          alt={item.alt}
+          loading="lazy"
+          decoding="async"
+          className="max-h-[40vh] w-auto max-w-[45%] object-contain"
+        />
+      ))}
+      <div className="absolute inset-0 bg-gradient-to-r from-white via-white/75 to-transparent pointer-events-none" aria-hidden="true" />
     </div>
   );
 }
