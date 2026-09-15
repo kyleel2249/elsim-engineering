@@ -43,7 +43,7 @@ export function ThemeSwitcher() {
         className="flex items-center gap-2 rounded-full border border-[var(--theme-border)] bg-[var(--theme-surface-elevated)] px-2.5 py-1.5 shadow-md backdrop-blur-md transition hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-burgundy"
         aria-expanded={open}
         aria-haspopup="listbox"
-        aria-label={`Background theme: ${current.label}. Open theme picker."}
+        aria-label={`Background theme: ${current.label}. Open theme picker.`}
       >
         <span
           className="h-5 w-5 shrink-0 rounded-full border border-black/20 shadow-inner"
@@ -112,7 +112,11 @@ export function ThemeSwitcher() {
                         stroke="currentColor"
                         aria-hidden="true"
                       >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M4.5 12.75l6 6 9-13.5"
+                        />
                       </svg>
                     )}
                   </button>
