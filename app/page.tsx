@@ -14,7 +14,7 @@ const Logo3D = dynamic(
     ssr: false,
     loading: () => (
       <div className="flex h-40 items-center justify-center" aria-hidden="true">
-        <div className="h-16 w-16 rounded-full bg-metal-100" />
+        <div className="h-16 w-16 rounded-full opacity-30" style={{ background: 'var(--theme-border)' }} />
       </div>
     ),
   }
@@ -32,22 +32,34 @@ export default function HomePage() {
 
   return (
     <>
-      <section className="relative bg-white border-b border-metal-200">
+      <section
+        className="relative border-b"
+        style={{ backgroundColor: 'var(--theme-bg)', borderColor: 'var(--theme-border)' }}
+      >
         <div className="mx-auto max-w-7xl lg:grid lg:grid-cols-2 lg:min-h-[min(88vh,720px)]">
           <div className="relative order-2 lg:order-1 h-[42vh] min-h-[280px] sm:h-[48vh] lg:h-auto lg:min-h-[520px]">
             <HeroSlideshow />
           </div>
 
-          <div className="order-1 lg:order-2 flex items-center bg-gradient-to-br from-white via-metal-50 to-metal-100">
+          <div
+            className="order-1 lg:order-2 flex items-center"
+            style={{ backgroundColor: 'var(--theme-bg-muted)' }}
+          >
             <div className="w-full px-4 sm:px-8 lg:px-12 py-12 lg:py-16">
               <p className="text-xs font-semibold tracking-[0.2em] text-burgundy uppercase mb-4">
                 People Powering Engineering • Ghana & West Africa
               </p>
-              <h1 className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-tight text-charcoal leading-[1.15]">
+              <h1
+                className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-bold tracking-tight leading-[1.15]"
+                style={{ color: 'var(--theme-text)' }}
+              >
                 Engineers. Systems.{' '}
                 <span className="text-burgundy">Real-World Performance.</span>
               </h1>
-              <p className="mt-5 text-base sm:text-lg text-charcoal-600 max-w-lg leading-relaxed">
+              <p
+                className="mt-5 text-base sm:text-lg max-w-lg leading-relaxed"
+                style={{ color: 'var(--theme-text-muted)' }}
+              >
                 ELSIM Engineering teams design, install, test and maintain electrical and energy systems across Ghana and West Africa — with safety, reliability and professional execution at the centre of every project.
               </p>
               <div className="mt-8 flex flex-wrap gap-4">
@@ -59,7 +71,12 @@ export default function HomePage() {
                 </Link>
                 <Link
                   href="/projects"
-                  className="inline-flex items-center justify-center rounded border border-charcoal/20 bg-white px-6 py-3.5 text-sm font-semibold text-charcoal hover:border-burgundy hover:text-burgundy transition-colors"
+                  className="inline-flex items-center justify-center rounded border px-6 py-3.5 text-sm font-semibold hover:border-burgundy hover:text-burgundy transition-colors"
+                  style={{
+                    borderColor: 'var(--theme-border)',
+                    backgroundColor: 'var(--theme-surface)',
+                    color: 'var(--theme-text)',
+                  }}
                 >
                   Explore Our Projects
                 </Link>
@@ -69,32 +86,52 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-10 bg-white border-t border-metal-200" aria-label="ELSIM Engineering brand">
+      <section
+        className="py-10 border-t"
+        style={{ backgroundColor: 'var(--theme-bg)', borderColor: 'var(--theme-border)' }}
+        aria-label="ELSIM Engineering brand"
+      >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center justify-center gap-2">
             <Logo3D height={140} className="w-full max-w-[220px] sm:max-w-[280px]" />
-            <p className="text-[10px] uppercase tracking-[0.25em] text-charcoal-400 font-medium">
+            <p
+              className="text-[10px] uppercase tracking-[0.25em] font-medium"
+              style={{ color: 'var(--theme-text-muted)' }}
+            >
               ELSIM Engineering Firm
             </p>
           </div>
         </div>
       </section>
 
-      <section className="py-16 bg-white border-t border-metal-200">
+      <section
+        className="py-16 border-t"
+        style={{ backgroundColor: 'var(--theme-bg)', borderColor: 'var(--theme-border)' }}
+      >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <p className="text-xs font-semibold tracking-[0.2em] text-burgundy uppercase mb-3">
             Our people at work
           </p>
-          <h2 className="font-display text-2xl sm:text-3xl font-bold text-charcoal mb-8">
+          <h2
+            className="font-display text-2xl sm:text-3xl font-bold mb-8"
+            style={{ color: 'var(--theme-text)' }}
+          >
             Engineers and technicians on site
           </h2>
           <div className="grid gap-6 sm:grid-cols-2">
             {peoplePhotos.map((item) => (
               <figure
                 key={item.label}
-                className="flex flex-col rounded border border-metal-200 bg-metal-50 overflow-hidden"
+                className="flex flex-col rounded border overflow-hidden"
+                style={{
+                  borderColor: 'var(--theme-border)',
+                  backgroundColor: 'var(--theme-bg-muted)',
+                }}
               >
-                <div className="relative w-full bg-metal-100 flex items-center justify-center p-2 sm:p-4">
+                <div
+                  className="relative w-full flex items-center justify-center p-2 sm:p-4"
+                  style={{ backgroundColor: 'var(--theme-surface)' }}
+                >
                   <Image
                     src={cdnUrl(item.src)}
                     alt={item.alt}
@@ -106,7 +143,14 @@ export default function HomePage() {
                     loading="eager"
                   />
                 </div>
-                <figcaption className="px-4 py-3 text-sm font-medium text-charcoal border-t border-metal-200 bg-white">
+                <figcaption
+                  className="px-4 py-3 text-sm font-medium border-t"
+                  style={{
+                    color: 'var(--theme-text)',
+                    borderColor: 'var(--theme-border)',
+                    backgroundColor: 'var(--theme-surface)',
+                  }}
+                >
                   {item.label}
                 </figcaption>
               </figure>
@@ -115,52 +159,75 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="border-t border-metal-200 bg-white">
+      <section
+        className="border-t"
+        style={{ backgroundColor: 'var(--theme-bg)', borderColor: 'var(--theme-border)' }}
+      >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 grid gap-8 sm:grid-cols-2">
-          <figure className="flex flex-col rounded border border-metal-200 overflow-hidden bg-metal-50">
-            <div className="p-2 sm:p-4 flex items-center justify-center bg-metal-100">
-              <Image
-                src={cdnUrl(media.infrastructure.powerTransmission.src)}
-                alt={media.infrastructure.powerTransmission.alt}
-                width={1200}
-                height={600}
-                className="w-full h-auto max-h-[60vh] object-contain"
-                sizes="(max-width: 640px) 100vw, 50vw"
-                quality={85}
-                loading="eager"
-              />
-            </div>
-            <figcaption className="px-4 py-3 text-sm font-medium text-charcoal border-t border-metal-200 bg-white">
-              Power transmission
-            </figcaption>
-          </figure>
-          <figure className="flex flex-col rounded border border-metal-200 overflow-hidden bg-metal-50">
-            <div className="p-2 sm:p-4 flex items-center justify-center bg-metal-100">
-              <Image
-                src={cdnUrl(media.infrastructure.electricalPole.src)}
-                alt={media.infrastructure.electricalPole.alt}
-                width={1200}
-                height={600}
-                className="w-full h-auto max-h-[60vh] object-contain"
-                sizes="(max-width: 640px) 100vw, 50vw"
-                quality={85}
-                loading="eager"
-              />
-            </div>
-            <figcaption className="px-4 py-3 text-sm font-medium text-charcoal border-t border-metal-200 bg-white">
-              Electrical distribution pole
-            </figcaption>
-          </figure>
+          {[
+            {
+              src: media.infrastructure.powerTransmission.src,
+              alt: media.infrastructure.powerTransmission.alt,
+              label: 'Power transmission',
+            },
+            {
+              src: media.infrastructure.electricalPole.src,
+              alt: media.infrastructure.electricalPole.alt,
+              label: 'Electrical distribution pole',
+            },
+          ].map((item) => (
+            <figure
+              key={item.label}
+              className="flex flex-col rounded border overflow-hidden"
+              style={{
+                borderColor: 'var(--theme-border)',
+                backgroundColor: 'var(--theme-bg-muted)',
+              }}
+            >
+              <div
+                className="p-2 sm:p-4 flex items-center justify-center"
+                style={{ backgroundColor: 'var(--theme-surface)' }}
+              >
+                <Image
+                  src={cdnUrl(item.src)}
+                  alt={item.alt}
+                  width={1200}
+                  height={600}
+                  className="w-full h-auto max-h-[60vh] object-contain"
+                  sizes="(max-width: 640px) 100vw, 50vw"
+                  quality={85}
+                  loading="eager"
+                />
+              </div>
+              <figcaption
+                className="px-4 py-3 text-sm font-medium border-t"
+                style={{
+                  color: 'var(--theme-text)',
+                  borderColor: 'var(--theme-border)',
+                  backgroundColor: 'var(--theme-surface)',
+                }}
+              >
+                {item.label}
+              </figcaption>
+            </figure>
+          ))}
         </div>
       </section>
 
-      <section className="py-20 bg-white border-t border-metal-200">
+      <section
+        className="py-20 border-t"
+        style={{ backgroundColor: 'var(--theme-bg)', borderColor: 'var(--theme-border)' }}
+      >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <p className="text-xs font-semibold tracking-[0.2em] text-burgundy uppercase mb-3">01 — Company</p>
-              <h2 className="font-display text-3xl font-bold text-charcoal">About ELSIM Engineering</h2>
-              <p className="mt-4 text-charcoal-600 leading-relaxed">{company.description}</p>
+              <h2 className="font-display text-3xl font-bold" style={{ color: 'var(--theme-text)' }}>
+                About ELSIM Engineering
+              </h2>
+              <p className="mt-4 leading-relaxed" style={{ color: 'var(--theme-text-muted)' }}>
+                {company.description}
+              </p>
               <Link
                 href="/about"
                 className="mt-6 inline-flex items-center text-sm font-semibold text-burgundy hover:text-burgundy-600 transition-colors"
@@ -170,11 +237,20 @@ export default function HomePage() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               {company.values.slice(0, 4).map((v) => (
-                <div key={v.id} className="rounded border border-metal-200 bg-metal-50 p-5">
+                <div
+                  key={v.id}
+                  className="rounded border p-5"
+                  style={{
+                    borderColor: 'var(--theme-border)',
+                    backgroundColor: 'var(--theme-bg-muted)',
+                  }}
+                >
                   <h3 className="font-display text-sm font-semibold text-burgundy uppercase tracking-wide">
                     {v.title}
                   </h3>
-                  <p className="mt-2 text-sm text-charcoal-600">{v.description}</p>
+                  <p className="mt-2 text-sm" style={{ color: 'var(--theme-text-muted)' }}>
+                    {v.description}
+                  </p>
                 </div>
               ))}
             </div>
@@ -182,43 +258,73 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-20 bg-metal-50 border-t border-metal-200">
+      <section
+        className="py-20 border-t"
+        style={{ backgroundColor: 'var(--theme-bg-muted)', borderColor: 'var(--theme-border)' }}
+      >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-12">
             <p className="text-xs font-semibold tracking-[0.2em] text-burgundy uppercase mb-3">02 — Capabilities</p>
-            <h2 className="font-display text-3xl font-bold text-charcoal">What Our Teams Deliver</h2>
+            <h2 className="font-display text-3xl font-bold" style={{ color: 'var(--theme-text)' }}>
+              What Our Teams Deliver
+            </h2>
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {services.map((service) => (
               <Link
                 key={service.slug}
                 href={`/services/${service.slug}`}
-                className="group relative rounded border border-metal-200 bg-white p-6 hover:border-burgundy/40 hover:shadow-md transition-all"
+                className="group relative rounded border p-6 hover:border-burgundy/40 hover:shadow-md transition-all"
+                style={{
+                  borderColor: 'var(--theme-border)',
+                  backgroundColor: 'var(--theme-surface)',
+                }}
               >
-                <h3 className="font-display text-lg font-semibold text-charcoal group-hover:text-burgundy transition-colors">
+                <h3
+                  className="font-display text-lg font-semibold group-hover:text-burgundy transition-colors"
+                  style={{ color: 'var(--theme-text)' }}
+                >
                   {service.title}
                 </h3>
-                <p className="mt-2 text-sm text-charcoal-600">{service.shortDescription}</p>
+                <p className="mt-2 text-sm" style={{ color: 'var(--theme-text-muted)' }}>
+                  {service.shortDescription}
+                </p>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-20 bg-white border-t border-metal-200">
+      <section
+        className="py-20 border-t"
+        style={{ backgroundColor: 'var(--theme-bg)', borderColor: 'var(--theme-border)' }}
+      >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-12">
             <p className="text-xs font-semibold tracking-[0.2em] text-burgundy uppercase mb-3">03 — Projects</p>
-            <h2 className="font-display text-3xl font-bold text-charcoal">Where Our Engineers Have Worked</h2>
+            <h2 className="font-display text-3xl font-bold" style={{ color: 'var(--theme-text)' }}>
+              Where Our Engineers Have Worked
+            </h2>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {projects.map((project) => (
-              <div key={project.slug} className="rounded border border-metal-200 bg-metal-50 p-5">
+              <div
+                key={project.slug}
+                className="rounded border p-5"
+                style={{
+                  borderColor: 'var(--theme-border)',
+                  backgroundColor: 'var(--theme-bg-muted)',
+                }}
+              >
                 <span className="text-[10px] font-semibold uppercase tracking-wider text-burgundy">
                   {project.location}
                 </span>
-                <h3 className="font-display text-base font-semibold text-charcoal mt-1">{project.title}</h3>
-                <p className="mt-2 text-sm text-charcoal-600 line-clamp-2">{project.shortDescription}</p>
+                <h3 className="font-display text-base font-semibold mt-1" style={{ color: 'var(--theme-text)' }}>
+                  {project.title}
+                </h3>
+                <p className="mt-2 text-sm line-clamp-2" style={{ color: 'var(--theme-text-muted)' }}>
+                  {project.shortDescription}
+                </p>
               </div>
             ))}
           </div>
