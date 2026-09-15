@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { company } from '@/lib/data/company';
+import { media } from '@/lib/data/media';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -15,11 +16,12 @@ export function Footer() {
             <Link href="/" className="inline-flex items-center gap-2.5" aria-label="ELSIM Engineering Home">
               <span className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-white">
                 <Image
-                  src="/assets/elsim/logo.png"
-                  alt="ELSIM Engineering Firm"
+                  src={media.logo.src}
+                  alt={media.logo.alt}
                   width={80}
                   height={80}
                   className="h-full w-full object-contain p-0.5"
+                  loading="lazy"
                 />
               </span>
               <div>
