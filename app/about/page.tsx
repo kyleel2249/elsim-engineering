@@ -26,16 +26,20 @@ export default function AboutPage() {
           </p>
         </div>
 
-        <div className="mt-10 relative aspect-[16/10] w-full overflow-hidden rounded border border-metal-200 bg-metal-100">
-          <Image
-            src={media.photography.technicianPanelWork}
-            alt="ELSIM technician working on an electrical control panel"
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 896px"
-            priority
-          />
-        </div>
+        {/* Full photo — no crop */}
+        <figure className="mt-10 rounded border border-metal-200 bg-metal-50 overflow-hidden">
+          <div className="p-2 sm:p-4 flex items-center justify-center bg-metal-100">
+            <Image
+              src={media.photography.technicianPanelWork}
+              alt="ELSIM technician working on an electrical control panel"
+              width={1200}
+              height={800}
+              className="w-full h-auto max-h-[75vh] object-contain"
+              sizes="(max-width: 768px) 100vw, 896px"
+              priority
+            />
+          </div>
+        </figure>
 
         <div className="mt-14 grid gap-8 md:grid-cols-2">
           <div className="rounded border border-metal-200 bg-metal-50 p-6">
@@ -72,16 +76,18 @@ export default function AboutPage() {
         <section className="mt-14">
           <h2 className="font-display text-2xl font-bold text-charcoal mb-2">Our Team</h2>
           <p className="text-sm text-charcoal-500 mb-6">Leadership of ELSIM Engineering</p>
-          <div className="relative w-full overflow-hidden rounded border border-metal-200 bg-white">
-            <Image
-              src={media.leadership.ourTeam}
-              alt="ELSIM Engineering leadership: Ing. Simon Sandy Kununya (CEO), Ella Ankah (General Manager), Ing. Teye Amos Agudey (Engineer/Project Manager), Stephen Doe Agbo (Chief Accounts Officer)"
-              width={900}
-              height={700}
-              className="w-full h-auto"
-              sizes="(max-width: 768px) 100vw, 896px"
-            />
-          </div>
+          <figure className="rounded border border-metal-200 bg-white overflow-hidden">
+            <div className="p-2 sm:p-4 flex items-center justify-center bg-metal-50">
+              <Image
+                src={media.leadership.ourTeam}
+                alt="ELSIM Engineering leadership: Ing. Simon Sandy Kununya (CEO), Ella Ankah (General Manager), Ing. Teye Amos Agudey (Engineer/Project Manager), Stephen Doe Agbo (Chief Accounts Officer)"
+                width={1200}
+                height={900}
+                className="w-full h-auto max-h-[80vh] object-contain"
+                sizes="(max-width: 768px) 100vw, 896px"
+              />
+            </div>
+          </figure>
           <ul className="mt-6 grid gap-3 sm:grid-cols-2 text-sm">
             {company.leadership.map((person) => (
               <li key={person.name} className="rounded border border-metal-200 px-4 py-3">
