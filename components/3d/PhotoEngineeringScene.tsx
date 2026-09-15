@@ -8,72 +8,67 @@ import { media } from '@/lib/data/media';
 import { useWebGLSupport, useReducedMotion } from '@/hooks/useWebGLSupport';
 
 /**
- * Real ELSIM photography as textured planes in 3D space.
- * People, solar, panels, poles — not abstract geometry.
+ * Real ELSIM photography as textured planes in 3D.
+ * Planes keep natural image aspect ratio — no crop, no stretch.
  */
 
 const PHOTO_SET = [
   {
     id: 'engineer-panel',
     url: media.photography.engineerPanelInspection,
-    position: [-1.4, 0.35, 0.2] as [number, number, number],
-    scale: [1.6, 2.0, 1] as [number, number, number],
-    rotation: [0, 0.25, 0] as [number, number, number],
-    label: 'Engineer panel inspection',
+    position: [-1.5, 0.2, 0.15] as [number, number, number],
+    /** Base width; height computed from texture aspect */
+    baseWidth: 1.7,
+    rotation: [0, 0.22, 0] as [number, number, number],
   },
   {
     id: 'solar-team',
     url: media.photography.solarTeamReview,
-    position: [1.5, 0.45, -0.3] as [number, number, number],
-    scale: [2.0, 1.25, 1] as [number, number, number],
-    rotation: [0, -0.3, 0] as [number, number, number],
-    label: 'Solar team',
+    position: [1.55, 0.35, -0.25] as [number, number, number],
+    baseWidth: 2.1,
+    rotation: [0, -0.28, 0] as [number, number, number],
   },
   {
     id: 'technician',
     url: media.photography.technicianPanelWork,
-    position: [0.1, -0.15, -1.2] as [number, number, number],
-    scale: [1.8, 1.15, 1] as [number, number, number],
-    rotation: [0, 0.05, 0] as [number, number, number],
-    label: 'Technician at panel',
+    position: [0.05, -0.1, -1.15] as [number, number, number],
+    baseWidth: 1.9,
+    rotation: [0, 0.04, 0] as [number, number, number],
   },
   {
     id: 'site-engineer',
     url: media.photography.siteEngineerLaptop,
-    position: [-2.2, 0.6, -0.8] as [number, number, number],
-    scale: [1.1, 1.5, 1] as [number, number, number],
-    rotation: [0, 0.4, 0] as [number, number, number],
-    label: 'Site engineer',
+    position: [-2.15, 0.45, -0.75] as [number, number, number],
+    baseWidth: 1.2,
+    rotation: [0, 0.38, 0] as [number, number, number],
   },
   {
     id: 'power-line',
     url: media.infrastructure.powerTransmission,
-    position: [2.4, 0.9, -1.5] as [number, number, number],
-    scale: [2.2, 1.0, 1] as [number, number, number],
-    rotation: [0, -0.2, 0] as [number, number, number],
-    label: 'Power transmission',
+    position: [2.35, 0.75, -1.45] as [number, number, number],
+    baseWidth: 2.2,
+    rotation: [0, -0.18, 0] as [number, number, number],
   },
   {
     id: 'pole',
     url: media.infrastructure.electricalPole,
-    position: [-0.8, 0.85, -2.0] as [number, number, number],
-    scale: [2.0, 0.9, 1] as [number, number, number],
-    rotation: [0, 0.15, 0] as [number, number, number],
-    label: 'Electrical pole',
+    position: [-0.75, 0.7, -1.95] as [number, number, number],
+    baseWidth: 2.0,
+    rotation: [0, 0.12, 0] as [number, number, number],
   },
 ] as const;
 
 function PhotoPlane({
   url,
   position,
-  scale,
+  baseWidth,
   rotation,
   floatPhase = 0,
   animate,
 }: {
   url: string;
   position: [number, number, number];
-  scale: [number, number, number];
+  baseWidth: number;
   rotation: [number, number, number];
   floatPhase?: number;
   animate: boolean;
@@ -81,11 +76,19 @@ function PhotoPlane({
   const meshRef = useRef<THREE.Mesh>(null);
   const texture = useLoader(THREE.TextureLoader, url);
 
-  useMemo(() => {
+  // Full image on plane — natural aspect ratio (no crop / stretch)
+  const aspect = useMemo(() => {
     texture.colorSpace = THREE.SRGBColorSpace;
     texture.minFilter = THREE.LinearFilter;
     texture.magFilter = THREE.LinearFilter;
+    const img = texture.image as HTMLImageElement | undefined;
+    if (img && img.width && img.height) {
+      return img.width / img.height;
+    }
+    return 1.5;
   }, [texture]);
+
+  const height = baseWidth / aspect;
 
   useFrame((state) => {
     if (!meshRef.current || !animate) return;
@@ -94,7 +97,7 @@ function PhotoPlane({
   });
 
   return (
-    <mesh ref={meshRef} position={position} rotation={rotation} scale={scale}>
+    <mesh ref={meshRef} position={position} rotation={rotation} scale={[baseWidth, height, 1]}>
       <planeGeometry args={[1, 1]} />
       <meshStandardMaterial
         map={texture}
@@ -118,7 +121,6 @@ function SceneContent({
   const mouse = useRef({ x: 0, y: 0 });
   const target = useRef({ x: 0, y: 0 });
 
-  // Mobile / tablet: fewer planes
   const photos = useMemo(() => {
     if (quality.tier === 'LOW') return PHOTO_SET.slice(0, 2);
     if (quality.tier === 'MEDIUM') return PHOTO_SET.slice(0, 4);
@@ -145,12 +147,11 @@ function SceneContent({
   }, []);
 
   useFrame(() => {
-    // Documentary camera parallax — responsive intensity by tier
     const intensity = quality.tier === 'LOW' ? 0.15 : quality.tier === 'MEDIUM' ? 0.28 : 0.4;
     target.current.x += (mouse.current.x * intensity - target.current.x) * 0.04;
     target.current.y += (mouse.current.y * intensity * 0.5 - target.current.y) * 0.04;
 
-    const baseZ = size.width < 768 ? 4.2 : 3.6;
+    const baseZ = size.width < 768 ? 4.4 : 3.8;
     camera.position.x = target.current.x * 0.8;
     camera.position.y = 0.35 + target.current.y * 0.4;
     camera.position.z = baseZ;
@@ -163,7 +164,6 @@ function SceneContent({
       <directionalLight position={[4, 5, 3]} intensity={0.55} color="#ffffff" />
       <pointLight position={[-3, 2, 2]} intensity={0.25} color="#941A1D" />
 
-      {/* Soft ground plane */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.2, 0]}>
         <planeGeometry args={[16, 12]} />
         <meshStandardMaterial color="#f4f4f4" roughness={1} metalness={0} />
@@ -174,7 +174,7 @@ function SceneContent({
           key={p.id}
           url={p.url}
           position={p.position}
-          scale={p.scale}
+          baseWidth={p.baseWidth}
           rotation={p.rotation}
           floatPhase={i * 0.9}
           animate={animate}
@@ -184,9 +184,10 @@ function SceneContent({
   );
 }
 
+/** Fallback: full images, no crop */
 function PhotoFallback() {
   return (
-    <div className="absolute inset-0 grid grid-cols-2 sm:grid-cols-3 gap-1 p-1" aria-hidden="true">
+    <div className="absolute inset-0 flex flex-wrap items-center justify-center gap-2 p-3 bg-metal-50" aria-hidden="true">
       {[media.photography.engineerPanelInspection, media.photography.solarTeamReview, media.photography.technicianPanelWork].map(
         (src, i) => (
           // eslint-disable-next-line @next/next/no-img-element
@@ -194,19 +195,15 @@ function PhotoFallback() {
             key={i}
             src={src}
             alt=""
-            className="h-full w-full object-cover opacity-90"
+            className="max-h-[40vh] w-auto max-w-[45%] object-contain"
           />
         )
       )}
-      <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-white via-white/75 to-transparent pointer-events-none" />
     </div>
   );
 }
 
-/**
- * Highly responsive 3D scene built from real ELSIM photography:
- * engineers, solar teams, panel work, power lines, poles.
- */
 export function PhotoEngineeringScene() {
   const webgl = useWebGLSupport();
   const reduced = useReducedMotion();
