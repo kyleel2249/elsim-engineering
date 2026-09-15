@@ -5,8 +5,8 @@ const nextConfig = {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days — CDN-friendly
-    // Allow optional external image CDN hosts
+    // Long edge cache for CDN / browser performance
+    minimumCacheTTL: 60 * 60 * 24 * 365, // 1 year
     remotePatterns: [
       { protocol: 'https', hostname: 'res.cloudinary.com' },
       { protocol: 'https', hostname: 'images.unsplash.com' },
@@ -14,6 +14,29 @@ const nextConfig = {
       { protocol: 'https', hostname: '**.imgix.net' },
       { protocol: 'https', hostname: 'imagedelivery.net' },
     ],
+  },
+  // Immutable cache for static assets under /assets
+  async headers() {
+    return [
+      {
+        source: '/assets/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/_next/image',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+    ];
   },
   transpilePackages: ['three'],
 };
