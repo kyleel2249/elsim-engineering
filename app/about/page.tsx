@@ -26,16 +26,16 @@ export default function AboutPage() {
           </p>
         </div>
 
-        {/* Full photo — no crop */}
         <figure className="mt-10 rounded border border-metal-200 bg-metal-50 overflow-hidden">
           <div className="p-2 sm:p-4 flex items-center justify-center bg-metal-100">
             <Image
-              src={media.photography.technicianPanelWork}
-              alt="ELSIM technician working on an electrical control panel"
+              src={media.photography.technicianPanelWork.src}
+              alt={media.photography.technicianPanelWork.alt}
               width={1200}
               height={800}
               className="w-full h-auto max-h-[75vh] object-contain"
               sizes="(max-width: 768px) 100vw, 896px"
+              quality={85}
               priority
             />
           </div>
@@ -79,12 +79,14 @@ export default function AboutPage() {
           <figure className="rounded border border-metal-200 bg-white overflow-hidden">
             <div className="p-2 sm:p-4 flex items-center justify-center bg-metal-50">
               <Image
-                src={media.leadership.ourTeam}
-                alt="ELSIM Engineering leadership: Ing. Simon Sandy Kununya (CEO), Ella Ankah (General Manager), Ing. Teye Amos Agudey (Engineer/Project Manager), Stephen Doe Agbo (Chief Accounts Officer)"
+                src={media.leadership.ourTeam.src}
+                alt={media.leadership.ourTeam.alt}
                 width={1200}
                 height={900}
                 className="w-full h-auto max-h-[80vh] object-contain"
                 sizes="(max-width: 768px) 100vw, 896px"
+                quality={85}
+                loading="lazy"
               />
             </div>
           </figure>
