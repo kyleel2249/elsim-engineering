@@ -32,15 +32,12 @@ export default function HomePage() {
 
   return (
     <>
-      {/* Split hero: professional slideshow (left) + content (right) */}
       <section className="relative bg-white border-b border-metal-200">
         <div className="mx-auto max-w-7xl lg:grid lg:grid-cols-2 lg:min-h-[min(88vh,720px)]">
-          {/* Left — fills empty space with slideshow */}
           <div className="relative order-2 lg:order-1 h-[42vh] min-h-[280px] sm:h-[48vh] lg:h-auto lg:min-h-[520px]">
             <HeroSlideshow />
           </div>
 
-          {/* Right — messaging & CTAs */}
           <div className="order-1 lg:order-2 flex items-center bg-gradient-to-br from-white via-metal-50 to-metal-100">
             <div className="w-full px-4 sm:px-8 lg:px-12 py-12 lg:py-16">
               <p className="text-xs font-semibold tracking-[0.2em] text-burgundy uppercase mb-4">
@@ -106,7 +103,7 @@ export default function HomePage() {
                     className="w-full h-auto max-h-[70vh] object-contain"
                     sizes="(max-width: 640px) 100vw, 50vw"
                     quality={85}
-                    loading="lazy"
+                    loading="eager"
                   />
                 </div>
                 <figcaption className="px-4 py-3 text-sm font-medium text-charcoal border-t border-metal-200 bg-white">
@@ -130,7 +127,7 @@ export default function HomePage() {
                 className="w-full h-auto max-h-[60vh] object-contain"
                 sizes="(max-width: 640px) 100vw, 50vw"
                 quality={85}
-                loading="lazy"
+                loading="eager"
               />
             </div>
             <figcaption className="px-4 py-3 text-sm font-medium text-charcoal border-t border-metal-200 bg-white">
@@ -147,7 +144,7 @@ export default function HomePage() {
                 className="w-full h-auto max-h-[60vh] object-contain"
                 sizes="(max-width: 640px) 100vw, 50vw"
                 quality={85}
-                loading="lazy"
+                loading="eager"
               />
             </div>
             <figcaption className="px-4 py-3 text-sm font-medium text-charcoal border-t border-metal-200 bg-white">
