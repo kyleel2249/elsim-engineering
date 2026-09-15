@@ -21,7 +21,7 @@ export function Footer() {
                   width={80}
                   height={80}
                   className="h-full w-full object-contain p-0.5"
-                  loading="lazy"
+                  loading="eager"
                 />
               </span>
               <div>
