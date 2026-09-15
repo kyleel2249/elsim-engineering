@@ -4,6 +4,8 @@ import { Inter, Space_Grotesk } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { ThemeProvider } from '@/components/theme/ThemeProvider';
+import { ThemeSwitcher } from '@/components/theme/ThemeSwitcher';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -67,9 +69,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable}`} data-theme="white" suppressHydrationWarning>
       <head>
-        {/* Google tag (gtag.js) — single instance for all pages */}
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
           strategy="afterInteractive"
@@ -82,19 +83,28 @@ export default function RootLayout({
             gtag('config', '${GA_MEASUREMENT_ID}');
           `}
         </Script>
+        {/* Prevent theme flash before React hydrates */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('elsim-theme');if(t&&['white','black','red','orange','green','blue','violet'].indexOf(t)!==-1){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();`,
+          }}
+        />
       </head>
-      <body className="min-h-screen flex flex-col bg-white text-charcoal">
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-burgundy focus:text-white focus:px-4 focus:py-2 focus:rounded"
-        >
-          Skip to main content
-        </a>
-        <Header />
-        <main id="main-content" className="flex-1">
-          {children}
-        </main>
-        <Footer />
+      <body className="min-h-screen flex flex-col">
+        <ThemeProvider>
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-20 focus:z-50 focus:bg-burgundy focus:text-white focus:px-4 focus:py-2 focus:rounded"
+          >
+            Skip to main content
+          </a>
+          <ThemeSwitcher />
+          <Header />
+          <main id="main-content" className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );
