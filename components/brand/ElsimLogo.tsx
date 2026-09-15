@@ -41,7 +41,7 @@ export function ElsimLogo({
           height={box * 2}
           className="h-full w-full object-contain"
           priority={priority}
-          loading={priority ? undefined : 'lazy'}
+          loading="eager"
         />
       </span>
       {withWordmark && (
