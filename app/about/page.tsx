@@ -37,6 +37,7 @@ export default function AboutPage() {
               sizes="(max-width: 768px) 100vw, 896px"
               quality={85}
               priority
+              loading="eager"
             />
           </div>
         </figure>
@@ -86,7 +87,7 @@ export default function AboutPage() {
                 className="w-full h-auto max-h-[80vh] object-contain"
                 sizes="(max-width: 768px) 100vw, 896px"
                 quality={85}
-                loading="lazy"
+                loading="eager"
               />
             </div>
           </figure>
