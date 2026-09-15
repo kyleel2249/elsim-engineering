@@ -29,6 +29,25 @@ const Logo3D = dynamic(
   }
 );
 
+const peoplePhotos = [
+  {
+    ...media.photography.engineerPanelInspection,
+    label: 'Electrical inspection',
+  },
+  {
+    ...media.photography.solarTeamReview,
+    label: 'Solar installation',
+  },
+  {
+    ...media.photography.technicianPanelWork,
+    label: 'Panel works',
+  },
+  {
+    ...media.photography.siteEngineerLaptop,
+    label: 'Site engineering',
+  },
+] as const;
+
 export default function HomePage() {
   const projects = getPublishedProjects().slice(0, 6);
 
@@ -77,7 +96,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Full-size photos — no crop, natural aspect ratio */}
       <section className="py-16 bg-white border-t border-metal-200">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <p className="text-xs font-semibold tracking-[0.2em] text-burgundy uppercase mb-3">
@@ -87,28 +105,7 @@ export default function HomePage() {
             Engineers and technicians on site
           </h2>
           <div className="grid gap-6 sm:grid-cols-2">
-            {[
-              {
-                src: media.photography.engineerPanelInspection,
-                alt: 'ELSIM engineer inspecting an electrical panel with a flashlight',
-                label: 'Electrical inspection',
-              },
-              {
-                src: media.photography.solarTeamReview,
-                alt: 'ELSIM solar team reviewing plans at a solar installation site',
-                label: 'Solar installation',
-              },
-              {
-                src: media.photography.technicianPanelWork,
-                alt: 'ELSIM technician working on a control panel',
-                label: 'Panel works',
-              },
-              {
-                src: media.photography.siteEngineerLaptop,
-                alt: 'Site engineer reviewing project data on a laptop',
-                label: 'Site engineering',
-              },
-            ].map((item) => (
+            {peoplePhotos.map((item) => (
               <figure
                 key={item.label}
                 className="flex flex-col rounded border border-metal-200 bg-metal-50 overflow-hidden"
@@ -121,6 +118,8 @@ export default function HomePage() {
                     height={900}
                     className="w-full h-auto max-h-[70vh] object-contain"
                     sizes="(max-width: 640px) 100vw, 50vw"
+                    quality={85}
+                    loading="lazy"
                   />
                 </div>
                 <figcaption className="px-4 py-3 text-sm font-medium text-charcoal border-t border-metal-200 bg-white">
@@ -132,18 +131,19 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Infrastructure — full image, no crop */}
       <section className="border-t border-metal-200 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 grid gap-8 sm:grid-cols-2">
           <figure className="flex flex-col rounded border border-metal-200 overflow-hidden bg-metal-50">
             <div className="p-2 sm:p-4 flex items-center justify-center bg-metal-100">
               <Image
-                src={media.infrastructure.powerTransmission}
-                alt="High-voltage transmission insulator and power infrastructure"
+                src={media.infrastructure.powerTransmission.src}
+                alt={media.infrastructure.powerTransmission.alt}
                 width={1200}
                 height={600}
                 className="w-full h-auto max-h-[60vh] object-contain"
                 sizes="(max-width: 640px) 100vw, 50vw"
+                quality={85}
+                loading="lazy"
               />
             </div>
             <figcaption className="px-4 py-3 text-sm font-medium text-charcoal border-t border-metal-200 bg-white">
@@ -153,12 +153,14 @@ export default function HomePage() {
           <figure className="flex flex-col rounded border border-metal-200 overflow-hidden bg-metal-50">
             <div className="p-2 sm:p-4 flex items-center justify-center bg-metal-100">
               <Image
-                src={media.infrastructure.electricalPole}
-                alt="Electrical distribution pole and cross-arm infrastructure"
+                src={media.infrastructure.electricalPole.src}
+                alt={media.infrastructure.electricalPole.alt}
                 width={1200}
                 height={600}
                 className="w-full h-auto max-h-[60vh] object-contain"
                 sizes="(max-width: 640px) 100vw, 50vw"
+                quality={85}
+                loading="lazy"
               />
             </div>
             <figcaption className="px-4 py-3 text-sm font-medium text-charcoal border-t border-metal-200 bg-white">
