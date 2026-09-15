@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { media } from '@/lib/data/media';
 import { cdnUrl } from '@/lib/cdn';
@@ -33,12 +33,13 @@ const SLIDES = [
   },
 ] as const;
 
+/** Auto-advance interval — exactly 5 seconds per slide */
 const INTERVAL_MS = 5000;
 
 export function HeroSlideshow() {
   const [index, setIndex] = useState(0);
-  const [paused, setPaused] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -48,6 +49,19 @@ export function HeroSlideshow() {
     return () => mq.removeEventListener('change', handler);
   }, []);
 
+  // Continuous auto-slide every 5 seconds (always on unless reduced motion)
+  useEffect(() => {
+    if (reducedMotion) return;
+
+    timerRef.current = setInterval(() => {
+      setIndex((i) => (i + 1) % SLIDES.length);
+    }, INTERVAL_MS);
+
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [reducedMotion, index]); // reset timer when user manually changes slide
+
   const goTo = useCallback((i: number) => {
     setIndex((i + SLIDES.length) % SLIDES.length);
   }, []);
@@ -55,26 +69,12 @@ export function HeroSlideshow() {
   const next = useCallback(() => goTo(index + 1), [goTo, index]);
   const prev = useCallback(() => goTo(index - 1), [goTo, index]);
 
-  useEffect(() => {
-    if (paused || reducedMotion) return;
-    const id = window.setInterval(() => {
-      setIndex((i) => (i + 1) % SLIDES.length);
-    }, INTERVAL_MS);
-    return () => window.clearInterval(id);
-  }, [paused, reducedMotion]);
-
   return (
     <div
       className="relative h-full min-h-[320px] w-full overflow-hidden bg-charcoal"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocusCapture={() => setPaused(true)}
-      onBlurCapture={(e) => {
-        if (!e.currentTarget.contains(e.relatedTarget as Node)) setPaused(false);
-      }}
       role="region"
       aria-roledescription="carousel"
-      aria-label="ELSIM Engineering project photography"
+      aria-label="ELSIM Engineering project photography — auto-advances every 5 seconds"
     >
       {SLIDES.map((slide, i) => (
         <div
@@ -92,8 +92,8 @@ export function HeroSlideshow() {
             className="object-contain object-center bg-charcoal"
             sizes="(max-width: 1024px) 100vw, 50vw"
             quality={85}
-            priority={i === 0}
-            loading={i === 0 ? undefined : 'lazy'}
+            priority
+            loading="eager"
           />
           <div
             className="absolute inset-0 bg-gradient-to-t from-charcoal/70 via-transparent to-charcoal/20 pointer-events-none"
@@ -155,11 +155,7 @@ export function HeroSlideshow() {
 
       {!reducedMotion && (
         <div className="absolute top-0 left-0 right-0 z-[2] h-0.5 bg-white/10" aria-hidden="true">
-          <div
-            key={index}
-            className={clsx('h-full bg-burgundy', paused ? '' : 'animate-slideshow-progress')}
-            style={paused ? { width: '100%', opacity: 0.35 } : undefined}
-          />
+          <div key={index} className="h-full bg-burgundy animate-slideshow-progress" />
         </div>
       )}
     </div>
