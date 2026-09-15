@@ -6,7 +6,6 @@ import { getPublishedProjects } from '@/lib/data/projects';
 import { company } from '@/lib/data/company';
 import { media } from '@/lib/data/media';
 
-// Real-photo 3D scene: engineers, solar, panels, poles
 const PhotoEngineeringScene = dynamic(
   () =>
     import('@/components/3d/PhotoEngineeringScene').then((m) => m.PhotoEngineeringScene),
@@ -35,7 +34,6 @@ export default function HomePage() {
 
   return (
     <>
-      {/* Hero — real people & infrastructure in responsive 3D */}
       <section className="relative min-h-[88vh] flex items-center overflow-hidden bg-gradient-to-br from-white via-metal-50 to-metal-100">
         <PhotoEngineeringScene />
         <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 w-full pointer-events-none">
@@ -79,6 +77,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Full-size photos — no crop, natural aspect ratio */}
       <section className="py-16 bg-white border-t border-metal-200">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <p className="text-xs font-semibold tracking-[0.2em] text-burgundy uppercase mb-3">
@@ -87,7 +86,7 @@ export default function HomePage() {
           <h2 className="font-display text-2xl sm:text-3xl font-bold text-charcoal mb-8">
             Engineers and technicians on site
           </h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 sm:grid-cols-2">
             {[
               {
                 src: media.photography.engineerPanelInspection,
@@ -112,16 +111,19 @@ export default function HomePage() {
             ].map((item) => (
               <figure
                 key={item.label}
-                className="group relative aspect-[4/5] overflow-hidden rounded border border-metal-200 bg-metal-100"
+                className="flex flex-col rounded border border-metal-200 bg-metal-50 overflow-hidden"
               >
-                <Image
-                  src={item.src}
-                  alt={item.alt}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                />
-                <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-charcoal/80 to-transparent px-3 py-3 text-xs font-medium text-white">
+                <div className="relative w-full bg-metal-100 flex items-center justify-center p-2 sm:p-4">
+                  <Image
+                    src={item.src}
+                    alt={item.alt}
+                    width={1200}
+                    height={900}
+                    className="w-full h-auto max-h-[70vh] object-contain"
+                    sizes="(max-width: 640px) 100vw, 50vw"
+                  />
+                </div>
+                <figcaption className="px-4 py-3 text-sm font-medium text-charcoal border-t border-metal-200 bg-white">
                   {item.label}
                 </figcaption>
               </figure>
@@ -130,24 +132,39 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="grid sm:grid-cols-2 border-t border-metal-200">
-        <div className="relative aspect-[16/9] sm:aspect-auto sm:min-h-[280px]">
-          <Image
-            src={media.infrastructure.powerTransmission}
-            alt="High-voltage transmission insulator and power infrastructure"
-            fill
-            className="object-cover"
-            sizes="(max-width: 640px) 100vw, 50vw"
-          />
-        </div>
-        <div className="relative aspect-[16/9] sm:aspect-auto sm:min-h-[280px]">
-          <Image
-            src={media.infrastructure.electricalPole}
-            alt="Electrical distribution pole and cross-arm infrastructure"
-            fill
-            className="object-cover"
-            sizes="(max-width: 640px) 100vw, 50vw"
-          />
+      {/* Infrastructure — full image, no crop */}
+      <section className="border-t border-metal-200 bg-white">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 grid gap-8 sm:grid-cols-2">
+          <figure className="flex flex-col rounded border border-metal-200 overflow-hidden bg-metal-50">
+            <div className="p-2 sm:p-4 flex items-center justify-center bg-metal-100">
+              <Image
+                src={media.infrastructure.powerTransmission}
+                alt="High-voltage transmission insulator and power infrastructure"
+                width={1200}
+                height={600}
+                className="w-full h-auto max-h-[60vh] object-contain"
+                sizes="(max-width: 640px) 100vw, 50vw"
+              />
+            </div>
+            <figcaption className="px-4 py-3 text-sm font-medium text-charcoal border-t border-metal-200 bg-white">
+              Power transmission
+            </figcaption>
+          </figure>
+          <figure className="flex flex-col rounded border border-metal-200 overflow-hidden bg-metal-50">
+            <div className="p-2 sm:p-4 flex items-center justify-center bg-metal-100">
+              <Image
+                src={media.infrastructure.electricalPole}
+                alt="Electrical distribution pole and cross-arm infrastructure"
+                width={1200}
+                height={600}
+                className="w-full h-auto max-h-[60vh] object-contain"
+                sizes="(max-width: 640px) 100vw, 50vw"
+              />
+            </div>
+            <figcaption className="px-4 py-3 text-sm font-medium text-charcoal border-t border-metal-200 bg-white">
+              Electrical distribution pole
+            </figcaption>
+          </figure>
         </div>
       </section>
 
