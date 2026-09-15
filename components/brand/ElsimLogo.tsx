@@ -2,13 +2,11 @@
 
 import Image from 'next/image';
 import { clsx } from 'clsx';
+import { media } from '@/lib/data/media';
 
 interface ElsimLogoProps {
-  /** Visual size preset */
   size?: 'sm' | 'md' | 'lg' | 'xl';
-  /** Show wordmark text beside mark */
   withWordmark?: boolean;
-  /** Enable subtle CSS animation (gear rotation via SVG overlay) */
   animated?: boolean;
   className?: string;
   priority?: boolean;
@@ -21,11 +19,6 @@ const sizeMap = {
   xl: { box: 80, text: 'text-xl' },
 } as const;
 
-/**
- * Official ELSIM logo mark.
- * Uses the authentic PNG asset at /assets/elsim/logo.png
- * Responsive sizes; optional CSS animation for gear energy feel.
- */
 export function ElsimLogo({
   size = 'md',
   withWordmark = false,
@@ -38,19 +31,17 @@ export function ElsimLogo({
   return (
     <span className={clsx('inline-flex items-center gap-2.5', className)}>
       <span
-        className={clsx(
-          'relative shrink-0',
-          animated && 'logo-spin-slow'
-        )}
+        className={clsx('relative shrink-0', animated && 'logo-spin-slow')}
         style={{ width: box, height: box }}
       >
         <Image
-          src="/assets/elsim/logo.png"
-          alt="ELSIM Engineering Firm"
+          src={media.logo.src}
+          alt={media.logo.alt}
           width={box * 2}
           height={box * 2}
           className="h-full w-full object-contain"
           priority={priority}
+          loading={priority ? undefined : 'lazy'}
         />
       </span>
       {withWordmark && (
@@ -67,11 +58,6 @@ export function ElsimLogo({
   );
 }
 
-/**
- * Pure SVG recreation of the ELSIM mark — crisp at any size,
- * fully animatable (gear rotation + circuit pulse).
- * Use when the PNG is not yet installed or for 2D motion branding.
- */
 export function ElsimLogoSvg({
   size = 48,
   animated = true,
@@ -91,10 +77,8 @@ export function ElsimLogoSvg({
       className={clsx(className)}
       aria-hidden="true"
     >
-      {/* Outer gear ring */}
       <g className={animated ? 'origin-center animate-[spin_24s_linear_infinite]' : ''} style={{ transformOrigin: '100px 100px' }}>
         <circle cx="100" cy="100" r="78" stroke="#1a1a1a" strokeWidth="6" fill="none" />
-        {/* Gear teeth */}
         {Array.from({ length: 12 }).map((_, i) => {
           const angle = (i * 30 * Math.PI) / 180;
           const x1 = 100 + Math.cos(angle) * 72;
@@ -115,8 +99,6 @@ export function ElsimLogoSvg({
           );
         })}
       </g>
-
-      {/* Burgundy gear arc (right side) */}
       <path
         d="M 160 60 A 72 72 0 0 1 160 140"
         stroke="#941A1D"
@@ -126,8 +108,6 @@ export function ElsimLogoSvg({
         className={animated ? 'origin-center animate-[spin_18s_linear_infinite_reverse]' : ''}
         style={{ transformOrigin: '100px 100px' }}
       />
-
-      {/* Circuit board pattern */}
       <g stroke="#1a1a1a" strokeWidth="2.5" fill="none">
         <path d="M70 85 H90 V75 H110" className={animated ? 'animate-pulse' : ''} />
         <path d="M70 100 H100 V90 H120" />
@@ -139,30 +119,10 @@ export function ElsimLogoSvg({
         <circle cx="120" cy="90" r="3" fill="#941A1D" />
         <circle cx="115" cy="125" r="3" fill="#1a1a1a" />
       </g>
-
-      {/* Centre text */}
-      <text
-        x="100"
-        y="108"
-        textAnchor="middle"
-        fill="#1a1a1a"
-        fontFamily="system-ui, sans-serif"
-        fontWeight="800"
-        fontSize="22"
-        letterSpacing="1"
-      >
+      <text x="100" y="108" textAnchor="middle" fill="#1a1a1a" fontFamily="system-ui, sans-serif" fontWeight="800" fontSize="22" letterSpacing="1">
         ELSIM
       </text>
-      <text
-        x="100"
-        y="124"
-        textAnchor="middle"
-        fill="#1a1a1a"
-        fontFamily="system-ui, sans-serif"
-        fontWeight="600"
-        fontSize="7"
-        letterSpacing="1.5"
-      >
+      <text x="100" y="124" textAnchor="middle" fill="#1a1a1a" fontFamily="system-ui, sans-serif" fontWeight="600" fontSize="7" letterSpacing="1.5">
         ENGINEERING FIRM
       </text>
     </svg>
