@@ -97,19 +97,20 @@ function SceneContent({ quality }: { quality: QualitySettings }) {
   );
 }
 
-/** Photo fallback when WebGL unavailable or reduced motion */
+/** Full photo fallback — no crop */
 function StaticFallback() {
   return (
-    <div className="absolute inset-0" aria-hidden="true">
+    <div className="absolute inset-0 flex items-center justify-center bg-metal-50" aria-hidden="true">
       <Image
         src={media.photography.engineerPanelInspection}
         alt=""
-        fill
-        className="object-cover object-center opacity-90"
+        width={1200}
+        height={800}
+        className="max-h-full max-w-full w-auto h-auto object-contain opacity-95"
         sizes="100vw"
         priority
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent pointer-events-none" />
     </div>
   );
 }
