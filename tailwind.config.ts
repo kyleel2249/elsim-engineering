@@ -1,102 +1,65 @@
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
+  darkMode: 'class',
   content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './lib/**/*.{ts,tsx}'
   ],
   theme: {
     extend: {
       colors: {
-        // Official ELSIM Brand Palette
-        burgundy: {
-          DEFAULT: '#941A1D',
-          50: '#fdf2f2',
-          100: '#fce4e4',
-          200: '#f9cdcd',
-          300: '#f4a9a9',
-          400: '#ec7676',
-          500: '#941A1D',
-          600: '#7a1518',
-          700: '#651216',
-          800: '#551114',
-          900: '#4a1215',
-          950: '#280709',
+        steel: {
+          950: '#070B14',
+          900: '#0B1220',
+          800: '#101A2C',
+          700: '#182338',
+          600: '#233350',
+          500: '#3A4C6E',
+          400: '#64748B',
+          300: '#94A3B8',
+          200: '#C4CEDB',
+          100: '#E6EDF5'
         },
-        charcoal: {
-          DEFAULT: '#171717',
-          50: '#f6f6f6',
-          100: '#e7e7e7',
-          200: '#d1d1d1',
-          300: '#b0b0b0',
-          400: '#888888',
-          500: '#6d6d6d',
-          600: '#5d5d5d',
-          700: '#4f4f4f',
-          800: '#454545',
-          900: '#3d3d3d',
-          950: '#171717',
+        cyan: {
+          400: '#22D3EE',
+          500: '#0FB8D6',
+          600: '#0A93AE'
         },
-        metal: {
-          DEFAULT: '#D1D1D1',
-          50: '#fafafa',
-          100: '#f5f5f5',
-          200: '#e5e5e5',
-          300: '#D1D1D1',
-          400: '#a3a3a3',
-          500: '#737373',
-          600: '#525252',
-          700: '#404040',
-          800: '#262626',
-          900: '#171717',
-        },
-        engblue: {
-          DEFAULT: '#2F80C5',
-          50: '#f0f7fc',
-          100: '#ddeff9',
-          200: '#c3e3f4',
-          300: '#9ad0ec',
-          400: '#6ab5e0',
-          500: '#2F80C5',
-          600: '#3a7bb8',
-          700: '#316498',
-          800: '#2d557d',
-          900: '#294868',
-          950: '#1b2e44',
-        },
-        safety: {
-          DEFAULT: '#D7E63D',
-          50: '#fafce8',
-          100: '#f4f8ce',
-          200: '#e9f2a0',
-          300: '#D7E63D',
-          400: '#c5d622',
-          500: '#a8b815',
-          600: '#82910f',
-          700: '#636e10',
-          800: '#4f5813',
-          900: '#434a15',
-          950: '#232808',
-        },
+        copper: {
+          400: '#F0A868',
+          500: '#E08A3C',
+          600: '#B96A24'
+        }
       },
       fontFamily: {
-        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
-        display: ['var(--font-space-grotesk)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-display)'],
+        body: ['var(--font-body)'],
+        mono: ['var(--font-mono)']
+      },
+      backgroundImage: {
+        blueprint:
+          'linear-gradient(rgba(34,211,238,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.06) 1px, transparent 1px)'
+      },
+      backgroundSize: {
+        grid: '48px 48px',
+        'grid-sm': '16px 16px'
       },
       animation: {
         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'flow': 'flow 3s linear infinite',
+        'spin-slow': 'spin 18s linear infinite',
+        marquee: 'marquee 32s linear infinite'
       },
       keyframes: {
-        flow: {
-          '0%': { strokeDashoffset: '100' },
-          '100%': { strokeDashoffset: '0' },
-        },
-      },
-    },
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' }
+        }
+      }
+    }
   },
-  plugins: [],
+  plugins: []
 };
 
 export default config;
