@@ -2,44 +2,39 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import { clsx } from 'clsx';
+import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import { media } from '@/lib/data/media';
 import { cdnUrl } from '@/lib/cdn';
-import { clsx } from 'clsx';
 
 const SLIDES = [
-  {
-    ...media.photography.engineerPanelInspection,
-    caption: 'Electrical inspection',
-  },
-  {
-    ...media.photography.solarTeamReview,
-    caption: 'Solar installation',
-  },
-  {
-    ...media.photography.technicianPanelWork,
-    caption: 'Panel works',
-  },
-  {
-    ...media.photography.siteEngineerLaptop,
-    caption: 'Site engineering',
-  },
-  {
-    ...media.infrastructure.powerTransmission,
-    caption: 'Power transmission',
-  },
-  {
-    ...media.infrastructure.electricalPole,
-    caption: 'Distribution infrastructure',
-  },
+  { ...media.photography.engineerPanelInspection, caption: 'Panel inspection under load' },
+  { ...media.photography.solarTeamReview, caption: 'Solar installation review' },
+  { ...media.photography.technicianPanelWork, caption: 'Switchgear and control panel works' },
+  { ...media.photography.siteEngineerLaptop, caption: 'Site engineering and data capture' },
+  { ...media.infrastructure.electricalPole, caption: 'Distribution infrastructure' },
+  { ...media.infrastructure.powerTransmission, caption: 'Transmission works' },
 ] as const;
 
-/** Auto-advance interval — exactly 5 seconds per slide */
 const INTERVAL_MS = 5000;
 
+/**
+ * Hero photography rail.
+ *
+ * A CSS cross-fade rather than a 3D scene — a deliberate performance choice for
+ * Cloudflare Pages, where the WebGL hero cost far more than it returned.
+ *
+ * The supplied photographs are small and vary widely in aspect ratio, so each
+ * slide is contained rather than cropped and sits on a navy ground with a
+ * blurred copy of itself behind it. That fills the frame without inventing
+ * pixels or cutting people out of the shot.
+ */
 export function HeroSlideshow() {
   const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const regionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -49,9 +44,8 @@ export function HeroSlideshow() {
     return () => mq.removeEventListener('change', handler);
   }, []);
 
-  // Continuous auto-slide every 5 seconds (always on unless reduced motion)
   useEffect(() => {
-    if (reducedMotion) return;
+    if (reducedMotion || paused) return;
 
     timerRef.current = setInterval(() => {
       setIndex((i) => (i + 1) % SLIDES.length);
@@ -60,7 +54,7 @@ export function HeroSlideshow() {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [reducedMotion, index]); // reset timer when user manually changes slide
+  }, [reducedMotion, paused, index]);
 
   const goTo = useCallback((i: number) => {
     setIndex((i + SLIDES.length) % SLIDES.length);
@@ -69,52 +63,93 @@ export function HeroSlideshow() {
   const next = useCallback(() => goTo(index + 1), [goTo, index]);
   const prev = useCallback(() => goTo(index - 1), [goTo, index]);
 
+  // Arrow-key control when the carousel has focus.
+  function onKeyDown(event: React.KeyboardEvent) {
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      next();
+    } else if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      prev();
+    }
+  }
+
+  const autoplaying = !reducedMotion && !paused;
+
   return (
     <div
-      className="relative h-full min-h-[320px] w-full overflow-hidden bg-charcoal"
+      ref={regionRef}
+      className="relative h-full min-h-[300px] w-full overflow-hidden bg-navy-800"
       role="region"
       aria-roledescription="carousel"
-      aria-label="ELSIM Engineering project photography — auto-advances every 5 seconds"
+      aria-label="ELSIM Engineering project photography"
+      tabIndex={0}
+      onKeyDown={onKeyDown}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
     >
-      {SLIDES.map((slide, i) => (
-        <div
-          key={slide.src}
-          className={clsx(
-            'absolute inset-0 transition-opacity duration-700 ease-in-out',
-            i === index ? 'opacity-100 z-[1]' : 'opacity-0 z-0'
-          )}
-          aria-hidden={i !== index}
-        >
-          <Image
-            src={cdnUrl(slide.src)}
-            alt={slide.alt}
-            fill
-            className="object-contain object-center bg-charcoal"
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            quality={85}
-            priority
-            loading="eager"
-          />
+      {SLIDES.map((slide, i) => {
+        const current = i === index;
+        return (
           <div
-            className="absolute inset-0 bg-gradient-to-t from-charcoal/70 via-transparent to-charcoal/20 pointer-events-none"
-            aria-hidden="true"
-          />
-        </div>
-      ))}
+            key={slide.src}
+            className={clsx(
+              'absolute inset-0 transition-opacity duration-700 ease-in-out',
+              current ? 'z-[1] opacity-100' : 'z-0 opacity-0'
+            )}
+            aria-hidden={!current}
+            role="group"
+            aria-roledescription="slide"
+            aria-label={`${i + 1} of ${SLIDES.length}: ${slide.caption}`}
+          >
+            {/* Blurred fill behind the contained image, so the frame is never
+                empty and the photograph itself is never cropped. */}
+            <Image
+              src={cdnUrl(slide.src)}
+              alt=""
+              aria-hidden
+              fill
+              className="scale-110 object-cover opacity-30 blur-2xl"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              quality={25}
+              priority={i === 0}
+            />
 
-      <div className="absolute bottom-0 left-0 right-0 z-[2] px-5 pb-12 pt-16 bg-gradient-to-t from-charcoal/90 to-transparent">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-burgundy-300 mb-1">
+            <Image
+              src={cdnUrl(slide.src)}
+              alt={slide.alt}
+              fill
+              className="object-contain object-center"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              quality={92}
+              priority={i === 0}
+            />
+
+            <div
+              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-950/85 via-transparent to-navy-950/25"
+              aria-hidden
+            />
+          </div>
+        );
+      })}
+
+      {/* Caption */}
+      <div className="absolute inset-x-0 bottom-0 z-[2] bg-gradient-to-t from-navy-950 to-transparent px-5 pb-14 pt-16">
+        <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">
           ELSIM on site
         </p>
-        <p className="text-sm sm:text-base font-medium text-white" aria-live="polite">
+        <p className="text-sm font-medium text-white sm:text-base" aria-live="polite">
           {SLIDES[index].caption}
         </p>
       </div>
 
+      {/* Slide selection */}
       <div
-        className="absolute bottom-4 left-0 right-0 z-[2] flex justify-center gap-2"
+        className="absolute inset-x-0 bottom-5 z-[2] flex items-center justify-center gap-2"
         role="tablist"
-        aria-label="Slide selection"
+        aria-label="Choose a slide"
       >
         {SLIDES.map((slide, i) => (
           <button
@@ -122,42 +157,66 @@ export function HeroSlideshow() {
             type="button"
             role="tab"
             aria-selected={i === index}
-            aria-label={`Show slide ${i + 1}: ${slide.caption}`}
+            aria-label={`Slide ${i + 1}: ${slide.caption}`}
             onClick={() => goTo(i)}
             className={clsx(
-              'h-1.5 rounded-full transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white',
-              i === index ? 'w-6 bg-burgundy' : 'w-1.5 bg-white/40 hover:bg-white/70'
+              'h-1.5 rounded-full transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold',
+              i === index ? 'w-7 bg-gold' : 'w-1.5 bg-white/40 hover:bg-white/70'
             )}
           />
         ))}
       </div>
 
-      <button
-        type="button"
-        onClick={prev}
-        className="absolute left-3 top-1/2 z-[2] -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-charcoal/50 text-white backdrop-blur-sm hover:bg-burgundy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-colors"
-        aria-label="Previous slide"
-      >
-        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-        </svg>
-      </button>
-      <button
-        type="button"
-        onClick={next}
-        className="absolute right-3 top-1/2 z-[2] -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-charcoal/50 text-white backdrop-blur-sm hover:bg-burgundy focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-colors"
-        aria-label="Next slide"
-      >
-        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-        </svg>
-      </button>
+      <SlideButton onClick={prev} side="left" label="Previous slide">
+        <ChevronLeft className="h-5 w-5" aria-hidden />
+      </SlideButton>
+      <SlideButton onClick={next} side="right" label="Next slide">
+        <ChevronRight className="h-5 w-5" aria-hidden />
+      </SlideButton>
 
+      {/* Autoplay control — WCAG requires a way to stop moving content */}
       {!reducedMotion && (
-        <div className="absolute top-0 left-0 right-0 z-[2] h-0.5 bg-white/10" aria-hidden="true">
-          <div key={index} className="h-full bg-burgundy animate-slideshow-progress" />
+        <button
+          type="button"
+          onClick={() => setPaused((v) => !v)}
+          className="absolute right-3 top-3 z-[2] flex h-9 w-9 items-center justify-center rounded-full bg-navy-950/60 text-white backdrop-blur-sm transition-colors hover:bg-navy-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+          aria-label={paused ? 'Resume slideshow' : 'Pause slideshow'}
+        >
+          {paused ? <Play className="h-4 w-4" aria-hidden /> : <Pause className="h-4 w-4" aria-hidden />}
+        </button>
+      )}
+
+      {autoplaying && (
+        <div className="absolute inset-x-0 top-0 z-[2] h-0.5 bg-white/10" aria-hidden>
+          <div key={index} className="animate-slideshow-progress h-full bg-gold" />
         </div>
       )}
     </div>
+  );
+}
+
+function SlideButton({
+  onClick,
+  side,
+  label,
+  children,
+}: {
+  onClick: () => void;
+  side: 'left' | 'right';
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      className={clsx(
+        'absolute top-1/2 z-[2] flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-navy-950/55 text-white backdrop-blur-sm transition-colors hover:bg-navy-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold',
+        side === 'left' ? 'left-3' : 'right-3'
+      )}
+    >
+      {children}
+    </button>
   );
 }

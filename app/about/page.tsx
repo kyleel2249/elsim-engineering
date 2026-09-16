@@ -1,114 +1,188 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
+import { PageHeader } from '@/components/layout/PageHeader';
+import { Reveal } from '@/components/motion/Reveal';
+import { SiteImage } from '@/components/media/SiteImage';
+import { StatCounter } from '@/components/motion/StatCounter';
 import { company } from '@/lib/data/company';
 import { media } from '@/lib/data/media';
+import { getPublishedProjects } from '@/lib/data/projects';
+import { services } from '@/lib/data/services';
 
 export const metadata: Metadata = {
   title: 'About ELSIM Engineering',
   description:
-    'ELSIM Engineering – vision, mission, values and leadership. Electrical engineering solutions across Ghana and West Africa.',
+    'ELSIM Engineering — vision, mission, values and leadership. Electrical engineering solutions across Ghana and West Africa.',
 };
 
 export default function AboutPage() {
-  return (
-    <div className="py-16 sm:py-24 bg-white">
-      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        <p className="text-xs font-semibold tracking-[0.2em] text-burgundy uppercase mb-3">
-          Company
-        </p>
-        <h1 className="font-display text-4xl font-bold text-charcoal">About ELSIM Engineering</h1>
+  const projectCount = getPublishedProjects().length;
 
-        <div className="mt-8 space-y-5 text-charcoal-600 leading-relaxed">
-          <p>{company.description}</p>
+  return (
+    <div className="py-16 sm:py-24" style={{ backgroundColor: 'var(--theme-bg)' }}>
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        <PageHeader eyebrow="Company" title="About ELSIM Engineering" />
+
+        <div className="mt-8 space-y-5 leading-relaxed" style={{ color: 'var(--theme-text-muted)' }}>
+          <p className="text-lg">{company.description}</p>
           <p>
-            Operating from Accra, Ghana, with verified project experience across Ghana, Togo, Côte d'Ivoire, Burkina Faso, Senegal and Niger.
+            We operate from Accra, Ghana, with delivered project experience in{' '}
+            {company.regions.slice(0, -1).join(', ')} and {company.regions.slice(-1)}.
           </p>
         </div>
 
-        <figure className="mt-10 rounded border border-metal-200 bg-metal-50 overflow-hidden">
-          <div className="p-2 sm:p-4 flex items-center justify-center bg-metal-100">
-            <Image
-              src={media.photography.technicianPanelWork.src}
-              alt={media.photography.technicianPanelWork.alt}
-              width={1200}
-              height={800}
-              className="w-full h-auto max-h-[75vh] object-contain"
-              sizes="(max-width: 768px) 100vw, 896px"
-              quality={85}
-              priority
-              loading="eager"
-            />
+        <Reveal>
+          <div className="mt-12 grid gap-8 sm:grid-cols-3">
+            <StatCounter value={projectCount} label="Projects on record" />
+            <StatCounter value={company.regions.length} label="Countries delivered in" />
+            <StatCounter value={services.length} label="Service lines" />
           </div>
-        </figure>
+        </Reveal>
 
-        <div className="mt-14 grid gap-8 md:grid-cols-2">
-          <div className="rounded border border-metal-200 bg-metal-50 p-6">
-            <h2 className="font-display text-lg font-semibold text-burgundy uppercase tracking-wide">
-              Vision
-            </h2>
-            <p className="mt-3 text-sm text-charcoal-600 leading-relaxed">{company.vision}</p>
-          </div>
-          <div className="rounded border border-metal-200 bg-metal-50 p-6">
-            <h2 className="font-display text-lg font-semibold text-burgundy uppercase tracking-wide">
-              Mission
-            </h2>
-            <p className="mt-3 text-sm text-charcoal-600 leading-relaxed">{company.mission}</p>
-          </div>
+        <Reveal>
+          <figure
+            className="relative mt-14 overflow-hidden rounded border"
+            style={{ borderColor: 'var(--theme-border)', backgroundColor: 'var(--theme-bg-muted)' }}
+          >
+            <div
+              className="relative flex items-center justify-center p-2 sm:p-4"
+              style={{ backgroundColor: 'var(--theme-surface)' }}
+            >
+              <SiteImage
+                src={media.photography.technicianPanelWork.src}
+                alt={media.photography.technicianPanelWork.alt}
+                width={1200}
+                height={800}
+                className="h-auto w-full max-h-[70vh] object-contain"
+                sizes="(max-width: 768px) 100vw, 896px"
+                quality={85}
+                priority
+                fallbackLabel="Control panel works"
+                showSkeleton={false}
+              />
+            </div>
+          </figure>
+        </Reveal>
+
+        <div className="mt-14 grid gap-6 md:grid-cols-2">
+          <Reveal>
+            <section
+              className="h-full rounded border p-6"
+              style={{ borderColor: 'var(--theme-border)', backgroundColor: 'var(--theme-bg-muted)' }}
+            >
+              <h2 className="font-display text-lg font-semibold text-accent">Vision</h2>
+              <p className="mt-3 text-sm leading-relaxed" style={{ color: 'var(--theme-text-muted)' }}>
+                {company.vision}
+              </p>
+            </section>
+          </Reveal>
+          <Reveal delay={80}>
+            <section
+              className="h-full rounded border p-6"
+              style={{ borderColor: 'var(--theme-border)', backgroundColor: 'var(--theme-bg-muted)' }}
+            >
+              <h2 className="font-display text-lg font-semibold text-accent">Mission</h2>
+              <p className="mt-3 text-sm leading-relaxed" style={{ color: 'var(--theme-text-muted)' }}>
+                {company.mission}
+              </p>
+            </section>
+          </Reveal>
         </div>
 
-        <section className="mt-14">
-          <h2 className="font-display text-2xl font-bold text-charcoal mb-6">Core Values</h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {company.values.map((v) => (
-              <div
-                key={v.id}
-                className="rounded border border-metal-200 p-5 hover:border-burgundy/30 transition-colors"
-              >
-                <h3 className="font-display text-sm font-semibold text-burgundy uppercase tracking-wide">
-                  {v.title}
-                </h3>
-                <p className="mt-2 text-sm text-charcoal-600">{v.description}</p>
-              </div>
+        <section className="mt-16">
+          <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--theme-text)' }}>
+            Core values
+          </h2>
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {company.values.map((value, i) => (
+              <Reveal key={value.id} delay={i * 60}>
+                <div
+                  className="lift h-full rounded border p-5"
+                  style={{
+                    borderColor: 'var(--theme-border)',
+                    backgroundColor: 'var(--theme-surface)',
+                  }}
+                >
+                  <h3 className="font-display text-sm font-semibold text-accent">{value.title}</h3>
+                  <p className="mt-2 text-sm" style={{ color: 'var(--theme-text-muted)' }}>
+                    {value.description}
+                  </p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </section>
 
-        <section className="mt-14">
-          <h2 className="font-display text-2xl font-bold text-charcoal mb-2">Our Team</h2>
-          <p className="text-sm text-charcoal-500 mb-6">Leadership of ELSIM Engineering</p>
-          <figure className="rounded border border-metal-200 bg-white overflow-hidden">
-            <div className="p-2 sm:p-4 flex items-center justify-center bg-metal-50">
-              <Image
-                src={media.leadership.ourTeam.src}
-                alt={media.leadership.ourTeam.alt}
-                width={1200}
-                height={900}
-                className="w-full h-auto max-h-[80vh] object-contain"
-                sizes="(max-width: 768px) 100vw, 896px"
-                quality={85}
-                loading="eager"
-              />
-            </div>
-          </figure>
-          <ul className="mt-6 grid gap-3 sm:grid-cols-2 text-sm">
-            {company.leadership.map((person) => (
-              <li key={person.name} className="rounded border border-metal-200 px-4 py-3">
-                <span className="font-semibold text-charcoal">{person.name}</span>
-                <span className="block text-burgundy text-xs uppercase tracking-wide mt-0.5">
-                  {person.role}
-                </span>
-              </li>
+        <section className="mt-16">
+          <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--theme-text)' }}>
+            Leadership
+          </h2>
+          <p className="mt-2 text-sm" style={{ color: 'var(--theme-text-subtle)' }}>
+            The people accountable for delivery
+          </p>
+
+          <Reveal>
+            <figure
+              className="relative mt-6 overflow-hidden rounded border"
+              style={{ borderColor: 'var(--theme-border)' }}
+            >
+              <div
+                className="relative flex items-center justify-center p-2 sm:p-4"
+                style={{ backgroundColor: 'var(--theme-bg-muted)' }}
+              >
+                <SiteImage
+                  src={media.leadership.ourTeam.src}
+                  alt={media.leadership.ourTeam.alt}
+                  width={1200}
+                  height={900}
+                  className="h-auto w-full max-h-[70vh] object-contain"
+                  sizes="(max-width: 768px) 100vw, 896px"
+                  quality={85}
+                  fallbackLabel="ELSIM Engineering leadership"
+                  showSkeleton={false}
+                />
+              </div>
+            </figure>
+          </Reveal>
+
+          <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+            {company.leadership.map((person, i) => (
+              <Reveal key={person.name} delay={i * 60} as="li">
+                <div
+                  className="rounded border px-4 py-3.5"
+                  style={{
+                    borderColor: 'var(--theme-border)',
+                    backgroundColor: 'var(--theme-surface)',
+                  }}
+                >
+                  <span className="font-semibold" style={{ color: 'var(--theme-text)' }}>
+                    {person.name}
+                  </span>
+                  <span className="mt-0.5 block text-xs text-accent">{person.role}</span>
+                  {person.bio && (
+                    <p className="mt-2 text-sm" style={{ color: 'var(--theme-text-muted)' }}>
+                      {person.bio}
+                    </p>
+                  )}
+                </div>
+              </Reveal>
             ))}
           </ul>
         </section>
 
-        <div className="mt-14">
+        <div className="mt-16 flex flex-wrap gap-4">
           <Link
             href="/contact"
-            className="inline-flex items-center justify-center rounded bg-burgundy px-5 py-2.5 text-sm font-semibold text-white hover:bg-burgundy-600 transition-colors"
+            className="inline-flex items-center rounded bg-accent px-5 py-2.5 text-sm font-semibold text-on-accent transition-all hover:brightness-110"
           >
             Contact us
+          </Link>
+          <Link
+            href="/projects"
+            className="inline-flex items-center rounded border px-5 py-2.5 text-sm font-medium transition-colors"
+            style={{ borderColor: 'var(--theme-border)', color: 'var(--theme-text)' }}
+          >
+            See the work
           </Link>
         </div>
       </div>

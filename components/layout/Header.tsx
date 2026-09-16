@@ -2,68 +2,128 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Menu, X, Zap } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/Button';
+import { ElsimLogo } from '@/components/brand/ElsimLogo';
+import { ThemeSwitcher } from '@/components/theme/ThemeSwitcher';
+import { CommandPalette } from '@/components/search/CommandPalette';
+import { ScrollProgress } from '@/components/motion/ScrollProgress';
 
 const NAV = [
   { href: '/services', label: 'Services' },
   { href: '/projects', label: 'Projects' },
+  { href: '/safety', label: 'Safety' },
+  { href: '/maintenance', label: 'Maintenance' },
   { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' }
+  { href: '/contact', label: 'Contact' },
 ];
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
+  // Close the mobile menu whenever the route changes.
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  // Condense the header once the page has been scrolled.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Lock background scroll while the mobile sheet is open.
+  useEffect(() => {
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [open]);
+
+  function isActive(href: string) {
+    return pathname === href || pathname.startsWith(`${href}/`);
+  }
+
   return (
-    <header className="sticky top-0 z-50 border-b border-steel-700 bg-steel-950/85 backdrop-blur">
+    <header
+      className="sticky top-0 z-50 border-b backdrop-blur transition-[padding,background-color] duration-300"
+      style={{
+        borderColor: 'var(--theme-border)',
+        backgroundColor: 'color-mix(in srgb, var(--theme-bg) 88%, transparent)',
+      }}
+    >
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-sm focus:bg-cyan-400 focus:px-4 focus:py-2 focus:text-steel-950"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded focus:bg-accent focus:px-4 focus:py-2 focus:text-on-accent"
       >
         Skip to content
       </a>
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link href="/" className="flex items-center gap-2 font-display text-lg text-steel-100">
-          <Zap className="h-5 w-5 text-cyan-400" aria-hidden />
-          ELSIM<span className="text-cyan-400">.</span>ENGINEERING
+
+      <div
+        className={cn(
+          'mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 transition-all duration-300 sm:px-6 lg:px-8',
+          scrolled ? 'py-2.5' : 'py-4'
+        )}
+      >
+        <Link href="/" className="flex shrink-0 items-center" aria-label="ELSIM Engineering, home">
+          <ElsimLogo size={scrolled ? 'md' : 'lg'} withWordmark priority />
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
+        <nav className="hidden items-center gap-7 xl:flex" aria-label="Primary">
           {NAV.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className={cn(
-                'text-sm text-steel-300 transition-colors hover:text-cyan-400',
-                pathname === item.href && 'text-cyan-400'
-              )}
-              aria-current={pathname === item.href ? 'page' : undefined}
+              data-active={isActive(item.href)}
+              className="link-underline text-sm transition-colors"
+              style={{
+                color: isActive(item.href) ? 'var(--theme-accent)' : 'var(--theme-text-muted)',
+              }}
+              aria-current={isActive(item.href) ? 'page' : undefined}
             >
               {item.label}
             </Link>
           ))}
-          <Button href="/quotation" size="sm">
-            Request a quote
-          </Button>
         </nav>
 
-        <button
-          className="rounded-sm p-2 text-steel-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 md:hidden"
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          aria-label={open ? 'Close menu' : 'Open menu'}
-        >
-          {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        <div className="flex items-center gap-2">
+          <CommandPalette />
+          <ThemeSwitcher />
+
+          <Link
+            href="/quotation"
+            className="hidden h-9 items-center rounded bg-accent px-4 text-sm font-semibold text-on-accent transition-all hover:brightness-110 sm:inline-flex"
+          >
+            Request a quote
+          </Link>
+
+          <button
+            type="button"
+            className="inline-flex h-9 w-9 items-center justify-center rounded border xl:hidden"
+            style={{
+              borderColor: 'var(--theme-border)',
+              backgroundColor: 'var(--theme-surface)',
+              color: 'var(--theme-text)',
+            }}
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
 
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {open && (
           <motion.nav
             id="mobile-menu"
@@ -71,27 +131,45 @@ export function Header() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="overflow-hidden border-t border-steel-700 md:hidden"
+            transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+            className="overflow-hidden border-t xl:hidden"
+            style={{ borderColor: 'var(--theme-border)', backgroundColor: 'var(--theme-bg)' }}
           >
-            <div className="flex flex-col gap-4 px-6 py-6">
-              {NAV.map((item) => (
-                <Link
+            <div className="flex flex-col gap-1 px-4 py-4 sm:px-6">
+              {NAV.map((item, i) => (
+                <motion.div
                   key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="text-base text-steel-200 hover:text-cyan-400"
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.03 * i, duration: 0.2 }}
                 >
-                  {item.label}
-                </Link>
+                  <Link
+                    href={item.href}
+                    className="block rounded px-3 py-2.5 text-base transition-colors"
+                    style={{
+                      color: isActive(item.href) ? 'var(--theme-accent)' : 'var(--theme-text)',
+                      backgroundColor: isActive(item.href)
+                        ? 'var(--theme-accent-soft)'
+                        : 'transparent',
+                    }}
+                    aria-current={isActive(item.href) ? 'page' : undefined}
+                  >
+                    {item.label}
+                  </Link>
+                </motion.div>
               ))}
-              <Button href="/quotation" size="sm">
+              <Link
+                href="/quotation"
+                className="mt-3 inline-flex h-11 items-center justify-center rounded bg-accent px-4 text-sm font-semibold text-on-accent"
+              >
                 Request a quote
-              </Button>
+              </Link>
             </div>
           </motion.nav>
         )}
       </AnimatePresence>
+
+      <ScrollProgress />
     </header>
   );
 }
