@@ -16,6 +16,7 @@ const NAV = [
   { href: '/projects', label: 'Projects' },
   { href: '/safety', label: 'Safety' },
   { href: '/maintenance', label: 'Maintenance' },
+  { href: '/our-impact', label: 'Our Impact' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ];

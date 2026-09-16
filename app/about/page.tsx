@@ -90,6 +90,18 @@ export default function AboutPage() {
           </Reveal>
         </div>
 
+        <Reveal>
+          <section
+            className="mt-8 rounded border p-6"
+            style={{ borderColor: 'var(--theme-border)', backgroundColor: 'var(--theme-bg-muted)' }}
+          >
+            <h2 className="font-display text-lg font-semibold text-accent">Our philosophy</h2>
+            <p className="mt-3 text-sm leading-relaxed" style={{ color: 'var(--theme-text-muted)' }}>
+              {company.philosophy}
+            </p>
+          </section>
+        </Reveal>
+
         <section className="mt-16">
           <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--theme-text)' }}>
             Core values
@@ -169,7 +181,85 @@ export default function AboutPage() {
               </Reveal>
             ))}
           </ul>
+
+          {company.leadership.some((person) => person.message) && (
+            <div className="mt-8 space-y-6">
+              {company.leadership
+                .filter((person) => person.message)
+                .map((person, i) => (
+                  <Reveal key={`${person.name}-message`} delay={i * 60}>
+                    <blockquote
+                      className="rounded border p-6"
+                      style={{ borderColor: 'var(--theme-border)', backgroundColor: 'var(--theme-bg-muted)' }}
+                    >
+                      <p className="text-sm font-semibold text-accent">Message from the {person.role}</p>
+                      <p className="mt-3 text-sm leading-relaxed" style={{ color: 'var(--theme-text-muted)' }}>
+                        {person.message}
+                      </p>
+                      <footer className="mt-4 text-xs font-medium" style={{ color: 'var(--theme-text-subtle)' }}>
+                        — {person.name}
+                      </footer>
+                    </blockquote>
+                  </Reveal>
+                ))}
+            </div>
+          )}
         </section>
+
+        {company.certifications.length > 0 && (
+          <section className="mt-16">
+            <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--theme-text)' }}>
+              Certifications &amp; professional standards
+            </h2>
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {company.certifications.map((cert, i) => (
+                <Reveal key={cert.name} delay={i * 60}>
+                  <div
+                    className="h-full rounded border p-5"
+                    style={{ borderColor: 'var(--theme-border)', backgroundColor: 'var(--theme-surface)' }}
+                  >
+                    <h3 className="font-display text-sm font-semibold" style={{ color: 'var(--theme-text)' }}>
+                      {cert.name}
+                    </h3>
+                    <p className="mt-1 text-xs text-accent">{cert.issuingBody}</p>
+                    {cert.detail && (
+                      <p className="mt-2 text-sm" style={{ color: 'var(--theme-text-muted)' }}>
+                        {cert.detail}
+                      </p>
+                    )}
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {company.partners.length > 0 && (
+          <section className="mt-16">
+            <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--theme-text)' }}>
+              Our partners
+            </h2>
+            <p className="mt-2 text-sm" style={{ color: 'var(--theme-text-subtle)' }}>
+              Supplier and technology partners named in ELSIM&rsquo;s company profile.
+            </p>
+            <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+              {company.partners.map((partner, i) => (
+                <Reveal key={partner.name} delay={i * 60} as="li">
+                  <div
+                    className="rounded border px-4 py-3.5 text-sm font-medium"
+                    style={{
+                      borderColor: 'var(--theme-border)',
+                      backgroundColor: 'var(--theme-surface)',
+                      color: 'var(--theme-text)',
+                    }}
+                  >
+                    {partner.name}
+                  </div>
+                </Reveal>
+              ))}
+            </ul>
+          </section>
+        )}
 
         <section className="mt-16">
           <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--theme-text)' }}>

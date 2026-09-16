@@ -21,6 +21,7 @@ interface Entry {
 const PAGES: Entry[] = [
   { id: 'p-home', title: 'Home', subtitle: 'ELSIM Engineering', group: 'Pages', href: '/', keywords: 'start index' },
   { id: 'p-about', title: 'About', subtitle: 'Vision, mission, values, leadership', group: 'Pages', href: '/about', keywords: 'company team who' },
+  { id: 'p-impact', title: 'Our Impact', subtitle: 'Power, people, progress', group: 'Pages', href: '/our-impact', keywords: 'impact stats regions countries' },
   { id: 'p-services', title: 'Services', subtitle: 'What our teams deliver', group: 'Pages', href: '/services', keywords: 'capabilities offering' },
   { id: 'p-projects', title: 'Projects', subtitle: 'Delivered across West Africa', group: 'Pages', href: '/projects', keywords: 'portfolio work case study' },
   { id: 'p-safety', title: 'Safety & Quality', subtitle: 'How we work safely', group: 'Pages', href: '/safety', keywords: 'hse standards compliance risk' },

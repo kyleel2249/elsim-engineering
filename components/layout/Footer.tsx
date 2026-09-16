@@ -8,6 +8,7 @@ import { services } from '@/lib/data/services';
 const COMPANY_LINKS = [
   { href: '/about', label: 'About ELSIM' },
   { href: '/projects', label: 'Projects' },
+  { href: '/our-impact', label: 'Our Impact' },
   { href: '/safety', label: 'Safety & quality' },
   { href: '/maintenance', label: 'Maintenance support' },
   { href: '/contact', label: 'Contact' },
