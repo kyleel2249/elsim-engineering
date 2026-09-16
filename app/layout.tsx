@@ -1,64 +1,149 @@
 import type { Metadata, Viewport } from 'next';
-import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google';
+import Script from 'next/script';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { ThemeProvider, themeNoFlashScript } from '@/components/theme/ThemeProvider';
+import { PageTransition } from '@/components/motion/PageTransition';
+import { BackToTop } from '@/components/motion/BackToTop';
+import { fontVariables } from '@/lib/fonts';
+import { company } from '@/lib/data/company';
+import { media } from '@/lib/data/media';
+import { siteUrl, isIndexable, GA_MEASUREMENT_ID } from '@/lib/site';
 import './globals.css';
-
-const display = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-display',
-  weight: ['500', '600', '700']
-});
-
-const body = IBM_Plex_Sans({
-  subsets: ['latin'],
-  variable: '--font-body',
-  weight: ['400', '500', '600']
-});
-
-const mono = IBM_Plex_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-  weight: ['400', '500']
-});
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  manifest: '/manifest.json',
+  manifest: '/manifest.webmanifest',
+  applicationName: 'ELSIM Engineering',
   title: {
-    default: 'ELSIM Engineering — Electrical, Structural & Mechanical Services',
-    template: '%s · ELSIM Engineering'
+    default: 'ELSIM Engineering — Electrical, Energy & Technical Services in Ghana',
+    template: '%s · ELSIM Engineering',
   },
   description:
-    'ELSIM Engineering delivers electrical, structural, mechanical and power-systems services for commercial and industrial clients in Ghana.',
+    'ELSIM Engineering designs, installs, tests and maintains electrical, solar and power-distribution systems for commercial and industrial clients across Ghana and West Africa.',
+  keywords: [
+    'electrical engineering Ghana',
+    'solar installation Accra',
+    'power distribution West Africa',
+    'transformer installation',
+    'electrical maintenance Ghana',
+    'ELSIM Engineering',
+  ],
+  authors: [{ name: company.name }],
+  creator: company.name,
+  publisher: company.name,
+  alternates: { canonical: '/' },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon-192.png', type: 'image/png', sizes: '192x192' },
+      { url: '/icon-512.png', type: 'image/png', sizes: '512x512' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
   openGraph: {
     title: 'ELSIM Engineering',
     description:
-      'Electrical, structural, mechanical and power-systems engineering services in Ghana.',
+      'Electrical, solar, power-distribution and consulting engineering across Ghana and West Africa.',
     url: siteUrl,
-    siteName: 'ELSIM Engineering',
+    siteName: company.name,
     locale: 'en_GH',
-    type: 'website'
+    type: 'website',
+    images: [{ url: media.og.src, width: 1200, height: 630, alt: media.og.alt }],
   },
-  robots: {
-    index: false,
-    follow: false
-  }
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ELSIM Engineering',
+    description: 'Electrical, solar and power-distribution engineering across West Africa.',
+    images: [media.og.src],
+  },
+  formatDetection: { telephone: true, address: true, email: true },
+  robots: isIndexable
+    ? {
+        index: true,
+        follow: true,
+        googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
+      }
+    : { index: false, follow: false },
 };
 
 export const viewport: Viewport = {
-  themeColor: '#070B14'
+  themeColor: '#ffffff',
+  width: 'device-width',
+  initialScale: 1,
+  colorScheme: 'light dark',
+};
+
+/** Organisation structured data — helps search engines resolve the business. */
+const organisationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: company.name,
+  description: company.description,
+  url: siteUrl,
+  logo: `${siteUrl}${media.logo.src}`,
+  image: `${siteUrl}${media.og.src}`,
+  telephone: company.phones,
+  slogan: company.tagline,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: company.address.line1,
+    addressLocality: company.address.city,
+    addressCountry: 'GH',
+  },
+  areaServed: company.regions.map((name) => ({ '@type': 'Country', name })),
+  knowsAbout: [
+    'Electrical installations',
+    'Solar photovoltaic systems',
+    'Power distribution and transformers',
+    'Electrical inspection and maintenance',
+    'Electrical consulting and audits',
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
-      <body className="min-h-screen bg-steel-950 font-body text-steel-100 antialiased">
-        <Header />
-        <main id="main-content">{children}</main>
-        <Footer />
+    <html lang="en-GH" className={fontVariables} suppressHydrationWarning>
+      <head>
+        {/* Applies the stored theme before first paint so the page never flashes. */}
+        <script
+          dangerouslySetInnerHTML={{ __html: themeNoFlashScript }}
+          suppressHydrationWarning
+        />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organisationJsonLd) }}
+        />
+      </head>
+      <body className="min-h-screen font-body antialiased">
+        <ThemeProvider>
+          <Header />
+          <main id="main-content">
+            <PageTransition>{children}</PageTransition>
+          </main>
+          <Footer />
+          <BackToTop />
+        </ThemeProvider>
+
+        {/* Google Analytics — property G-E8Z0XCC54Q. Loads after hydration so it
+            never blocks first paint, and is skipped entirely when unset. */}
+        {GA_MEASUREMENT_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga-init" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_MEASUREMENT_ID}', { anonymize_ip: true });
+              `}
+            </Script>
+          </>
+        )}
       </body>
     </html>
   );
