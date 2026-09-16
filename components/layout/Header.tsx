@@ -71,11 +71,11 @@ export function Header() {
       <div
         className={cn(
           'mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 transition-all duration-300 sm:px-6 lg:px-8',
-          scrolled ? 'py-2.5' : 'py-4'
+          scrolled ? 'py-3' : 'py-5'
         )}
       >
-        <Link href="/" className="flex shrink-0 items-center" aria-label="ELSIM Engineering, home">
-          <ElsimLogo size={scrolled ? 'md' : 'lg'} withWordmark priority />
+        <Link href="/" className="flex shrink-0 items-center" aria-label="ELSIM Engineering Firm, home">
+          <ElsimLogo size={scrolled ? 'lg' : 'xl'} withWordmark priority />
         </Link>
 
         <nav className="hidden items-center gap-7 xl:flex" aria-label="Primary">

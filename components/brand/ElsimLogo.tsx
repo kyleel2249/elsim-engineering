@@ -16,10 +16,10 @@ interface ElsimLogoProps {
 }
 
 const sizeMap = {
-  sm: { box: 30, text: 'text-sm' },
-  md: { box: 38, text: 'text-base' },
-  lg: { box: 46, text: 'text-lg' },
-  xl: { box: 80, text: 'text-2xl' },
+  sm: { box: 40, text: 'text-base', sub: 'text-[10px]' },
+  md: { box: 52, text: 'text-lg', sub: 'text-xs' },
+  lg: { box: 64, text: 'text-xl', sub: 'text-xs' },
+  xl: { box: 88, text: 'text-2xl', sub: 'text-sm' },
 } as const;
 
 /**
@@ -40,12 +40,12 @@ export function ElsimLogo({
   inverse,
 }: ElsimLogoProps) {
   const { theme } = useTheme();
-  const { box, text } = sizeMap[size];
+  const { box, text, sub } = sizeMap[size];
   const useInverse = inverse ?? theme === 'black';
   const asset = useInverse ? media.logoInverse : media.logoMark;
 
   return (
-    <span className={clsx('inline-flex items-center gap-2.5', className)}>
+    <span className={clsx('inline-flex items-center gap-3', className)}>
       <span
         className="relative shrink-0 transition-all duration-300"
         style={{ width: box, height: box }}
@@ -69,7 +69,7 @@ export function ElsimLogo({
             ELSIM
           </span>
           <span
-            className="mt-0.5 text-[9px] uppercase tracking-[0.18em]"
+            className={clsx('mt-1 uppercase tracking-[0.16em] font-semibold', sub)}
             style={{ color: 'var(--theme-text-subtle)' }}
           >
             Engineering Firm

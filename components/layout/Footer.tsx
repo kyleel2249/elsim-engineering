@@ -36,21 +36,21 @@ export function Footer() {
       <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-4">
-            <Link href="/" className="inline-flex items-center gap-3" aria-label="ELSIM Engineering, home">
-              <span className="relative h-12 w-12 shrink-0 overflow-hidden rounded bg-white p-1">
+            <Link href="/" className="inline-flex items-center gap-4" aria-label="ELSIM Engineering Firm, home">
+              <span className="relative h-20 w-20 shrink-0 overflow-hidden rounded-md bg-white p-1.5">
                 <Image
                   src={cdnUrl(media.logoMark.src)}
                   alt={media.logo.alt}
-                  width={96}
-                  height={96}
+                  width={160}
+                  height={160}
                   className="h-full w-full object-contain"
                 />
               </span>
               <span className="flex flex-col leading-none">
-                <span className="font-display text-base font-semibold text-white">
-                  ELSIM ENGINEERING
+                <span className="font-display text-2xl font-bold tracking-tight text-white">
+                  ELSIM ENGINEERING FIRM
                 </span>
-                <span className="mt-1 label-technical text-elcyan">
+                <span className="mt-2 text-sm font-medium uppercase tracking-[0.14em] text-elcyan">
                   Electrical &middot; Energy &middot; Industrial
                 </span>
               </span>
