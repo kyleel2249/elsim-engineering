@@ -457,6 +457,37 @@ body {
   }
 }
 
+/* Hero background — full-bleed photography wallpaper with a 3D Ken Burns
+   drift. Kept as pure CSS (no WebGL) to preserve the Cloudflare Pages
+   performance budget; perspective + rotateX/rotateY/translateZ on the
+   GPU-composited layer gives real depth without the render cost. */
+.hero-stage-3d {
+  perspective: 1800px;
+  perspective-origin: 50% 40%;
+}
+
+.hero-slide-3d {
+  transform-style: preserve-3d;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.hero-slide-3d[data-active='true'] {
+  animation: hero-kenburns-3d 6.4s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+@keyframes hero-kenburns-3d {
+  0% {
+    transform: scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) translateZ(0px);
+  }
+  50% {
+    transform: scale3d(1.09, 1.09, 1) rotateX(-1.1deg) rotateY(1.6deg) translateZ(24px);
+  }
+  100% {
+    transform: scale3d(1.17, 1.17, 1) rotateX(1deg) rotateY(-1.5deg) translateZ(46px);
+  }
+}
+
 /* Skeleton shimmer used by loading states */
 .skeleton {
   background: linear-gradient(
@@ -563,6 +594,11 @@ body {
 
   .reveal {
     opacity: 1;
+    transform: none;
+  }
+
+  .hero-slide-3d[data-active='true'] {
+    animation: none;
     transform: none;
   }
 

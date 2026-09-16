@@ -43,17 +43,30 @@ const SLIDES = [
 const INTERVAL_MS = 5000;
 
 /**
- * Hero photography rail.
+ * Hero photography wallpaper.
  *
- * A CSS cross-fade rather than a 3D scene — a deliberate performance choice for
- * Cloudflare Pages, where the WebGL hero cost far more than it returned.
+ * Full-bleed background layer for the hero section: every slide covers the
+ * entire stage (object-cover, no letterboxing) and sits behind the hero copy
+ * as an ambient backdrop. The active slide gets a CSS 3D Ken Burns drift
+ * (perspective + rotateX/rotateY/translateZ) for real depth — deliberately
+ * still pure CSS rather than WebGL, to protect the Cloudflare Pages
+ * performance budget while getting a genuinely 3D-feeling motion.
  *
- * The supplied photographs are small and vary widely in aspect ratio, so each
- * slide is contained rather than cropped and sits on a navy ground with a
- * blurred copy of itself behind it. That fills the frame without inventing
- * pixels or cutting people out of the shot.
+ * Fully responsive: the stage is sized entirely by its parent (h-full
+ * w-full), so it reflows from mobile single-column stacks up to wide
+ * desktop hero panels with no internal breakpoints of its own.
  */
-export function HeroSlideshow() {
+export function HeroSlideshow({
+  className,
+  variant = 'carousel',
+}: {
+  className?: string;
+  /** 'wallpaper' hides the caption bar, dot nav, and arrows so the slideshow
+   * reads as a pure decorative background behind other foreground content;
+   * the pause control and progress bar stay, since WCAG still requires a
+   * way to stop auto-moving content. */
+  variant?: 'carousel' | 'wallpaper';
+}) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -103,7 +116,10 @@ export function HeroSlideshow() {
   return (
     <div
       ref={regionRef}
-      className="relative h-full min-h-[300px] w-full overflow-hidden bg-navy-800"
+      className={clsx(
+        'hero-stage-3d relative h-full min-h-[300px] w-full overflow-hidden bg-navy-800',
+        className
+      )}
       role="region"
       aria-roledescription="carousel"
       aria-label="ELSIM Engineering project photography"
@@ -120,7 +136,7 @@ export function HeroSlideshow() {
           <div
             key={slide.src}
             className={clsx(
-              'absolute inset-0 transition-opacity duration-700 ease-in-out',
+              'absolute inset-0 transition-opacity duration-[1400ms] ease-in-out',
               current ? 'z-[1] opacity-100' : 'z-0 opacity-0'
             )}
             aria-hidden={!current}
@@ -128,107 +144,108 @@ export function HeroSlideshow() {
             aria-roledescription="slide"
             aria-label={`${i + 1} of ${SLIDES.length}: ${slide.caption}`}
           >
-            {/* Blurred fill behind the contained image, so the frame is never
-                empty and the photograph itself is never cropped. */}
-            <Image
-              src={cdnUrl(slide.src)}
-              alt=""
-              aria-hidden
-              fill
-              className="scale-110 object-cover opacity-30 blur-2xl"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              quality={25}
-              priority={i === 0}
-            />
-
-            <Image
-              src={cdnUrl(slide.src)}
-              alt={slide.alt}
-              fill
-              className="object-contain object-center"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              quality={92}
-              priority={i === 0}
-            />
-
+            {/* Remounted every time this slide becomes active, so the 3D
+                Ken Burns keyframe animation restarts from frame zero. */}
             <div
-              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-950/85 via-transparent to-navy-950/25"
-              aria-hidden
-            />
+              key={current ? `active-${index}` : 'idle'}
+              className="hero-slide-3d absolute inset-0"
+              data-active={current}
+            >
+              <Image
+                src={cdnUrl(slide.src)}
+                alt={slide.alt}
+                fill
+                className="object-cover object-center"
+                sizes="100vw"
+                quality={90}
+                priority={i === 0}
+              />
+            </div>
           </div>
         );
       })}
 
-      {/* Caption */}
-      <div className="absolute inset-x-0 bottom-0 z-[2] bg-gradient-to-t from-navy-950 to-transparent px-5 pb-14 pt-16">
-        <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">
-          ELSIM on site
-        </p>
-        <p className="text-sm font-medium text-white sm:text-base" aria-live="polite">
-          {SLIDES[index].caption}
-        </p>
-      </div>
+      {/* Ambient darkening so the wallpaper never fights with foreground
+          copy laid over it elsewhere on the page. */}
+      <div
+        className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-navy-950/80 via-navy-950/15 to-navy-950/35"
+        aria-hidden
+      />
 
-      {/* Slide selection.
-          A dot per slide stops being usable once the set is large — this
-          carousel now spans the full field-photography set, so past a
-          threshold it switches to a scrollable strip of small thumbnails
-          plus a numeric counter instead of one dot each. */}
-      {SLIDES.length <= 10 ? (
-        <div
-          className="absolute inset-x-0 bottom-5 z-[2] flex items-center justify-center gap-2"
-          role="tablist"
-          aria-label="Choose a slide"
-        >
-          {SLIDES.map((slide, i) => (
-            <button
-              key={slide.src}
-              type="button"
-              role="tab"
-              aria-selected={i === index}
-              aria-label={`Slide ${i + 1}: ${slide.caption}`}
-              onClick={() => goTo(i)}
-              className={clsx(
-                'h-1.5 rounded-full transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold',
-                i === index ? 'w-7 bg-gold' : 'w-1.5 bg-white/40 hover:bg-white/70'
-              )}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="absolute inset-x-0 bottom-5 z-[2] flex flex-col items-center gap-2">
-          <div
-            className="no-scrollbar flex max-w-[85%] gap-1.5 overflow-x-auto px-2"
-            role="tablist"
-            aria-label="Choose a slide"
-          >
-            {SLIDES.map((slide, i) => (
-              <button
-                key={slide.src}
-                type="button"
-                role="tab"
-                aria-selected={i === index}
-                aria-label={`Slide ${i + 1} of ${SLIDES.length}: ${slide.caption}`}
-                onClick={() => goTo(i)}
-                className={clsx(
-                  'h-1 shrink-0 rounded-full transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold',
-                  i === index ? 'w-6 bg-gold' : 'w-3 bg-white/35 hover:bg-white/60'
-                )}
-              />
-            ))}
+      {variant === 'carousel' && (
+        <>
+          {/* Caption */}
+          <div className="absolute inset-x-0 bottom-0 z-[2] bg-gradient-to-t from-navy-950/95 to-transparent px-5 pb-14 pt-16">
+            <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">
+              ELSIM on site
+            </p>
+            <p className="text-sm font-medium text-white sm:text-base" aria-live="polite">
+              {SLIDES[index].caption}
+            </p>
           </div>
-          <p className="text-[11px] tabular-nums text-navy-200" aria-hidden>
-            {index + 1} / {SLIDES.length}
-          </p>
-        </div>
-      )}
 
-      <SlideButton onClick={prev} side="left" label="Previous slide">
-        <ChevronLeft className="h-5 w-5" aria-hidden />
-      </SlideButton>
-      <SlideButton onClick={next} side="right" label="Next slide">
-        <ChevronRight className="h-5 w-5" aria-hidden />
-      </SlideButton>
+          {/* Slide selection.
+              A dot per slide stops being usable once the set is large — this
+              carousel now spans the full field-photography set, so past a
+              threshold it switches to a scrollable strip of small thumbnails
+              plus a numeric counter instead of one dot each. */}
+          {SLIDES.length <= 10 ? (
+            <div
+              className="absolute inset-x-0 bottom-5 z-[2] flex items-center justify-center gap-2"
+              role="tablist"
+              aria-label="Choose a slide"
+            >
+              {SLIDES.map((slide, i) => (
+                <button
+                  key={slide.src}
+                  type="button"
+                  role="tab"
+                  aria-selected={i === index}
+                  aria-label={`Slide ${i + 1}: ${slide.caption}`}
+                  onClick={() => goTo(i)}
+                  className={clsx(
+                    'h-1.5 rounded-full transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold',
+                    i === index ? 'w-7 bg-gold' : 'w-1.5 bg-white/40 hover:bg-white/70'
+                  )}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="absolute inset-x-0 bottom-5 z-[2] flex flex-col items-center gap-2">
+              <div
+                className="no-scrollbar flex max-w-[85%] gap-1.5 overflow-x-auto px-2"
+                role="tablist"
+                aria-label="Choose a slide"
+              >
+                {SLIDES.map((slide, i) => (
+                  <button
+                    key={slide.src}
+                    type="button"
+                    role="tab"
+                    aria-selected={i === index}
+                    aria-label={`Slide ${i + 1} of ${SLIDES.length}: ${slide.caption}`}
+                    onClick={() => goTo(i)}
+                    className={clsx(
+                      'h-1 shrink-0 rounded-full transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold',
+                      i === index ? 'w-6 bg-gold' : 'w-3 bg-white/35 hover:bg-white/60'
+                    )}
+                  />
+                ))}
+              </div>
+              <p className="text-[11px] tabular-nums text-navy-200" aria-hidden>
+                {index + 1} / {SLIDES.length}
+              </p>
+            </div>
+          )}
+
+          <SlideButton onClick={prev} side="left" label="Previous slide">
+            <ChevronLeft className="h-5 w-5" aria-hidden />
+          </SlideButton>
+          <SlideButton onClick={next} side="right" label="Next slide">
+            <ChevronRight className="h-5 w-5" aria-hidden />
+          </SlideButton>
+        </>
+      )}
 
       {/* Autoplay control — WCAG requires a way to stop moving content */}
       {!reducedMotion && (
