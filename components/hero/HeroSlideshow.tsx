@@ -10,9 +10,29 @@ import { cdnUrl } from '@/lib/cdn';
 const SLIDES = [
   { ...media.photography.engineerPanelInspection, caption: 'Panel inspection under load' },
   { ...media.photography.solarTeamReview, caption: 'Solar installation review' },
+  { ...media.work.linemanPoleTop, caption: 'Working live at height' },
   { ...media.photography.technicianPanelWork, caption: 'Switchgear and control panel works' },
+  { ...media.work.transformerKioskInstallation, caption: 'Transformer kiosk installation' },
   { ...media.photography.siteEngineerLaptop, caption: 'Site engineering and data capture' },
+  { ...media.work.cableCoilTransport, caption: 'Line-works cable transport' },
+  { ...media.work.transformerRoomOverview, caption: 'Distribution transformer room' },
+  { ...media.work.panelWiringTeam, caption: 'Distribution panel wiring' },
+  { ...media.work.linemanConductorWork, caption: 'Overhead conductor works' },
+  { ...media.work.busbarPanelCloseup, caption: 'Three-phase busbar assembly' },
+  { ...media.work.machineHallOverview, caption: 'Industrial machine installation' },
   { ...media.infrastructure.electricalPole, caption: 'Distribution infrastructure' },
+  { ...media.work.meterInspection, caption: 'Meter inspection' },
+  { ...media.work.facadeConduitInstallation, caption: 'Facade conduit installation' },
+  { ...media.work.switchgearCabinetOutdoor, caption: 'Outdoor switchgear works' },
+  { ...media.work.poleTeamBriefing, caption: 'Line crew on site' },
+  { ...media.work.liftShaftInstallation, caption: 'Lift shaft installation' },
+  { ...media.work.breakerPanelInspection, caption: 'Breaker panel inspection' },
+  { ...media.work.steelFrameAssembly01, caption: 'Equipment frame assembly' },
+  { ...media.work.machinePlatformAssembly, caption: 'Elevated machine assembly' },
+  { ...media.work.siteTeamWalkthrough, caption: 'Site walkthrough' },
+  { ...media.work.reinforcementConstructionSite, caption: 'Construction site supervision' },
+  { ...media.work.steelFrameAssembly02, caption: 'Equipment frame assembly' },
+  { ...media.work.domesticScaffoldWork, caption: 'Residential electrical fit-out' },
   { ...media.infrastructure.powerTransmission, caption: 'Transmission works' },
 ] as const;
 
@@ -145,27 +165,59 @@ export function HeroSlideshow() {
         </p>
       </div>
 
-      {/* Slide selection */}
-      <div
-        className="absolute inset-x-0 bottom-5 z-[2] flex items-center justify-center gap-2"
-        role="tablist"
-        aria-label="Choose a slide"
-      >
-        {SLIDES.map((slide, i) => (
-          <button
-            key={slide.src}
-            type="button"
-            role="tab"
-            aria-selected={i === index}
-            aria-label={`Slide ${i + 1}: ${slide.caption}`}
-            onClick={() => goTo(i)}
-            className={clsx(
-              'h-1.5 rounded-full transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold',
-              i === index ? 'w-7 bg-gold' : 'w-1.5 bg-white/40 hover:bg-white/70'
-            )}
-          />
-        ))}
-      </div>
+      {/* Slide selection.
+          A dot per slide stops being usable once the set is large — this
+          carousel now spans the full field-photography set, so past a
+          threshold it switches to a scrollable strip of small thumbnails
+          plus a numeric counter instead of one dot each. */}
+      {SLIDES.length <= 10 ? (
+        <div
+          className="absolute inset-x-0 bottom-5 z-[2] flex items-center justify-center gap-2"
+          role="tablist"
+          aria-label="Choose a slide"
+        >
+          {SLIDES.map((slide, i) => (
+            <button
+              key={slide.src}
+              type="button"
+              role="tab"
+              aria-selected={i === index}
+              aria-label={`Slide ${i + 1}: ${slide.caption}`}
+              onClick={() => goTo(i)}
+              className={clsx(
+                'h-1.5 rounded-full transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold',
+                i === index ? 'w-7 bg-gold' : 'w-1.5 bg-white/40 hover:bg-white/70'
+              )}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="absolute inset-x-0 bottom-5 z-[2] flex flex-col items-center gap-2">
+          <div
+            className="no-scrollbar flex max-w-[85%] gap-1.5 overflow-x-auto px-2"
+            role="tablist"
+            aria-label="Choose a slide"
+          >
+            {SLIDES.map((slide, i) => (
+              <button
+                key={slide.src}
+                type="button"
+                role="tab"
+                aria-selected={i === index}
+                aria-label={`Slide ${i + 1} of ${SLIDES.length}: ${slide.caption}`}
+                onClick={() => goTo(i)}
+                className={clsx(
+                  'h-1 shrink-0 rounded-full transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold',
+                  i === index ? 'w-6 bg-gold' : 'w-3 bg-white/35 hover:bg-white/60'
+                )}
+              />
+            ))}
+          </div>
+          <p className="text-[11px] tabular-nums text-navy-200" aria-hidden>
+            {index + 1} / {SLIDES.length}
+          </p>
+        </div>
+      )}
 
       <SlideButton onClick={prev} side="left" label="Previous slide">
         <ChevronLeft className="h-5 w-5" aria-hidden />
