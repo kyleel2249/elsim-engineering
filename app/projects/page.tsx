@@ -2,7 +2,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { ProjectExplorer } from '@/components/projects/ProjectExplorer';
+import { WorkGallery } from '@/components/media/WorkGallery';
 import { getPublishedProjects } from '@/lib/data/projects';
+import { workPhotos } from '@/lib/data/media';
 
 export const metadata: Metadata = {
   title: 'Projects',
@@ -23,6 +25,17 @@ export default function ProjectsPage() {
         />
 
         <ProjectExplorer projects={projects} />
+
+        <section className="mt-16">
+          <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--theme-text)' }}>
+            From the field
+          </h2>
+          <p className="mt-2 max-w-2xl text-sm" style={{ color: 'var(--theme-text-muted)' }}>
+            ELSIM crews at work across installations, transformer works, line works and
+            construction supervision.
+          </p>
+          <WorkGallery photos={workPhotos} className="mt-6" />
+        </section>
 
         <div
           className="mt-16 rounded border p-6 text-center sm:p-8"

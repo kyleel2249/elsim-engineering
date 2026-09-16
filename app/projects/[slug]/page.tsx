@@ -5,6 +5,8 @@ import { ArrowLeft } from 'lucide-react';
 import { getProjectBySlug, getPublishedProjects } from '@/lib/data/projects';
 import { getServiceBySlug } from '@/lib/data/services';
 import { Reveal } from '@/components/motion/Reveal';
+import { WorkGallery } from '@/components/media/WorkGallery';
+import { getWorkByCategory } from '@/lib/data/media';
 import { siteUrl } from '@/lib/site';
 
 interface Props {
@@ -159,6 +161,21 @@ export default function ProjectDetailPage({ params }: Props) {
                   </li>
                 ))}
               </ul>
+            </section>
+          </Reveal>
+        )}
+
+        {getWorkByCategory(project.category).length > 0 && (
+          <Reveal>
+            <section className="mt-12">
+              <h2 className="font-display text-xl font-semibold" style={{ color: 'var(--theme-text)' }}>
+                Field photography
+              </h2>
+              <p className="mt-1.5 text-sm" style={{ color: 'var(--theme-text-muted)' }}>
+                Representative photography of ELSIM {project.category.replace(/-/g, ' ')} work — not
+                confirmed images of this specific site.
+              </p>
+              <WorkGallery photos={getWorkByCategory(project.category).slice(0, 8)} className="mt-5" />
             </section>
           </Reveal>
         )}

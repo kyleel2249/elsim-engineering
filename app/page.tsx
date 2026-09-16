@@ -6,10 +6,12 @@ import { company } from '@/lib/data/company';
 import { media } from '@/lib/data/media';
 import { HeroSlideshow } from '@/components/hero/HeroSlideshow';
 import { PhotoPanel } from '@/components/media/PhotoPanel';
+import { WorkGallery } from '@/components/media/WorkGallery';
 import { Reveal } from '@/components/motion/Reveal';
 import { StatCounter } from '@/components/motion/StatCounter';
 import { Marquee } from '@/components/motion/Marquee';
 import { BrandField } from '@/components/3d/BrandField';
+import { workPhotos } from '@/lib/data/media';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
@@ -20,6 +22,18 @@ const SITE_PHOTOS = [
   { asset: media.photography.solarTeamReview, label: 'Solar installation' },
   { asset: media.photography.technicianPanelWork, label: 'Switchgear works' },
   { asset: media.photography.siteEngineerLaptop, label: 'Site engineering' },
+];
+
+/** Curated cross-section for the homepage teaser; the full set lives on /projects. */
+const homeGalleryPhotos = [
+  media.work.transformerKioskInstallation,
+  media.work.linemanPoleTop,
+  media.work.panelWiringTeam,
+  media.work.machineHallOverview,
+  media.work.busbarPanelCloseup,
+  media.work.meterInspection,
+  media.work.steelFrameAssembly01,
+  media.work.siteTeamWalkthrough,
 ];
 
 export default function HomePage() {
@@ -201,6 +215,18 @@ export default function HomePage() {
               />
             </Reveal>
           </div>
+
+          <Reveal>
+            <div className="mt-14 flex items-baseline justify-between gap-4">
+              <h3 className="font-display text-xl font-semibold" style={{ color: 'var(--theme-text)' }}>
+                Across our sites
+              </h3>
+              <Link href="/projects" className="link-underline shrink-0 text-sm font-semibold text-accent">
+                See the full gallery
+              </Link>
+            </div>
+            <WorkGallery photos={homeGalleryPhotos} className="mt-6" />
+          </Reveal>
         </div>
       </section>
 

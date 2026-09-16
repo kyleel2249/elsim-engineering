@@ -3,9 +3,10 @@ import Link from 'next/link';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Reveal } from '@/components/motion/Reveal';
 import { SiteImage } from '@/components/media/SiteImage';
+import { WorkGallery } from '@/components/media/WorkGallery';
 import { StatCounter } from '@/components/motion/StatCounter';
 import { company } from '@/lib/data/company';
-import { media } from '@/lib/data/media';
+import { media, workPhotos } from '@/lib/data/media';
 import { getPublishedProjects } from '@/lib/data/projects';
 import { services } from '@/lib/data/services';
 
@@ -168,6 +169,20 @@ export default function AboutPage() {
               </Reveal>
             ))}
           </ul>
+        </section>
+
+        <section className="mt-16">
+          <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--theme-text)' }}>
+            The team at work
+          </h2>
+          <p className="mt-2 text-sm" style={{ color: 'var(--theme-text-muted)' }}>
+            Installations, transformer works, line works and site supervision across our project
+            countries.
+          </p>
+          <WorkGallery photos={workPhotos.slice(0, 12)} className="mt-6" />
+          <Link href="/projects" className="link-underline mt-5 inline-block text-sm font-semibold text-accent">
+            See the full gallery
+          </Link>
         </section>
 
         <div className="mt-16 flex flex-wrap gap-4">

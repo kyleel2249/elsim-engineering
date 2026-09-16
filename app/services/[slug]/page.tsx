@@ -4,6 +4,8 @@ import type { Metadata } from 'next';
 import { getServiceBySlug, getAllServiceSlugs } from '@/lib/data/services';
 import { getProjectsByCategory } from '@/lib/data/projects';
 import { Reveal } from '@/components/motion/Reveal';
+import { WorkGallery } from '@/components/media/WorkGallery';
+import { getWorkByCategory } from '@/lib/data/media';
 import { siteUrl } from '@/lib/site';
 
 interface Props {
@@ -237,6 +239,20 @@ export default function ServiceDetailPage({ params }: Props) {
                   </details>
                 ))}
               </div>
+            </section>
+          </Reveal>
+        )}
+
+        {getWorkByCategory(service.slug).length > 0 && (
+          <Reveal>
+            <section className="mt-14">
+              <h2 className="font-display text-2xl font-semibold" style={{ color: 'var(--theme-text)' }}>
+                Field photography
+              </h2>
+              <p className="mt-1.5 text-sm" style={{ color: 'var(--theme-text-muted)' }}>
+                ELSIM crews carrying out {service.title.toLowerCase()} work.
+              </p>
+              <WorkGallery photos={getWorkByCategory(service.slug)} className="mt-5" />
             </section>
           </Reveal>
         )}
