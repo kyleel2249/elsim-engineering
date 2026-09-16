@@ -225,6 +225,38 @@ export const media = {
       height: 513,
       categories: ['electrical-installations'],
     },
+    frameInstallation01: {
+      src: '/assets/elsim/work/frame-installation-01.png',
+      alt: 'ELSIM crew installing an angled steel equipment frame indoors, onlookers nearby',
+      width: 418,
+      height: 521,
+      categories: ['electrical-installations'],
+    },
+    frameInstallation02: {
+      src: '/assets/elsim/work/frame-installation-02.png',
+      alt: 'ELSIM crew fitting a steel equipment frame in place, second angle of the same installation',
+      width: 440,
+      height: 582,
+      categories: ['electrical-installations'],
+    },
+    busbarPanelFlatlay: {
+      src: '/assets/elsim/work/busbar-panel-flatlay.png',
+      alt: 'Unmounted three-phase busbar panel assembly laid flat on a workbench, colour-coded copper bars and breakers',
+      width: 438,
+      height: 580,
+      categories: ['power-distribution', 'electrical-installations'],
+    },
+    /**
+     * No ELSIM branding is visible in this shot, so the alt text describes
+     * only what's shown rather than asserting whose facility or visit it is.
+     */
+    factoryFacilityVisit: {
+      src: '/assets/elsim/work/factory-facility-visit.png',
+      alt: 'Group of engineers and visitors in high-visibility vests touring an industrial warehouse with material racking',
+      width: 914,
+      height: 550,
+      categories: ['electrical-consulting'],
+    },
   },
 
   /** Master logo as supplied, on its white ground. */

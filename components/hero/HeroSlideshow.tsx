@@ -33,6 +33,10 @@ const SLIDES = [
   { ...media.work.reinforcementConstructionSite, caption: 'Construction site supervision' },
   { ...media.work.steelFrameAssembly02, caption: 'Equipment frame assembly' },
   { ...media.work.domesticScaffoldWork, caption: 'Residential electrical fit-out' },
+  { ...media.work.frameInstallation01, caption: 'Equipment frame installation' },
+  { ...media.work.busbarPanelFlatlay, caption: 'Busbar panel assembly' },
+  { ...media.work.frameInstallation02, caption: 'Equipment frame installation' },
+  { ...media.work.factoryFacilityVisit, caption: 'Technical facility visit' },
   { ...media.infrastructure.powerTransmission, caption: 'Transmission works' },
 ] as const;
 
