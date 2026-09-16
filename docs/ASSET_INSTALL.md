@@ -1,50 +1,66 @@
-# Install ELSIM Logo & Photography Assets
+# Asset installation
 
-Copy the provided company images into the Next.js `public` folder so they are served at `/assets/elsim/...`.
+All site imagery lives under `public/assets/elsim/` and is declared in
+`lib/data/media.ts`. Nothing in the app hardcodes an image path — components
+read the registry, so swapping a file is a one-line change.
 
-## Logo & favicon (required)
+## Layout
 
-| Source file | Destination in repo |
-|-------------|---------------------|
-| `elsim-logo.png` | `public/assets/elsim/logo.png` |
-
-Used as: header logo, footer logo, favicon, apple-touch-icon, Open Graph image, 3D logo fallback.
-
-## Photography
-
-| Source file | Destination in repo |
-|-------------|---------------------|
-| `elsim-tech1.png` | `public/assets/elsim/infrastructure/power-transmission.png` |
-| `elsim-tech2.png` | `public/assets/elsim/photography/engineer-panel-inspection.png` |
-| `elsim-tech3.png` | `public/assets/elsim/photography/solar-team-review.png` |
-| `elsim-tech4.png` | `public/assets/elsim/leadership/our-team.png` |
-| `elsim-tech5.png` | `public/assets/elsim/infrastructure/electrical-pole.png` |
-| `elsim-tech6.png` | `public/assets/elsim/photography/site-engineer-laptop.png` |
-| `elsim-vision-mision.png` | `public/assets/elsim/photography/technician-panel-work.png` |
-
-## Windows (Command Prompt)
-
-```cmd
-cd elsim-engineering
-mkdir public\assets\elsim\photography public\assets\elsim\leadership public\assets\elsim\infrastructure
-
-copy path\to\elsim-logo.png public\assets\elsim\logo.png
-
-copy path\to\elsim-tech1.png public\assets\elsim\infrastructure\power-transmission.png
-copy path\to\elsim-tech2.png public\assets\elsim\photography\engineer-panel-inspection.png
-copy path\to\elsim-tech3.png public\assets\elsim\photography\solar-team-review.png
-copy path\to\elsim-tech4.png public\assets\elsim\leadership\our-team.png
-copy path\to\elsim-tech5.png public\assets\elsim\infrastructure\electrical-pole.png
-copy path\to\elsim-tech6.png public\assets\elsim\photography\site-engineer-laptop.png
-copy path\to\elsim-vision-mision.png public\assets\elsim\photography\technician-panel-work.png
-
-npm install
-npm run dev
+```
+public/assets/elsim/
+├── logo.png                    master logo as supplied (white ground)
+├── logo-mark.png               derived: background knocked out
+├── logo-inverse.png            derived: navy lifted to white, for dark surfaces
+├── photography/
+│   ├── engineer-panel-inspection.png
+│   ├── solar-team-review.png
+│   ├── technician-panel-work.png
+│   └── site-engineer-laptop.png
+├── infrastructure/
+│   ├── electrical-pole.png
+│   └── power-transmission.png   ← still a generated placeholder
+└── leadership/
+    └── our-team.png
 ```
 
-## 3D logo animation
+## Replacing a photograph
 
-- Component: `components/3d/Logo3D.tsx`
-- Gear ring + circuit nodes + burgundy arc rotate slowly
-- Pauses when `prefers-reduced-motion` is set
-- Falls back to the official PNG mark when WebGL is unavailable
+1. Drop the new file over the existing filename.
+2. Update `width` and `height` for that entry in `lib/data/media.ts` to the new
+   file's real pixel dimensions.
+3. Update `alt` if the content of the shot changed.
+
+Step 2 matters. The registry dimensions drive layout reservation and stop the
+browser from upscaling a small source into a blur.
+
+## Why images are contained, not cropped
+
+The supplied photography is small and inconsistently proportioned — from
+135×518 to 463×168. Per the standing decision, images are never cropped: they
+are rendered with `object-contain` inside a fixed-ratio frame, with a blurred
+copy of the same image filling the letterbox behind them. Nobody gets cut out
+of a shot to make a grid line up.
+
+If higher-resolution originals become available, replacing the files is all
+that is needed — the containment still applies and simply has more detail to
+work with.
+
+## Regenerating the derived brand assets
+
+`logo-mark.png`, `logo-inverse.png`, the favicon, the PWA icons and the Open
+Graph card are all derived from `logo.png`. After replacing the master logo:
+
+```bash
+npm run assets          # or: python3 scripts/generate_brand_assets.py
+```
+
+Requires Python with Pillow (`pip install pillow`). The script never touches the
+photography.
+
+## Outstanding
+
+- `infrastructure/power-transmission.png` is a generated schematic placeholder,
+  not a photograph. It is the only image on the site that is not real ELSIM
+  material. Replace it when a transmission-works photograph is cleared.
+- Higher-resolution versions of all photography would materially improve the
+  hero, which currently letterboxes small source files.

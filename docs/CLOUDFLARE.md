@@ -1,30 +1,83 @@
-# Cloudflare Pages
+# Cloudflare Pages deployment
 
-## Exact settings
+## Build settings
 
-| Setting | Value |
-|---------|--------|
-| **Root directory** | *leave empty* |
-| **Build command** | `npm run build:cf` |
-| **Build output directory** | `out` |
-| **Production branch** | `main` |
-| **Node version** | `20` (env `NODE_VERSION=20`) |
+In the Cloudflare Pages dashboard, **Settings → Builds & deployments**:
 
-`build:cf` removes `app/api` (API routes cannot ship with static export) then runs:
+| Field | Value |
+|---|---|
+| Framework preset | `None` |
+| Build command | `npm run build:cf` |
+| Build output directory | `out` |
+| Root directory | *(leave empty)* |
+| Node version | `20` (set `NODE_VERSION=20` in environment variables) |
+
+## Environment variables
+
+Set these under **Settings → Environment variables**, for Production and
+Preview separately:
+
+| Key | Production | Preview |
+|---|---|---|
+| `NEXT_PUBLIC_SITE_URL` | `https://elsimengineering.com` | the preview URL |
+| `NEXT_PUBLIC_SITE_INDEXABLE` | `true` | `false` |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | `G-E8Z0XCC54Q` | *(leave empty)* |
+| `NODE_VERSION` | `20` | `20` |
+
+Setting `NEXT_PUBLIC_SITE_INDEXABLE=false` on Preview is what stops staging
+deployments competing with production in search results. It is the correct
+replacement for the blanket `disallow: /` this project previously shipped.
+
+## How the static build works
+
+`output: 'export'` cannot build route handlers, so the quotation API at
+`app/api/quotation/route.ts` cannot be part of a Pages build.
+
+The build script **does not delete it**. `scripts/prepare-static-export.mjs`:
+
+1. Moves `app/api` to `.api-stash/`
+2. Runs `next build` with `CF_PAGES_STATIC=1`
+3. Moves `app/api` back — including on failure, `Ctrl-C`, or an uncaught error
+
+This replaces the previous `rm -rf app/api`, which destroyed the endpoint on
+every build and only worked on a Unix shell. The new script runs identically on
+Windows, macOS and Linux.
+
+## What this means for the quotation form
+
+On a static deployment there is no `/api/quotation` endpoint. The form detects
+this (the response is not JSON), and instead of failing it offers a prefilled
+email handoff plus the office telephone number. No enquiry is lost.
+
+To run the API for real, deploy to a target that supports Next route handlers
+(Cloudflare Workers with `@cloudflare/next-on-pages`, Vercel, or a Node host)
+and use `npm run build` instead.
+
+## Offline / air-gapped builds
+
+`next/font/google` fetches font CSS at build time, so a Google Fonts outage
+fails the build. If that happens:
 
 ```bash
-CF_PAGES_STATIC=1 next build
+npm run build:cf:offline
 ```
 
-That writes the site to **`out/`**.
+This aliases `lib/fonts.ts` to `lib/fonts.offline.ts` and builds on a system
+font stack. Everything else is identical.
 
-## Optional env vars
+## Headers
 
-| Name | Purpose |
-|------|--------|
-| `CF_PAGES_STATIC` | Set automatically by `build:cf` |
-| `NODE_VERSION` | `20` recommended |
+`output: 'export'` ignores the `headers()` block in `next.config.js`. The
+equivalent security and caching policy is declared in `public/_headers`, which
+Cloudflare Pages reads directly.
 
-## Quotation API on static hosting
+## Troubleshooting
 
-The `app/api/quotation` route is omitted from static Cloudflare builds. Point the form at an external endpoint or deploy the API as a Cloudflare Worker later.
+**Build succeeds but the site looks unstyled.** Check that the deployment is
+building the latest `main`. A stale commit that predates the Tailwind palette
+merge will compile utility classes that no longer resolve.
+
+**Images 404.** Confirm `public/assets/elsim/` was committed. It is a large
+directory of binaries; a `.gitignore` rule for `*.png` would silently drop it.
+
+**Fonts fail to fetch.** Use `npm run build:cf:offline` as above.

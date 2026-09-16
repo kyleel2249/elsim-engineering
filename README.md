@@ -1,193 +1,115 @@
-# ELSIM Engineering – Premium 3D Engineering Website
+# ELSIM Engineering
 
-**Provisional production-ready website** for ELSIM Engineering (Ghana).
+Production website for ELSIM Engineering — electrical, energy and technical
+engineering services in Ghana and West Africa.
 
-> **Important**: The original Scribd company profile could not be fully accessed (CAPTCHA / paywall). No authentic logo, brand colours, project photographs, contact details, certifications or leadership bios were extractable. All content is clearly marked as provisional and requires ELSIM management approval before public launch.
+Next.js 14 (App Router) · TypeScript · Tailwind CSS · deployed to Cloudflare Pages.
 
-**Live repository**: https://github.com/kyleel2249/elsim-engineering
+## Quick start
 
----
-
-## Stack
-
-- **Next.js 14** (App Router) + TypeScript
-- **Tailwind CSS** – provisional engineering palette (deep navy + steel + electric cyan)
-- **React Three Fiber + Drei** – interactive 3D hero energy field
-- **Framer Motion** – UI transitions
-- Fully accessible (keyboard, reduced-motion, focus states, skip link)
-- SEO-ready metadata, semantic HTML
-- Multi-step quotation form with client-side validation (dev-mode submit)
-
-**Works on Windows, macOS, and Linux** with Node.js 18+ and npm 9+.
-
----
-
-## Prerequisites (Windows)
-
-1. **Install Node.js** (LTS recommended)  
-   Download from: https://nodejs.org/  
-   Choose the **Windows Installer (.msi)** – this also installs npm.
-
-2. Verify installation (open **Command Prompt** or **PowerShell**):
-
-   ```cmd
-   node -v
-   npm -v
-   ```
-
-   You should see Node `v18.x` or higher and npm `9.x` or higher.
-
-3. **Optional but recommended**: Install Git for Windows  
-   https://git-scm.com/download/win  
-   (Use the default options; this provides `git` in Command Prompt / PowerShell.)
-
----
-
-## Quick Start (Windows)
-
-### Option A – Command Prompt / PowerShell
-
-```cmd
-git clone https://github.com/kyleel2249/elsim-engineering.git
-cd elsim-engineering
+```bash
 npm install
-npm run dev
+cp .env.example .env.local
+npm run dev            # http://localhost:3000
 ```
 
-Then open your browser at: **http://localhost:3000**
+## Scripts
 
-### Option B – Without Git (download ZIP)
+| Command | What it does |
+|---|---|
+| `npm run dev` | Development server |
+| `npm run build` | Full Next build, API routes included |
+| `npm run build:cf` | Static export for Cloudflare Pages → `out/` |
+| `npm run build:offline` | Build without fetching Google Fonts |
+| `npm run build:cf:offline` | Static export without fetching Google Fonts |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run lint` | ESLint |
+| `npm run check` | Typecheck then lint |
+| `npm run assets` | Regenerate derived brand assets from the master logo |
 
-1. Go to https://github.com/kyleel2249/elsim-engineering
-2. Click the green **Code** button → **Download ZIP**
-3. Extract the ZIP to a folder (e.g. `C:\Projects\elsim-engineering`)
-4. Open Command Prompt or PowerShell in that folder:
+## Brand
 
-   ```cmd
-   cd C:\Projects\elsim-engineering
-   npm install
-   npm run dev
-   ```
+The palette is sampled from the master logo, not chosen independently:
 
-### Stopping the server
+| Role | Hex | Token |
+|---|---|---|
+| Navy (primary) | `#0F3156` | `navy-600`, `--theme-accent` |
+| Gold (secondary) | `#FAB617` | `gold-500`, `--theme-accent-2` |
 
-Press `Ctrl + C` in the terminal window.
+Gold is a highlight and mark colour. It fails contrast as body text on light
+surfaces, so use `text-accent-2-ink` (`#7B530C`) where gold-coloured text is
+wanted.
 
----
+An earlier burgundy `#941A1D` identity predates this logo. It has not been
+removed — it survives as the selectable `red` theme.
 
-## Scripts (all platforms)
+## Theming
 
-| Command             | Description                     |
-|---------------------|---------------------------------|
-| `npm install`       | Install all dependencies        |
-| `npm run dev`       | Start development server        |
-| `npm run build`     | Create production build         |
-| `npm run start`     | Run production server           |
-| `npm run lint`      | Run ESLint                      |
-| `npm run typecheck` | TypeScript type check           |
+Seven runtime themes (`white`, `black`, `blue`, `red`, `orange`, `green`,
+`violet`), defined as CSS custom properties in `app/globals.css` and switched by
+`components/theme/ThemeSwitcher.tsx`. The choice persists in `localStorage`,
+syncs across tabs, and is applied before first paint by an inline script so the
+page never flashes.
 
-All scripts use standard `npm` / Node commands and work identically on Windows, macOS, and Linux. No Unix-only tools are required.
+Components should style surfaces with `var(--theme-*)` or the `accent`
+utilities rather than fixed colours, so they follow the active theme.
 
----
-
-## Project Structure
+## Project structure
 
 ```
-app/                  # Next.js App Router pages
-  page.tsx            # Homepage + 3D hero
-  about/
-  services/           # Listing + [slug] detail
-  projects/
-  quotation/          # Multi-step form
-  ...
+app/                 routes, metadata, robots, sitemap, manifest, API
 components/
-  3d/                 # HeroEnergyField (R3F)
-  layout/             # Header, Footer
-  forms/              # QuotationForm
-lib/data/             # Typed services & projects (provisional)
-types/                # Shared TypeScript interfaces
+  3d/                WebGL scenes (gated — see components/3d/BrandField.tsx)
+  brand/             logo lockup
+  forms/             quotation form
+  hero/              hero slideshow
+  layout/            header, footer, page header, legal document
+  media/             image components that contain rather than crop
+  motion/            reveal, scroll progress, counters, transitions
+  projects/          filterable project explorer
+  search/            ⌘K command palette
+  theme/             theme provider and switcher
+  ui/                button, badge, card
+hooks/               WebGL support, reduced motion, scroll reveal
+lib/
+  3d/                quality tiers and 3D brand constants
+  data/              company, services, projects, media, legal — the content layer
+  validation/        shared Zod schemas
+public/assets/elsim/ all imagery — see docs/ASSET_INSTALL.md
+scripts/             asset generation and build wrappers
 ```
 
----
+Content lives in `lib/data/`. Copy changes should happen there, not in
+components.
 
-## Current Status & Blockers
+## Accessibility
 
-| Item                         | Status                                      |
-|------------------------------|---------------------------------------------|
-| Core architecture            | ✅ Complete                                 |
-| Windows / npm compatibility  | ✅ Verified                                 |
-| 3D hero + reduced-motion     | ✅ Complete                                 |
-| Navigation + responsive      | ✅ Complete                                 |
-| Services pages               | ✅ Provisional content                      |
-| Quotation form               | ✅ Multi-step + validation (dev mode)        |
-| Official logo & colours      | ❌ Missing – using provisional palette      |
-| Project photographs          | ❌ None available from source               |
-| Contact details / address    | ❌ Not extractable                          |
-| Leadership / certifications  | ❌ Pending official profile                 |
-| Backend for form submissions | ⚠️ Dev mode only – integrate Supabase/Firebase |
+Skip link, visible focus rings, keyboard-complete theme switcher, command
+palette and carousel, a pause control on the auto-advancing slideshow, live
+regions on form and filter results, and `prefers-reduced-motion` honoured
+throughout — reveals resolve to visible rather than staying hidden.
 
-**Required from ELSIM management to go production:**
+## Known items
 
-1. High-resolution company profile PDF or image exports
-2. Official logo (SVG preferred) + exact brand colour codes
-3. Verified address, phone, email, WhatsApp Business number
-4. Approved project photos + short verified descriptions
-5. Leadership photos + bios (publication permission)
-6. Any public certifications
-7. Confirmation of exact service list and geographic claims
+- `public/assets/elsim/infrastructure/power-transmission.png` is a generated
+  placeholder, not a photograph. Everything else is real ELSIM material.
+- The supplied photography is low resolution. Images are contained, never
+  cropped, so nothing is distorted, but higher-resolution originals would
+  improve the hero considerably.
+- `next@14.2.35` is the latest 14.x. Open advisories against the 14 line are
+  only fixed in Next 16, which is a breaking upgrade. Nearly all of them require
+  a running Next server (image optimizer, server actions, rewrites, RSC cache);
+  this site ships as a static export with no Next runtime, so practical exposure
+  is minimal. Worth scheduling the Next 16 migration deliberately rather than as
+  part of an unrelated change.
+- Service descriptions marked `[REQUIRES ELSIM APPROVAL]` in
+  `lib/data/services.ts` are provisional and need sign-off before launch.
+- `company.email` is `null` pending confirmation; the contact page handles this
+  and does not show a placeholder address.
 
----
+## Documentation
 
-## Troubleshooting (Windows)
-
-| Problem | Solution |
-|---------|----------|
-| `npm` is not recognized | Re-install Node.js from nodejs.org and restart the terminal |
-| `EPERM` or permission errors | Run Command Prompt / PowerShell **as Administrator**, or move the project out of a protected folder |
-| Port 3000 already in use | `npm run dev -- -p 3001` (uses port 3001) |
-| Slow `npm install` | Ensure you have a stable internet connection; antivirus can sometimes slow installs |
-| Line-ending warnings from Git | Already handled by `.gitattributes` (LF) |
-
----
-
-## Environment Variables
-
-Create a file named `.env.local` in the project root if needed later:
-
-```
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-# SUPABASE_URL=
-# SUPABASE_ANON_KEY=
-```
-
----
-
-## Deployment
-
-Recommended: **Vercel** or **Cloudflare Pages**.
-
-```cmd
-npm run build
-npm run start
-```
-
-Or connect the GitHub repository for automatic deploys.
-
----
-
-## Accessibility & Performance Notes
-
-- `prefers-reduced-motion` disables continuous 3D animation and substitutes a calm static composition.
-- Skip-to-content link, visible focus rings, semantic headings, ARIA labels on mobile menu.
-- 3D scene uses limited geometry, DPR capped, transparent background, lazy-friendly structure.
-- Images will use Next.js Image optimisation once real assets are supplied.
-
----
-
-## Licence & Usage
-
-Provisional internal development build. Do not present as final ELSIM brand identity until official assets and content are approved.
-
----
-
-Built with care for ELSIM Engineering – Ghana.
+- [`docs/CLOUDFLARE.md`](docs/CLOUDFLARE.md) — deployment, build settings, troubleshooting
+- [`docs/ASSET_INSTALL.md`](docs/ASSET_INSTALL.md) — replacing imagery
+- [`docs/3D_HUMAN_ASSET_PIPELINE.md`](docs/3D_HUMAN_ASSET_PIPELINE.md) — optional GLB characters
+- [`docs/WEBGL_ANIMATION_LIBRARIES.md`](docs/WEBGL_ANIMATION_LIBRARIES.md) — 3D library notes
