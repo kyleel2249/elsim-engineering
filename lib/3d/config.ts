@@ -24,7 +24,18 @@ export const HUMAN_MODEL_PATHS = {
 
 export type CharacterRole = keyof typeof HUMAN_MODEL_PATHS;
 
+/**
+ * Colours used by the 3D scenes.
+ *
+ * `navy` and `gold` are sampled from the master logo and are the primary pair.
+ * `burgundy` is kept because the `red` theme and the earlier brand still use
+ * it, and because removing it would break the scenes that reference it.
+ */
 export const BRAND_3D = {
+  navy: '#0F3156',
+  navyLight: '#2A5A94',
+  gold: '#FAB617',
+  goldDeep: '#D8960B',
   burgundy: '#941A1D',
   charcoal: '#171717',
   metal: '#D1D1D1',
