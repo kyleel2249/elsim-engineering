@@ -121,11 +121,11 @@ export function HumanFigure({
         <group position={[0, 1.76, 0]}>
           <mesh>
             <sphereGeometry args={[0.155, 16, 12, 0, Math.PI * 2, 0, Math.PI * 0.55]} />
-            <meshStandardMaterial color={BRAND_3D.burgundy} roughness={0.4} metalness={0.15} />
+            <meshStandardMaterial color={BRAND_3D.navy} roughness={0.4} metalness={0.15} />
           </mesh>
           <mesh position={[0, -0.02, 0.08]} rotation={[0.3, 0, 0]}>
             <boxGeometry args={[0.28, 0.02, 0.12]} />
-            <meshStandardMaterial color={BRAND_3D.burgundy} roughness={0.4} />
+            <meshStandardMaterial color={BRAND_3D.navy} roughness={0.4} />
           </mesh>
         </group>
       )}
@@ -177,7 +177,7 @@ export function ElectricalPanel({
       </mesh>
       <mesh position={[0, 1.5, 0.22]}>
         <sphereGeometry args={[0.03, 8, 8]} />
-        <meshStandardMaterial color={BRAND_3D.burgundy} emissive={BRAND_3D.burgundy} emissiveIntensity={0.5} />
+        <meshStandardMaterial color={BRAND_3D.gold} emissive={BRAND_3D.gold} emissiveIntensity={0.5} />
       </mesh>
       <mesh position={[0.15, 1.5, 0.22]}>
         <sphereGeometry args={[0.03, 8, 8]} />

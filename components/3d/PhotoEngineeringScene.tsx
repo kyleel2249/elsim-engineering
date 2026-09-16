@@ -155,7 +155,7 @@ function SceneContent({
     <>
       <ambientLight intensity={0.85} />
       <directionalLight position={[4, 5, 3]} intensity={0.55} color="#ffffff" />
-      <pointLight position={[-3, 2, 2]} intensity={0.25} color="#941A1D" />
+      <pointLight position={[-3, 2, 2]} intensity={0.25} color="#FAB617" />
 
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.2, 0]}>
         <planeGeometry args={[16, 12]} />

@@ -8,7 +8,7 @@ import { useReducedMotion, useWebGLSupport } from '@/hooks/useWebGLSupport';
 import { ElsimLogo } from '@/components/brand/ElsimLogo';
 
 /**
- * 3D ELSIM logo mark: gear ring + circuit nodes + burgundy accent.
+ * 3D ELSIM logo mark: gear ring + circuit nodes in the brand navy and gold.
  * Highly responsive — scales with container; slows / pauses on reduced motion.
  */
 function LogoMesh({ animate }: { animate: boolean }) {
@@ -59,10 +59,10 @@ function LogoMesh({ animate }: { animate: boolean }) {
       <mesh ref={arcRef} rotation={[0, 0, -0.4]}>
         <torusGeometry args={[1.05, 0.1, 8, 32, Math.PI * 0.85]} />
         <meshStandardMaterial
-          color={BRAND_3D.burgundy}
+          color={BRAND_3D.gold}
           metalness={0.4}
           roughness={0.3}
-          emissive={BRAND_3D.burgundy}
+          emissive={BRAND_3D.gold}
           emissiveIntensity={0.15}
         />
       </mesh>
@@ -79,8 +79,8 @@ function LogoMesh({ animate }: { animate: boolean }) {
         <mesh key={i} position={pos as [number, number, number]}>
           <sphereGeometry args={[0.06, 12, 12]} />
           <meshStandardMaterial
-            color={i % 2 === 0 ? BRAND_3D.burgundy : '#1a1a1a'}
-            emissive={i % 2 === 0 ? BRAND_3D.burgundy : '#000'}
+            color={i % 2 === 0 ? BRAND_3D.gold : BRAND_3D.navy}
+            emissive={i % 2 === 0 ? BRAND_3D.gold : BRAND_3D.navy}
             emissiveIntensity={i % 2 === 0 ? 0.4 : 0}
           />
         </mesh>
@@ -140,7 +140,7 @@ export function Logo3D({ className, height = 160 }: Logo3DProps) {
     return (
       <div className={className} style={{ height }} aria-hidden="true">
         <div className="flex h-full items-center justify-center">
-          <ElsimLogo size="xl" animated />
+          <ElsimLogo size="xl" />
         </div>
       </div>
     );
@@ -156,7 +156,7 @@ export function Logo3D({ className, height = 160 }: Logo3DProps) {
       >
         <ambientLight intensity={0.7} />
         <directionalLight position={[3, 4, 5]} intensity={0.9} />
-        <pointLight position={[-2, 1, 2]} intensity={0.35} color={BRAND_3D.burgundy} />
+        <pointLight position={[-2, 1, 2]} intensity={0.35} color={BRAND_3D.gold} />
         <Suspense fallback={null}>
           <LogoMesh animate={!reduced} />
         </Suspense>

@@ -64,7 +64,7 @@ function SceneContent({ quality }: { quality: QualitySettings }) {
     <>
       <ambientLight intensity={0.55} />
       <directionalLight position={[4, 6, 3]} intensity={0.9} color="#ffffff" castShadow={quality.shadows} />
-      <pointLight position={[-2, 3, 2]} intensity={0.35} color={BRAND_3D.burgundy} />
+      <pointLight position={[-2, 3, 2]} intensity={0.35} color={BRAND_3D.gold} />
       <pointLight position={[2, 2.5, 1]} intensity={0.25} color={BRAND_3D.engblue} />
 
       <Floor />

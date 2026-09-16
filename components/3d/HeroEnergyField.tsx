@@ -6,7 +6,8 @@ import { Float, Line } from '@react-three/drei';
 import * as THREE from 'three';
 
 // Official ELSIM brand colors for 3D
-const BURGUNDY = '#941A1D';
+const NAVY = '#0F3156';
+const GOLD = '#FAB617';
 const METAL = '#D1D1D1';
 const CHARCOAL = '#171717';
 const ENGBLUE = '#2F80C5';
@@ -31,24 +32,24 @@ function EnergyCore() {
 
   return (
     <group>
-      {/* Central structure – industrial metal + burgundy accent */}
+      {/* Central structure – industrial metal with the brand navy and gold */}
       <mesh ref={meshRef}>
         <octahedronGeometry args={[1.15, 0]} />
         <meshStandardMaterial
-          color={METAL}
-          metalness={0.85}
-          roughness={0.25}
-          emissive={BURGUNDY}
-          emissiveIntensity={0.15}
+          color={NAVY}
+          metalness={0.7}
+          roughness={0.3}
+          emissive={GOLD}
+          emissiveIntensity={0.12}
         />
       </mesh>
 
-      {/* Inner core – burgundy signature */}
+      {/* Inner core – gold signature */}
       <mesh scale={0.55}>
         <octahedronGeometry args={[1, 0]} />
         <meshStandardMaterial
-          color={BURGUNDY}
-          emissive={BURGUNDY}
+          color={GOLD}
+          emissive={GOLD}
           emissiveIntensity={0.35}
           metalness={0.6}
           roughness={0.3}
@@ -58,13 +59,13 @@ function EnergyCore() {
       {/* Outer technical ring */}
       <mesh ref={ringRef} rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[2.15, 0.025, 16, 64]} />
-        <meshStandardMaterial color={BURGUNDY} emissive={BURGUNDY} emissiveIntensity={0.5} />
+        <meshStandardMaterial color={GOLD} emissive={GOLD} emissiveIntensity={0.5} />
       </mesh>
 
       {/* Secondary ring – metal */}
       <mesh ref={ring2Ref} rotation={[Math.PI / 3.2, Math.PI / 5, 0]}>
         <torusGeometry args={[1.75, 0.018, 12, 48]} />
-        <meshStandardMaterial color={METAL} metalness={0.9} roughness={0.2} />
+        <meshStandardMaterial color={NAVY} metalness={0.85} roughness={0.22} />
       </mesh>
     </group>
   );
@@ -94,7 +95,7 @@ function EnergyPaths() {
         <Line
           key={i}
           points={path}
-          color={i % 2 === 0 ? BURGUNDY : ENGBLUE}
+          color={i % 2 === 0 ? GOLD : ENGBLUE}
           lineWidth={1.4}
           transparent
           opacity={0.45}
@@ -128,8 +129,8 @@ function FloatingNodes() {
           <mesh position={node.position}>
             <sphereGeometry args={[node.scale, 12, 12]} />
             <meshStandardMaterial
-              color={node.isBlue ? ENGBLUE : BURGUNDY}
-              emissive={node.isBlue ? ENGBLUE : BURGUNDY}
+              color={node.isBlue ? ENGBLUE : GOLD}
+              emissive={node.isBlue ? ENGBLUE : GOLD}
               emissiveIntensity={0.7}
             />
           </mesh>
@@ -161,7 +162,7 @@ function Scene() {
   return (
     <>
       <ambientLight intensity={0.4} />
-      <pointLight position={[5, 5, 5]} intensity={1.0} color={BURGUNDY} />
+      <pointLight position={[5, 5, 5]} intensity={1.0} color={GOLD} />
       <pointLight position={[-4, -2, 3]} intensity={0.5} color={ENGBLUE} />
       <pointLight position={[0, 4, -2]} intensity={0.35} color={METAL} />
       <EnergyCore />
@@ -196,8 +197,8 @@ export function HeroEnergyField() {
         className="absolute inset-0 bg-gradient-to-br from-white via-metal-50 to-metal-100 flex items-center justify-center eng-grid"
         aria-hidden="true"
       >
-        <div className="w-44 h-44 rounded-full border-2 border-burgundy/25 bg-burgundy/5 flex items-center justify-center">
-          <div className="w-20 h-20 rounded-full border border-burgundy/40 bg-burgundy/10" />
+        <div className="w-44 h-44 rounded-full border-2 border-navy/25 bg-navy/5 flex items-center justify-center">
+          <div className="w-20 h-20 rounded-full border border-gold/40 bg-gold/10" />
         </div>
       </div>
     );
