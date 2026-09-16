@@ -116,6 +116,19 @@ const config: Config = {
           700: '#1A4B75'
         },
 
+        /* ---------- Technical Premium (ELSIM identity, current spec) ----------
+           Exact hex values from the brand brief. Used directly where a
+           component needs to render outside the light/dark theme system
+           (e.g. the hero's fixed navy panel, which stays navy regardless of
+           the visitor's chosen theme) and by the EngineeringLine motif. */
+        elnavy: '#082B45',
+        elblue: '#0B5A82',
+        elcyan: '#00A9D6',
+        elamber: '#F5A623',
+        eloffwhite: '#F5F7F9',
+        elgraphite: '#111C24',
+        elslate: '#263746',
+
         /* ---------- technical / instrumentation palette ---------- */
         steel: {
           950: '#070B14',
@@ -155,7 +168,9 @@ const config: Config = {
         'brand-sweep':
           'linear-gradient(110deg, #0F3156 0%, #2A5A94 45%, #0F3156 100%)',
         'blueprint-navy':
-          'linear-gradient(rgba(15,49,86,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(15,49,86,0.07) 1px, transparent 1px)'
+          'linear-gradient(rgba(15,49,86,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(15,49,86,0.07) 1px, transparent 1px)',
+        'hero-navy-gradient':
+          'linear-gradient(135deg, #082B45 0%, #0B5A82 100%)'
       },
       backgroundSize: {
         grid: '48px 48px',

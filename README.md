@@ -30,19 +30,37 @@ npm run dev            # http://localhost:3000
 
 ## Brand
 
-The palette is sampled from the master logo, not chosen independently:
+"Technical Premium" — ELSIM's current design system. Engineering precision,
+industrial authority, modern energy, West African presence.
 
 | Role | Hex | Token |
 |---|---|---|
-| Navy (primary) | `#0F3156` | `navy-600`, `--theme-accent` |
-| Gold (secondary) | `#FAB617` | `gold-500`, `--theme-accent-2` |
+| Primary — Deep Engineering Navy | `#082B45` | `elnavy`, `--theme-accent` |
+| Secondary — Industrial Blue | `#0B5A82` | `elblue`, `--theme-accent-hover` |
+| Accent — Electrical Cyan | `#00A9D6` | `elcyan`, `--theme-accent-2` |
+| Energy accent — Controlled Amber | `#F5A623` | `elamber`, `--theme-energy` |
+| Background — Technical Off-White | `#F5F7F9` | `eloffwhite`, `--theme-bg` |
+| Dark — Graphite | `#111C24` | `elgraphite` |
+| Text — Slate | `#263746` | `elslate`, `--theme-text` |
 
-Gold is a highlight and mark colour. It fails contrast as body text on light
-surfaces, so use `text-accent-2-ink` (`#7B530C`) where gold-coloured text is
-wanted.
+Target mix is roughly 60% white/off-white, 25% navy/graphite, 10% blue/cyan,
+5% amber. Amber is reserved for CTAs and energy/power motifs — not a general
+highlight colour, and never the dominant tone. Cyan is the text-safe accent
+for light surfaces (`text-accent-2-ink` / `#066E8C`); raw cyan text on white
+is fine, raw amber text on white is not (`text-energy-ink` / `#7A4E0F`).
 
-An earlier burgundy `#941A1D` identity predates this logo. It has not been
-removed — it survives as the selectable `red` theme.
+Typography: **Manrope** (display/headings, 600–800 weight) and **Inter**
+(body, 400–500 weight), via `lib/fonts.ts`. Technical labels (eyebrows,
+kickers) use the `.label-technical` utility — uppercase, small, letter-spaced.
+
+The recurring engineering motif is a single-line-diagram accent —
+`components/brand/EngineeringLine.tsx` — a thin conductor with 2–4 node
+markers, used sparingly as a section accent, never as a literal schematic.
+
+An earlier navy `#0F3156` / gold `#FAB617` identity predates this system —
+it is not preserved as a selectable theme (the closest, `blue`, uses a
+related but distinct navy `#2A5A94`). The `red` theme still carries the
+original burgundy `#941A1D` identity that predates the logo entirely.
 
 ## Theming
 

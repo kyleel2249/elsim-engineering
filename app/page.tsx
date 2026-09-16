@@ -5,6 +5,7 @@ import { getPublishedProjects } from '@/lib/data/projects';
 import { company } from '@/lib/data/company';
 import { media } from '@/lib/data/media';
 import { HeroSlideshow } from '@/components/hero/HeroSlideshow';
+import { EngineeringLine } from '@/components/brand/EngineeringLine';
 import { PhotoPanel } from '@/components/media/PhotoPanel';
 import { WorkGallery } from '@/components/media/WorkGallery';
 import { Reveal } from '@/components/motion/Reveal';
@@ -42,67 +43,82 @@ export default function HomePage() {
 
   return (
     <>
-      {/* ---------------------------------------------------------------- Hero */}
-      <section
-        className="relative border-b"
-        style={{ backgroundColor: 'var(--theme-bg)', borderColor: 'var(--theme-border)' }}
-      >
-        <div className="mx-auto max-w-7xl lg:grid lg:min-h-[min(86vh,700px)] lg:grid-cols-2">
-          <div className="relative order-2 h-[44vh] min-h-[300px] sm:h-[50vh] lg:order-1 lg:h-auto">
-            <HeroSlideshow />
-          </div>
+      {/* ---------------------------------------------------------------- Hero
+          "Technical Premium" hero: full-width, dark navy gradient panel on
+          the left carrying the message, authentic ELSIM field photography
+          dominating the right. */}
+      <section className="relative border-b" style={{ borderColor: 'var(--theme-border)' }}>
+        <div className="lg:grid lg:min-h-[min(90vh,760px)] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
+          {/* Left — navy panel, the message */}
+          <div className="relative order-1 overflow-hidden bg-gradient-to-br from-elnavy to-elblue">
+            {/* Subtle blueprint grid + single-line motif, never a literal schematic */}
+            <div
+              className="pointer-events-none absolute inset-0 opacity-[0.08]"
+              style={{
+                backgroundImage:
+                  'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
+                backgroundSize: '56px 56px',
+              }}
+            />
 
-          <div
-            className="order-1 flex items-center lg:order-2"
-            style={{ backgroundColor: 'var(--theme-bg-muted)' }}
-          >
-            <div className="w-full px-4 py-14 sm:px-8 lg:px-12 lg:py-16">
-              <p className="text-xs font-semibold tracking-[0.18em] text-accent">
-                Ghana and West Africa
-              </p>
+            <div className="relative flex h-full flex-col justify-center px-4 py-16 sm:px-8 sm:py-20 lg:px-14 lg:py-24">
+              <div className="max-w-xl">
+                <p className="label-technical text-elcyan">
+                  Electrical <span className="text-elamber">•</span> Energy{' '}
+                  <span className="text-elamber">•</span> Industrial
+                </p>
 
-              <h1
-                className="mt-4 font-display text-3xl font-bold leading-[1.12] tracking-tight text-balance sm:text-4xl lg:text-[2.75rem]"
-                style={{ color: 'var(--theme-text)' }}
-              >
-                Electrical systems designed, installed and kept running
-              </h1>
+                <EngineeringLine className="mt-4 max-w-[220px] text-elcyan" nodes={2} />
 
-              <p
-                className="mt-5 max-w-lg text-base leading-relaxed text-pretty sm:text-lg"
-                style={{ color: 'var(--theme-text-muted)' }}
-              >
-                {company.tagline} ELSIM teams design, install, test and maintain electrical and
-                energy systems across six countries — the same firm from the load calculation to the
-                maintenance visit.
-              </p>
+                <h1 className="mt-6 font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-white text-balance sm:text-5xl lg:text-[3.25rem]">
+                  Engineering the power infrastructure that keeps business moving.
+                </h1>
 
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link
-                  href="/quotation"
-                  className="inline-flex items-center justify-center rounded bg-accent px-6 py-3.5 text-sm font-semibold text-on-accent shadow-panel transition-all hover:brightness-110"
-                >
-                  Request a project consultation
-                </Link>
-                <Link
-                  href="/projects"
-                  className="inline-flex items-center justify-center rounded border px-6 py-3.5 text-sm font-semibold transition-colors hover:border-accent"
-                  style={{
-                    borderColor: 'var(--theme-border-strong)',
-                    backgroundColor: 'var(--theme-surface)',
-                    color: 'var(--theme-text)',
-                  }}
-                >
-                  See the work
-                </Link>
-              </div>
+                <ul className="mt-7 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                  {['Design', 'Installation', 'Testing', 'Commissioning', 'Maintenance'].map(
+                    (step, i, arr) => (
+                      <li key={step} className="flex items-center gap-3">
+                        <span className="label-technical text-white/80">{step}.</span>
+                        {i < arr.length - 1 && <span className="h-1 w-1 rounded-full bg-elamber" />}
+                      </li>
+                    )
+                  )}
+                </ul>
 
-              <div className="mt-10 grid grid-cols-3 gap-6">
-                <StatCounter value={projects.length} label="Projects on record" />
-                <StatCounter value={company.regions.length} label="Countries" />
-                <StatCounter value={services.length} label="Service lines" />
+                <p className="mt-7 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-elamber" />
+                  <span className="label-technical text-white">Ghana &amp; West Africa</span>
+                </p>
+
+                <div className="mt-9 flex flex-wrap gap-3">
+                  <Link
+                    href="/quotation"
+                    className="group inline-flex items-center justify-center gap-2 rounded bg-elamber px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-elgraphite shadow-panel transition-all hover:brightness-105"
+                  >
+                    Request a project consultation
+                    <span className="transition-transform group-hover:translate-x-0.5">→</span>
+                  </Link>
+                  <Link
+                    href="/projects"
+                    className="group inline-flex items-center justify-center gap-2 rounded border border-white/30 px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:border-elcyan hover:text-elcyan"
+                  >
+                    Explore our projects
+                    <span className="transition-transform group-hover:translate-x-0.5">→</span>
+                  </Link>
+                </div>
+
+                <div className="mt-12 grid grid-cols-3 gap-6 border-t border-white/15 pt-8">
+                  <StatCounter tone="light" value={projects.length} label="Projects on record" />
+                  <StatCounter tone="light" value={company.regions.length} label="Countries" />
+                  <StatCounter tone="light" value={services.length} label="Service lines" />
+                </div>
               </div>
             </div>
+          </div>
+
+          {/* Right — authentic ELSIM field photography, dominant */}
+          <div className="relative order-2 h-[46vh] min-h-[320px] sm:h-[54vh] lg:h-auto">
+            <HeroSlideshow />
           </div>
         </div>
       </section>

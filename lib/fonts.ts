@@ -1,7 +1,12 @@
-import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google';
+import { Manrope, Inter, IBM_Plex_Mono } from 'next/font/google';
 
 /**
- * Typeface loading for the ELSIM site.
+ * Typeface loading for the ELSIM site — "Technical Premium" design system.
+ *
+ * Primary: Manrope (display/headings, 600–800 weight).
+ * Secondary: Inter (body copy, 400–500 weight).
+ * Mono: IBM Plex Mono, retained for technical/numeric readouts (stat
+ * counters, error codes, command palette shortcuts).
  *
  * `next/font/google` fetches the font CSS at build time, which means a Google
  * Fonts outage — or an air-gapped/offline CI runner — fails the whole build.
@@ -10,16 +15,16 @@ import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google';
  * font stack. See docs/CLOUDFLARE.md.
  */
 
-export const display = Space_Grotesk({
+export const display = Manrope({
   subsets: ['latin'],
   variable: '--font-display',
-  weight: ['500', '600', '700'],
+  weight: ['600', '700', '800'],
   display: 'swap',
   fallback: ['ui-sans-serif', 'system-ui', 'Segoe UI', 'Arial', 'sans-serif'],
   adjustFontFallback: true,
 });
 
-export const body = IBM_Plex_Sans({
+export const body = Inter({
   subsets: ['latin'],
   variable: '--font-body',
   weight: ['400', '500', '600'],

@@ -10,9 +10,9 @@ export type ThemeId =
 /**
  * Selectable colour themes.
  *
- * `white` is the house theme and matches the master logo: navy #0F3156 with
- * gold #FAB617. The burgundy that the site previously used throughout predates
- * that logo and is preserved here as the `red` theme rather than removed.
+ * `white` is the house theme: ELSIM's "Technical Premium" identity — Deep
+ * Engineering Navy #082B45, Industrial Blue #0B5A82, Electrical Cyan
+ * #00A9D6 and Controlled Amber #F5A623 on a Technical Off-White ground.
  */
 export interface ThemeOption {
   id: ThemeId;
@@ -24,7 +24,7 @@ export interface ThemeOption {
 }
 
 export const THEMES: ThemeOption[] = [
-  { id: 'white', label: 'White', swatch: '#0F3156', hint: 'ELSIM navy and gold on light' },
+  { id: 'white', label: 'White', swatch: '#082B45', hint: 'ELSIM navy, cyan and amber on light' },
   { id: 'black', label: 'Black', swatch: '#FAB617', hint: 'Gold on dark, low glare on site' },
   { id: 'blue', label: 'Blue', swatch: '#2A5A94', hint: 'Deeper navy, drawing-office blue' },
   { id: 'red', label: 'Red', swatch: '#941A1D', hint: 'Previous house burgundy' },
