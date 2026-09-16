@@ -92,11 +92,11 @@ throughout — reveals resolve to visible rather than staying hidden.
 
 ## Known items
 
-- `public/assets/elsim/infrastructure/power-transmission.png` is a generated
-  placeholder, not a photograph. Everything else is real ELSIM material.
-- The supplied photography is low resolution. Images are contained, never
-  cropped, so nothing is distorted, but higher-resolution originals would
-  improve the hero considerably.
+- The four originally-supplied photographs (engineer-panel-inspection,
+  solar-team-review, technician-panel-work, site-engineer-laptop) are low
+  resolution. Images are contained, never cropped, so nothing is distorted,
+  but higher-resolution originals would improve the hero considerably. The
+  24 field-work photos and both infrastructure shots are full resolution.
 - `next@14.2.35` is the latest 14.x. Open advisories against the 14 line are
   only fixed in Next 16, which is a breaking upgrade. Nearly all of them require
   a running Next server (image optimizer, server actions, rewrites, RSC cache);

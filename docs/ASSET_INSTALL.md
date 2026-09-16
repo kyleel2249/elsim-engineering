@@ -18,7 +18,7 @@ public/assets/elsim/
 │   └── site-engineer-laptop.png
 ├── infrastructure/
 │   ├── electrical-pole.png
-│   └── power-transmission.png   ← still a generated placeholder
+│   └── power-transmission.png
 └── leadership/
     └── our-team.png
 ```
@@ -59,8 +59,9 @@ photography.
 
 ## Outstanding
 
-- `infrastructure/power-transmission.png` is a generated schematic placeholder,
-  not a photograph. It is the only image on the site that is not real ELSIM
-  material. Replace it when a transmission-works photograph is cleared.
-- Higher-resolution versions of all photography would materially improve the
-  hero, which currently letterboxes small source files.
+- The four originally-supplied photographs (`photography/`) are low
+  resolution and letterbox inside their frames as a result. Higher-resolution
+  versions would materially improve the hero and the about-page panels that
+  use them.
+- Everything else — both `infrastructure/` shots and all 24 `work/` photos —
+  is full resolution and needs no further attention.

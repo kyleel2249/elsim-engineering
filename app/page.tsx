@@ -199,19 +199,19 @@ export default function HomePage() {
             ))}
           </div>
 
-          <div className="mt-6 grid gap-6 sm:grid-cols-2">
-            <Reveal>
+          <div className="mt-6 grid gap-6 sm:grid-cols-5">
+            <Reveal className="sm:col-span-3">
               <PhotoPanel
                 asset={media.infrastructure.electricalPole}
                 label="Distribution infrastructure"
                 ratio="16 / 9"
               />
             </Reveal>
-            <Reveal delay={80}>
+            <Reveal delay={80} className="sm:col-span-2">
               <PhotoPanel
                 asset={media.infrastructure.powerTransmission}
                 label="Transmission works"
-                ratio="16 / 9"
+                ratio="3 / 4"
               />
             </Reveal>
           </div>
