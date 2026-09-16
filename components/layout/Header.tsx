@@ -101,9 +101,10 @@ export function Header() {
 
           <Link
             href="/quotation"
-            className="hidden h-9 items-center rounded bg-accent px-4 text-sm font-semibold text-on-accent transition-all hover:brightness-110 sm:inline-flex"
+            className="group hidden h-10 items-center gap-1.5 whitespace-nowrap rounded bg-energy px-4 text-[11px] font-bold uppercase tracking-wide text-on-energy transition-all hover:brightness-105 sm:inline-flex"
           >
-            Request a quote
+            Request a Project Consultation
+            <span className="transition-transform group-hover:translate-x-0.5">→</span>
           </Link>
 
           <button
@@ -161,9 +162,10 @@ export function Header() {
               ))}
               <Link
                 href="/quotation"
-                className="mt-3 inline-flex h-11 items-center justify-center rounded bg-accent px-4 text-sm font-semibold text-on-accent"
+                className="mt-3 inline-flex h-11 items-center justify-center gap-1.5 rounded bg-energy px-4 text-sm font-bold uppercase tracking-wide text-on-energy"
               >
-                Request a quote
+                Request a Project Consultation
+                <span>→</span>
               </Link>
             </div>
           </motion.nav>

@@ -157,7 +157,7 @@ export default function HomePage() {
               <Reveal key={service.slug} delay={i * 70}>
                 <Link
                   href={`/services/${service.slug}`}
-                  className="lift group flex h-full flex-col rounded border p-6"
+                  className="lift group flex h-full flex-col rounded border p-6 transition-colors duration-200 hover:border-elcyan/60"
                   style={{
                     borderColor: 'var(--theme-border)',
                     backgroundColor: 'var(--theme-surface)',
@@ -346,28 +346,29 @@ export default function HomePage() {
       </section>
 
       {/* ----------------------------------------------------------------- CTA */}
-      <section className="eng-grid-dark relative overflow-hidden bg-navy-900 py-20">
+      <section className="eng-grid-dark relative overflow-hidden bg-elgraphite py-20">
         {/* WebGL accent: lazy, viewport-gated, and skipped entirely on
             low-power devices or under reduced motion. See BrandField. */}
         <BrandField className="pointer-events-none absolute inset-0 opacity-70" />
 
         <div className="relative mx-auto max-w-3xl px-4 text-center">
-          <h2 className="font-display text-2xl font-bold tracking-tight text-white sm:text-3xl">
+          <p className="label-technical text-elcyan">Let&rsquo;s build together</p>
+          <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-white sm:text-3xl">
             Ready to discuss your next project?
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-navy-200">
+          <p className="mx-auto mt-4 max-w-xl text-white/70">
             Tell us the location, the load and your timeline. We will come back with an approach.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
               href="/quotation"
-              className="rounded bg-gold px-6 py-3.5 text-sm font-semibold text-navy-900 transition-all hover:bg-gold-400"
+              className="rounded bg-elamber px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-elgraphite transition-all hover:brightness-105"
             >
-              Request a quotation
+              Request a Project Consultation →
             </Link>
             <Link
               href="/contact"
-              className="rounded border border-navy-400 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:border-gold hover:text-gold"
+              className="rounded border border-white/30 px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:border-elcyan hover:text-elcyan"
             >
               Contact us
             </Link>

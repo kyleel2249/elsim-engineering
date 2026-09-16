@@ -18,11 +18,22 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-navy-900 text-white">
-      {/* Gold datum edge, matching the logo's accent */}
-      <div className="h-1 bg-gradient-to-r from-gold via-gold-300 to-gold" aria-hidden />
+    <footer className="relative overflow-hidden bg-elgraphite text-white">
+      {/* Energy datum edge — cyan to amber, echoing the hero panel */}
+      <div className="h-1 bg-gradient-to-r from-elcyan via-elblue to-elamber" aria-hidden />
 
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+      {/* Subtle engineering line-art background */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.05]"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)',
+          backgroundSize: '64px 64px',
+        }}
+        aria-hidden
+      />
+
+      <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-4">
             <Link href="/" className="inline-flex items-center gap-3" aria-label="ELSIM Engineering, home">
@@ -36,22 +47,21 @@ export function Footer() {
                 />
               </span>
               <span className="flex flex-col leading-none">
-                <span className="font-display text-base font-semibold text-white">ELSIM</span>
-                <span className="mt-1 text-[10px] uppercase tracking-[0.18em] text-navy-300">
-                  Engineering Firm
+                <span className="font-display text-base font-semibold text-white">
+                  ELSIM ENGINEERING
+                </span>
+                <span className="mt-1 label-technical text-elcyan">
+                  Electrical &middot; Energy &middot; Industrial
                 </span>
               </span>
             </Link>
 
-            <p className="max-w-xs text-sm leading-relaxed text-navy-200">{company.description}</p>
-            <p className="text-xs text-navy-300">{company.address.full}</p>
+            <p className="max-w-xs text-sm leading-relaxed text-white/70">{company.description}</p>
+            <p className="text-xs text-white/50">{company.address.full}</p>
           </div>
 
           <nav aria-labelledby="footer-services">
-            <h2
-              id="footer-services"
-              className="mb-4 text-xs font-semibold uppercase tracking-widest text-gold"
-            >
+            <h2 id="footer-services" className="mb-4 label-technical text-elcyan">
               Services
             </h2>
             <ul className="space-y-2 text-sm">
@@ -59,7 +69,7 @@ export function Footer() {
                 <li key={service.slug}>
                   <Link
                     href={`/services/${service.slug}`}
-                    className="text-navy-200 transition-colors hover:text-gold"
+                    className="text-white/70 transition-colors hover:text-elcyan"
                   >
                     {service.title}
                   </Link>
@@ -69,16 +79,13 @@ export function Footer() {
           </nav>
 
           <nav aria-labelledby="footer-company">
-            <h2
-              id="footer-company"
-              className="mb-4 text-xs font-semibold uppercase tracking-widest text-gold"
-            >
+            <h2 id="footer-company" className="mb-4 label-technical text-elcyan">
               Company
             </h2>
             <ul className="space-y-2 text-sm">
               {COMPANY_LINKS.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-navy-200 transition-colors hover:text-gold">
+                  <Link href={link.href} className="text-white/70 transition-colors hover:text-elcyan">
                     {link.label}
                   </Link>
                 </li>
@@ -87,42 +94,53 @@ export function Footer() {
           </nav>
 
           <div>
-            <h2 className="mb-4 text-xs font-semibold uppercase tracking-widest text-gold">Contact</h2>
+            <h2 className="mb-4 label-technical text-elcyan">Contact</h2>
             <ul className="space-y-2 text-sm">
               {company.phones.map((phone) => (
                 <li key={phone}>
                   <a
                     href={`tel:${phone.replace(/\s/g, '')}`}
-                    className="text-navy-200 transition-colors hover:text-gold"
+                    className="text-white/70 transition-colors hover:text-elcyan"
                   >
                     {phone}
                   </a>
                 </li>
               ))}
+              {company.email && (
+                <li>
+                  <a
+                    href={`mailto:${company.email}`}
+                    className="text-white/70 transition-colors hover:text-elcyan"
+                  >
+                    {company.email}
+                  </a>
+                </li>
+              )}
             </ul>
 
-            <p className="mt-4 text-xs leading-relaxed text-navy-300">
+            <p className="mt-4 text-xs leading-relaxed text-white/50">
               Regions served: {company.regions.join(', ')}.
             </p>
 
             <Link
               href="/quotation"
-              className="mt-5 inline-flex items-center justify-center rounded bg-gold px-4 py-2.5 text-sm font-semibold text-navy-900 transition-colors hover:bg-gold-400"
+              className="mt-5 inline-flex items-center justify-center gap-1.5 rounded bg-elamber px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-elgraphite transition-all hover:brightness-105"
             >
               Request a consultation
+              <span>→</span>
             </Link>
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-navy-700 pt-8 sm:flex-row">
-          <p className="text-xs text-navy-300">
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row">
+          <p className="text-xs text-white/50">
             © {currentYear} {company.legalName}. All rights reserved.
           </p>
           <div className="flex gap-6 text-xs">
-            <Link href="/privacy" className="text-navy-300 transition-colors hover:text-gold">
+            <Link href="/privacy" className="text-white/50 transition-colors hover:text-elcyan">
               Privacy policy
             </Link>
-            <Link href="/terms" className="text-navy-300 transition-colors hover:text-gold">
+            <Link href="/terms" className="text-white/50 transition-colors hover:text-elcyan">
               Terms of use
             </Link>
           </div>
