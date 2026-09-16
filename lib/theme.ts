@@ -7,22 +7,37 @@ export type ThemeId =
   | 'blue'
   | 'violet';
 
+/**
+ * Selectable colour themes.
+ *
+ * `white` is the house theme and matches the master logo: navy #0F3156 with
+ * gold #FAB617. The burgundy that the site previously used throughout predates
+ * that logo and is preserved here as the `red` theme rather than removed.
+ */
 export interface ThemeOption {
   id: ThemeId;
   label: string;
   /** Swatch colour shown in the switcher */
   swatch: string;
+  /** Short description announced to assistive technology */
+  hint: string;
 }
 
 export const THEMES: ThemeOption[] = [
-  { id: 'white', label: 'White', swatch: '#FFFFFF' },
-  { id: 'black', label: 'Black', swatch: '#0A0A0A' },
-  { id: 'red', label: 'Red', swatch: '#941A1D' },
-  { id: 'orange', label: 'Orange', swatch: '#E85D04' },
-  { id: 'green', label: 'Green', swatch: '#2D6A4F' },
-  { id: 'blue', label: 'Blue', swatch: '#1D4E89' },
-  { id: 'violet', label: 'Violet', swatch: '#5B2C6F' },
+  { id: 'white', label: 'White', swatch: '#0F3156', hint: 'ELSIM navy and gold on light' },
+  { id: 'black', label: 'Black', swatch: '#FAB617', hint: 'Gold on dark, low glare on site' },
+  { id: 'blue', label: 'Blue', swatch: '#2A5A94', hint: 'Deeper navy, drawing-office blue' },
+  { id: 'red', label: 'Red', swatch: '#941A1D', hint: 'Previous house burgundy' },
+  { id: 'orange', label: 'Orange', swatch: '#C24A02', hint: 'High-visibility warmth' },
+  { id: 'green', label: 'Green', swatch: '#1F5540', hint: 'Renewables and solar' },
+  { id: 'violet', label: 'Violet', swatch: '#5B2C6F', hint: 'Low-contrast alternative' },
 ];
+
+export const THEME_IDS = THEMES.map((t) => t.id) as ThemeId[];
 
 export const DEFAULT_THEME: ThemeId = 'white';
 export const THEME_STORAGE_KEY = 'elsim-theme';
+
+export function isThemeId(value: unknown): value is ThemeId {
+  return typeof value === 'string' && (THEME_IDS as string[]).includes(value);
+}
