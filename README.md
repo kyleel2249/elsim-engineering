@@ -18,8 +18,9 @@ npm run dev            # http://localhost:3000
 | Command | What it does |
 |---|---|
 | `npm run dev` | Development server |
-| `npm run build` | Full Next build, API routes included |
-| `npm run build:cf` | Static export for Cloudflare Pages → `out/` |
+| `npm run build` | Detects the target: static export on Cloudflare Pages, Next server build elsewhere |
+| `npm run build:node` | Force the Next server build, API routes included |
+| `npm run build:cf` | Force the static export → `out/` |
 | `npm run build:offline` | Build without fetching Google Fonts |
 | `npm run build:cf:offline` | Static export without fetching Google Fonts |
 | `npm run typecheck` | `tsc --noEmit` |

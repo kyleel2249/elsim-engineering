@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/build.mjs",
     "build:offline": "node scripts/build-offline.mjs",
     "build:cf": "node scripts/prepare-static-export.mjs",
     "start": "next start",
@@ -16,7 +16,8 @@
     "typecheck": "tsc --noEmit",
     "check": "npm run typecheck && npm run lint",
     "assets": "python3 scripts/generate_brand_assets.py",
-    "build:cf:offline": "node scripts/prepare-static-export.mjs --offline"
+    "build:cf:offline": "node scripts/prepare-static-export.mjs --offline",
+    "build:node": "next build"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",

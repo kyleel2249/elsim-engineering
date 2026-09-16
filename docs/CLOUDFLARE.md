@@ -7,10 +7,21 @@ In the Cloudflare Pages dashboard, **Settings → Builds & deployments**:
 | Field | Value |
 |---|---|
 | Framework preset | `None` |
-| Build command | `npm run build:cf` |
+| Build command | `npm run build` |
 | Build output directory | `out` |
+| | |
 | Root directory | *(leave empty)* |
 | Node version | `20` (set `NODE_VERSION=20` in environment variables) |
+
+`npm run build` is safe to use here: it detects Cloudflare Pages (the platform
+sets `CF_PAGES=1`) and automatically produces a static export into `out/`.
+Off-platform the same command produces a normal Next server build. `npm run
+build:cf` forces the export explicitly if you prefer to pin it.
+
+> If the build log ends with `Error: Output directory "out" not found`, the
+> project is on an older revision where `npm run build` did not detect Pages.
+> Either redeploy the latest `main`, or set the build command to
+> `npm run build:cf`.
 
 ## Environment variables
 
