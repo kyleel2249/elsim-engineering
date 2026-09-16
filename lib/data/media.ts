@@ -55,9 +55,9 @@ export const media = {
   infrastructure: {
     powerTransmission: {
       src: '/assets/elsim/infrastructure/power-transmission.png',
-      alt: 'High-voltage substation at dusk, rows of insulator strings, disconnect switches and lattice towers along a lit access path',
-      width: 375,
-      height: 498,
+      alt: 'Silhouette of a high-voltage transmission insulator string on a lattice tower against a blue sky',
+      width: 461,
+      height: 144,
     },
     electricalPole: {
       src: '/assets/elsim/infrastructure/electrical-pole.png',
