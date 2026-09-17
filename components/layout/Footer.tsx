@@ -97,15 +97,28 @@ export function Footer() {
 
           <div>
             <h2 className="mb-4 label-technical text-[#941A1D]">Contact</h2>
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-3 text-sm">
               {company.phones.map((phone) => (
-                <li key={phone}>
+                <li key={phone.tel} className="space-y-1">
                   <a
-                    href={`tel:${phone.replace(/\s/g, '')}`}
+                    href={`tel:${phone.tel}`}
                     className="text-white/70 transition-colors hover:text-[#941A1D]"
                   >
-                    {phone}
+                    {phone.display}
                   </a>
+                  <span className="block text-[10px] uppercase tracking-wide text-white/40">
+                    {phone.whatsapp ? 'Calls & WhatsApp' : 'Calls'}
+                  </span>
+                  {phone.whatsapp && (
+                    <a
+                      href={`https://wa.me/${phone.tel.replace('+', '')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-0.5 inline-block text-xs text-white/55 transition-colors hover:text-[#941A1D]"
+                    >
+                      Open WhatsApp
+                    </a>
+                  )}
                 </li>
               ))}
               {company.email && (
