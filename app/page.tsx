@@ -63,49 +63,49 @@ export default function HomePage() {
             <p className="label-technical" style={{ color: 'var(--theme-energy)' }}>
               Electrical · Energy · Technical
             </p>
-            <h1
-              className="mt-4 font-display text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-[3.25rem] lg:leading-[1.1]"
-            >
+            <h1 className="mt-4 font-display text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-[3.25rem] lg:leading-[1.1]">
               Power systems engineered for West Africa
             </h1>
             <p className="mt-5 text-base leading-relaxed text-white/80 sm:text-lg">
               {company.description}
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+
+            <p className="mt-7 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 backdrop-blur-sm">
+              <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: 'var(--theme-energy)' }} />
+              <span className="label-technical text-white">Ghana & West Africa</span>
+            </p>
+
+            <div className="mt-9 flex flex-wrap gap-3">
               <Link
                 href="/quotation"
-                className="rounded bg-energy px-5 py-3 text-sm font-bold uppercase tracking-wide text-on-energy transition-all hover:brightness-105"
+                className="group inline-flex items-center justify-center gap-2 rounded bg-energy px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-on-energy shadow-panel transition-all hover:brightness-105"
               >
-                Request a quotation
+                Request a project consultation
+                <span className="transition-transform group-hover:translate-x-0.5">→</span>
               </Link>
               <Link
                 href="/projects"
-                className="rounded border border-white/30 px-5 py-3 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:border-white hover:bg-white/10"
+                className="group inline-flex items-center justify-center gap-2 rounded border border-white/30 px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-white backdrop-blur-sm transition-colors hover:border-white hover:bg-white/10"
               >
-                View projects
+                Explore our projects
+                <span className="transition-transform group-hover:translate-x-0.5">→</span>
               </Link>
+            </div>
+
+            <div className="mt-12 grid grid-cols-3 gap-6 border-t border-white/15 pt-8">
+              <StatCounter tone="light" value={company.stats.projectsOnRecord} suffix="+" label="Projects on record" />
+              <StatCounter tone="light" value={company.regions.length} label="Countries" />
+              <StatCounter tone="light" value={services.length} label="Service lines" />
             </div>
           </div>
         </div>
       </section>
 
-      <Marquee />
-
       <section
-        className="border-b py-16 sm:py-20"
+        className="border-b py-3"
         style={{ backgroundColor: 'var(--theme-bg-muted)', borderColor: 'var(--theme-border)' }}
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div
-            className="grid gap-8 rounded border p-6 sm:grid-cols-2 sm:p-8 lg:grid-cols-4"
-            style={{ backgroundColor: 'var(--theme-bg)', borderColor: 'var(--theme-border)' }}
-          >
-            <StatCounter label="Projects on record" value={30} suffix="+" />
-            <StatCounter label="West African markets" value={company.regions.length} />
-            <StatCounter label="Core service lines" value={services.length} />
-            <StatCounter label="Years of delivery" value={company.yearsOfExperience} suffix="+" />
-          </div>
-        </div>
+        <Marquee items={company.regions} />
       </section>
 
       <section className="py-16 sm:py-20" style={{ backgroundColor: 'var(--theme-bg)' }}>
