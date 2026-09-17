@@ -34,7 +34,7 @@ export default function AboutPage() {
 
         <Reveal>
           <div className="mt-12 grid gap-8 sm:grid-cols-3">
-            <StatCounter value={projectCount} label="Projects on record" />
+            <StatCounter value={company.stats.projectsOnRecord} suffix="+" label="Projects on record" />
             <StatCounter value={company.regions.length} label="Countries delivered in" />
             <StatCounter value={services.length} label="Service lines" />
           </div>
