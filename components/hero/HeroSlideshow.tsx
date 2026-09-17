@@ -10,7 +10,6 @@ import { cdnUrl } from '@/lib/cdn';
 const SLIDES = [
   { ...media.photography.solarTeamReview, caption: 'Solar installation review' },
   { ...media.work.linemanPoleTop, caption: 'Working live at height' },
-  { ...media.photography.technicianPanelWork, caption: 'Switchgear and control panel works' },
   { ...media.work.transformerKioskInstallation, caption: 'Transformer kiosk installation' },
   { ...media.photography.siteEngineerLaptop, caption: 'Site engineering and data capture' },
   { ...media.work.cableCoilTransport, caption: 'Line-works cable transport' },
