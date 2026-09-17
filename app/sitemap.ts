@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { services } from '@/lib/data/services';
 import { getPublishedProjects } from '@/lib/data/projects';
+import { getPublishedPosts } from '@/lib/data/blog';
 import { siteUrl } from '@/lib/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -10,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${siteUrl}`, lastModified: now, changeFrequency: 'monthly', priority: 1 },
     { url: `${siteUrl}/services`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 },
     { url: `${siteUrl}/projects`, lastModified: now, changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${siteUrl}/blog`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${siteUrl}/about`, lastModified: now, changeFrequency: 'yearly', priority: 0.7 },
     { url: `${siteUrl}/our-impact`, lastModified: now, changeFrequency: 'yearly', priority: 0.6 },
     { url: `${siteUrl}/safety`, lastModified: now, changeFrequency: 'yearly', priority: 0.6 },
@@ -35,5 +37,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticRoutes, ...serviceRoutes, ...projectRoutes];
+  const blogRoutes: MetadataRoute.Sitemap = getPublishedPosts().map((post) => ({
+    url: `${siteUrl}/blog/${post.slug}`,
+    lastModified: new Date(post.publishedAt),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...serviceRoutes, ...projectRoutes, ...blogRoutes];
 }
