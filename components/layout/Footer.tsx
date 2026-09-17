@@ -4,7 +4,7 @@ import { company } from '@/lib/data/company';
 import { media } from '@/lib/data/media';
 import { cdnUrl } from '@/lib/cdn';
 import { services } from '@/lib/data/services';
-import { Linkedin, Facebook } from 'lucide-react';
+import { Linkedin, Facebook, Phone, MessageCircle, Mail } from 'lucide-react';
 
 const COMPANY_LINKS = [
   { href: '/about', label: 'About ELSIM' },
@@ -103,8 +103,9 @@ export function Footer() {
                 <li key={phone.tel} className="space-y-1">
                   <a
                     href={`tel:${phone.tel}`}
-                    className="text-white/70 transition-colors hover:text-[#941A1D]"
+                    className="inline-flex items-center gap-2 text-white/70 transition-colors hover:text-[#941A1D]"
                   >
+                    <Phone className="h-3.5 w-3.5 shrink-0" aria-hidden />
                     {phone.display}
                   </a>
                   <span className="block text-[10px] uppercase tracking-wide text-white/40">
@@ -115,8 +116,9 @@ export function Footer() {
                       href={`https://wa.me/${phone.tel.replace('+', '')}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-0.5 inline-block text-xs text-white/55 transition-colors hover:text-[#941A1D]"
+                      className="mt-0.5 inline-flex items-center gap-1.5 text-xs text-white/55 transition-colors hover:text-[#941A1D]"
                     >
+                      <MessageCircle className="h-3.5 w-3.5 shrink-0" aria-hidden />
                       Open WhatsApp
                     </a>
                   )}
@@ -126,8 +128,9 @@ export function Footer() {
                 <li>
                   <a
                     href={`mailto:${company.email}`}
-                    className="text-white/70 transition-colors hover:text-[#941A1D]"
+                    className="inline-flex items-center gap-2 text-white/70 transition-colors hover:text-[#941A1D]"
                   >
+                    <Mail className="h-3.5 w-3.5 shrink-0" aria-hidden />
                     {company.email}
                   </a>
                 </li>

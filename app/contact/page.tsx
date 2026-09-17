@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { MapPin, Phone, Mail, Clock, Linkedin, Facebook } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Linkedin, Facebook, MessageCircle } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Reveal } from '@/components/motion/Reveal';
 import { company } from '@/lib/data/company';
@@ -45,9 +45,10 @@ export default function ContactPage() {
                   <li key={phone.tel} className="space-y-1">
                     <a
                       href={`tel:${phone.tel}`}
-                      className="link-underline font-medium"
+                      className="link-underline inline-flex items-center gap-2 font-medium"
                       style={{ color: 'var(--theme-text)' }}
                     >
+                      <Phone className="h-4 w-4 shrink-0 text-accent" aria-hidden />
                       {phone.display}
                     </a>
                     <span className="block text-xs" style={{ color: 'var(--theme-text-subtle)' }}>
@@ -58,8 +59,9 @@ export default function ContactPage() {
                         href={`https://wa.me/${phone.tel.replace('+', '')}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-block text-sm font-medium text-accent"
+                        className="inline-flex items-center gap-1.5 text-sm font-medium text-accent"
                       >
+                        <MessageCircle className="h-4 w-4 shrink-0" aria-hidden />
                         Chat on WhatsApp
                       </a>
                     )}
@@ -74,9 +76,10 @@ export default function ContactPage() {
               {company.email ? (
                 <a
                   href={`mailto:${company.email}`}
-                  className="link-underline font-medium"
+                  className="link-underline inline-flex items-center gap-2 font-medium"
                   style={{ color: 'var(--theme-text)' }}
                 >
+                  <Mail className="h-4 w-4 shrink-0 text-accent" aria-hidden />
                   {company.email}
                 </a>
               ) : (
