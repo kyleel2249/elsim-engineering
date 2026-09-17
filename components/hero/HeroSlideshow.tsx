@@ -21,6 +21,7 @@ const SLIDES = [
   { ...media.work.busbarPanelCloseup, caption: 'Three-phase busbar assembly' },
   { ...media.work.machineHallOverview, caption: 'Industrial machine installation' },
   { ...media.infrastructure.electricalPole, caption: 'Distribution infrastructure' },
+  { ...media.infrastructure.powerTransmission, caption: 'Transmission works' },
   { ...media.work.meterInspection, caption: 'Meter inspection' },
   { ...media.work.facadeConduitInstallation, caption: 'Facade conduit installation' },
   { ...media.work.switchgearCabinetOutdoor, caption: 'Outdoor switchgear works' },
