@@ -43,7 +43,7 @@ export default function OurImpactPage() {
 
         <Reveal>
           <div className="mt-10 grid gap-8 sm:grid-cols-3">
-            <StatCounter value={projectCount} label="Projects on record" />
+            <StatCounter value={company.stats.projectsOnRecord} suffix="+" label="Projects on record" />
             <StatCounter value={company.regions.length} label="Countries with delivered work" />
             <StatCounter value={services.length} label="Service lines" />
           </div>
