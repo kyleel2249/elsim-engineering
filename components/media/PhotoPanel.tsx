@@ -43,7 +43,7 @@ export function PhotoPanel({
           >
             <svg
               viewBox="0 0 48 48"
-              className="h-8 w-8 text-gold"
+              className="h-8 w-8 text-burgundy"
               fill="none"
               stroke="currentColor"
               strokeWidth={2}

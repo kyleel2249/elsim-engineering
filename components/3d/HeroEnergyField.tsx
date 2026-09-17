@@ -5,12 +5,13 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Float, Line } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Official ELSIM brand colors for 3D
-const NAVY = '#0F3156';
-const GOLD = '#FAB617';
+// "Technical Premium" brand colors for 3D — Deep Engineering Navy,
+// Controlled Amber, Electrical Cyan.
+const NAVY = '#082B45';
+const GOLD = '#F5A623';
 const METAL = '#D1D1D1';
-const CHARCOAL = '#171717';
-const ENGBLUE = '#2F80C5';
+const CHARCOAL = '#111C24';
+const ENGBLUE = '#00A9D6';
 
 function EnergyCore() {
   const meshRef = useRef<THREE.Mesh>(null);
