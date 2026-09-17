@@ -12,12 +12,11 @@ import { CommandPalette } from '@/components/search/CommandPalette';
 import { ScrollProgress } from '@/components/motion/ScrollProgress';
 
 const NAV = [
+  { href: '/about', label: 'About' },
   { href: '/services', label: 'Services' },
   { href: '/projects', label: 'Projects' },
   { href: '/safety', label: 'Safety' },
-  { href: '/maintenance', label: 'Maintenance' },
   { href: '/our-impact', label: 'Our Impact' },
-  { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ];
 
@@ -101,9 +100,9 @@ export function Header() {
 
           <Link
             href="/quotation"
-            className="group hidden h-10 items-center gap-1.5 whitespace-nowrap rounded bg-energy px-4 text-[11px] font-bold uppercase tracking-wide text-on-energy transition-all hover:brightness-105 sm:inline-flex"
+            className="group hidden h-11 items-center gap-1.5 whitespace-nowrap rounded bg-energy px-5 text-xs font-bold uppercase tracking-wide text-on-energy transition-all hover:brightness-105 sm:inline-flex"
           >
-            Request a Project Consultation
+            Get in Touch
             <span className="transition-transform group-hover:translate-x-0.5">→</span>
           </Link>
 
@@ -164,7 +163,7 @@ export function Header() {
                 href="/quotation"
                 className="mt-3 inline-flex h-11 items-center justify-center gap-1.5 rounded bg-energy px-4 text-sm font-bold uppercase tracking-wide text-on-energy"
               >
-                Request a Project Consultation
+                Get in Touch
                 <span>→</span>
               </Link>
             </div>

@@ -18,11 +18,9 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative overflow-hidden bg-elgraphite text-white">
-      {/* Energy datum edge — cyan to amber, echoing the hero panel */}
-      <div className="h-1 bg-gradient-to-r from-elcyan via-elblue to-elamber" aria-hidden />
+    <footer className="relative overflow-hidden bg-[#111111] text-white">
+      <div className="h-1 bg-[#C9A227]" aria-hidden />
 
-      {/* Subtle engineering line-art background */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.05]"
         style={{
@@ -50,7 +48,7 @@ export function Footer() {
                 <span className="font-display text-2xl font-bold tracking-tight text-white">
                   ELSIM ENGINEERING FIRM
                 </span>
-                <span className="mt-2 text-sm font-medium uppercase tracking-[0.14em] text-elcyan">
+                <span className="mt-2 text-sm font-medium uppercase tracking-[0.14em] text-[#C9A227]">
                   Electrical &middot; Energy &middot; Industrial
                 </span>
               </span>
@@ -61,7 +59,7 @@ export function Footer() {
           </div>
 
           <nav aria-labelledby="footer-services">
-            <h2 id="footer-services" className="mb-4 label-technical text-elcyan">
+            <h2 id="footer-services" className="mb-4 label-technical text-[#C9A227]">
               Services
             </h2>
             <ul className="space-y-2 text-sm">
@@ -69,7 +67,7 @@ export function Footer() {
                 <li key={service.slug}>
                   <Link
                     href={`/services/${service.slug}`}
-                    className="text-white/70 transition-colors hover:text-elcyan"
+                    className="text-white/70 transition-colors hover:text-[#C9A227]"
                   >
                     {service.title}
                   </Link>
@@ -79,13 +77,13 @@ export function Footer() {
           </nav>
 
           <nav aria-labelledby="footer-company">
-            <h2 id="footer-company" className="mb-4 label-technical text-elcyan">
+            <h2 id="footer-company" className="mb-4 label-technical text-[#C9A227]">
               Company
             </h2>
             <ul className="space-y-2 text-sm">
               {COMPANY_LINKS.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-white/70 transition-colors hover:text-elcyan">
+                  <Link href={link.href} className="text-white/70 transition-colors hover:text-[#C9A227]">
                     {link.label}
                   </Link>
                 </li>
@@ -94,13 +92,13 @@ export function Footer() {
           </nav>
 
           <div>
-            <h2 className="mb-4 label-technical text-elcyan">Contact</h2>
+            <h2 className="mb-4 label-technical text-[#C9A227]">Contact</h2>
             <ul className="space-y-2 text-sm">
               {company.phones.map((phone) => (
                 <li key={phone}>
                   <a
                     href={`tel:${phone.replace(/\s/g, '')}`}
-                    className="text-white/70 transition-colors hover:text-elcyan"
+                    className="text-white/70 transition-colors hover:text-[#C9A227]"
                   >
                     {phone}
                   </a>
@@ -110,7 +108,7 @@ export function Footer() {
                 <li>
                   <a
                     href={`mailto:${company.email}`}
-                    className="text-white/70 transition-colors hover:text-elcyan"
+                    className="text-white/70 transition-colors hover:text-[#C9A227]"
                   >
                     {company.email}
                   </a>
@@ -124,7 +122,7 @@ export function Footer() {
 
             <Link
               href="/quotation"
-              className="mt-5 inline-flex items-center justify-center gap-1.5 rounded bg-elamber px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-elgraphite transition-all hover:brightness-105"
+              className="mt-5 inline-flex items-center justify-center gap-1.5 rounded bg-[#C9A227] px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-[#111111] transition-all hover:brightness-105"
             >
               Request a consultation
               <span>→</span>
@@ -137,10 +135,10 @@ export function Footer() {
             © {currentYear} {company.legalName}. All rights reserved.
           </p>
           <div className="flex gap-6 text-xs">
-            <Link href="/privacy" className="text-white/50 transition-colors hover:text-elcyan">
+            <Link href="/privacy" className="text-white/50 transition-colors hover:text-[#C9A227]">
               Privacy policy
             </Link>
-            <Link href="/terms" className="text-white/50 transition-colors hover:text-elcyan">
+            <Link href="/terms" className="text-white/50 transition-colors hover:text-[#C9A227]">
               Terms of use
             </Link>
           </div>

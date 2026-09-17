@@ -53,12 +53,6 @@ export const media = {
     },
   },
   infrastructure: {
-    powerTransmission: {
-      src: '/assets/elsim/infrastructure/power-transmission.png',
-      alt: 'Silhouette of a high-voltage transmission insulator string and lattice tower against a bright sky',
-      width: 461,
-      height: 144,
-    },
     electricalPole: {
       src: '/assets/elsim/infrastructure/electrical-pole.png',
       alt: 'Wooden distribution pole with steel cross-arms, insulators and overhead lines against a clear sky',
@@ -206,7 +200,7 @@ export const media = {
       alt: 'ELSIM engineering team walking through an active construction site',
       width: 454,
       height: 608,
-      categories: ['electrical-consulting'],
+      categories: ['electrical-installations'],
     },
     steelFrameAssembly01: {
       src: '/assets/elsim/work/steel-frame-assembly-01.png',
@@ -295,7 +289,6 @@ export const mediaUrls = {
     technicianPanelWork: media.photography.technicianPanelWork.src,
   },
   infrastructure: {
-    powerTransmission: media.infrastructure.powerTransmission.src,
     electricalPole: media.infrastructure.electricalPole.src,
   },
   leadership: {

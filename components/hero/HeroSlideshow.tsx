@@ -37,34 +37,15 @@ const SLIDES = [
   { ...media.work.busbarPanelFlatlay, caption: 'Busbar panel assembly' },
   { ...media.work.frameInstallation02, caption: 'Equipment frame installation' },
   { ...media.work.factoryFacilityVisit, caption: 'Technical facility visit' },
-  { ...media.infrastructure.powerTransmission, caption: 'Transmission works' },
 ] as const;
 
 const INTERVAL_MS = 5000;
 
-/**
- * Hero photography wallpaper.
- *
- * Full-bleed background layer for the hero section: every slide covers the
- * entire stage (object-cover, no letterboxing) and sits behind the hero copy
- * as an ambient backdrop. The active slide gets a CSS 3D Ken Burns drift
- * (perspective + rotateX/rotateY/translateZ) for real depth — deliberately
- * still pure CSS rather than WebGL, to protect the Cloudflare Pages
- * performance budget while getting a genuinely 3D-feeling motion.
- *
- * Fully responsive: the stage is sized entirely by its parent (h-full
- * w-full), so it reflows from mobile single-column stacks up to wide
- * desktop hero panels with no internal breakpoints of its own.
- */
 export function HeroSlideshow({
   className,
   variant = 'carousel',
 }: {
   className?: string;
-  /** 'wallpaper' hides the caption bar, dot nav, and arrows so the slideshow
-   * reads as a pure decorative background behind other foreground content;
-   * the pause control and progress bar stay, since WCAG still requires a
-   * way to stop auto-moving content. */
   variant?: 'carousel' | 'wallpaper';
 }) {
   const [index, setIndex] = useState(0);
@@ -100,7 +81,6 @@ export function HeroSlideshow({
   const next = useCallback(() => goTo(index + 1), [goTo, index]);
   const prev = useCallback(() => goTo(index - 1), [goTo, index]);
 
-  // Arrow-key control when the carousel has focus.
   function onKeyDown(event: React.KeyboardEvent) {
     if (event.key === 'ArrowRight') {
       event.preventDefault();
@@ -144,8 +124,6 @@ export function HeroSlideshow({
             aria-roledescription="slide"
             aria-label={`${i + 1} of ${SLIDES.length}: ${slide.caption}`}
           >
-            {/* Remounted every time this slide becomes active, so the 3D
-                Ken Burns keyframe animation restarts from frame zero. */}
             <div
               key={current ? `active-${index}` : 'idle'}
               className="hero-slide-3d absolute inset-0"
@@ -165,8 +143,6 @@ export function HeroSlideshow({
         );
       })}
 
-      {/* Ambient darkening so the wallpaper never fights with foreground
-          copy laid over it elsewhere on the page. */}
       <div
         className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-navy-950/80 via-navy-950/15 to-navy-950/35"
         aria-hidden
@@ -174,7 +150,6 @@ export function HeroSlideshow({
 
       {variant === 'carousel' && (
         <>
-          {/* Caption */}
           <div className="absolute inset-x-0 bottom-0 z-[2] bg-gradient-to-t from-navy-950/95 to-transparent px-5 pb-14 pt-16">
             <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">
               ELSIM on site
@@ -184,11 +159,6 @@ export function HeroSlideshow({
             </p>
           </div>
 
-          {/* Slide selection.
-              A dot per slide stops being usable once the set is large — this
-              carousel now spans the full field-photography set, so past a
-              threshold it switches to a scrollable strip of small thumbnails
-              plus a numeric counter instead of one dot each. */}
           {SLIDES.length <= 10 ? (
             <div
               className="absolute inset-x-0 bottom-5 z-[2] flex items-center justify-center gap-2"
@@ -247,7 +217,6 @@ export function HeroSlideshow({
         </>
       )}
 
-      {/* Autoplay control — WCAG requires a way to stop moving content */}
       {!reducedMotion && (
         <button
           type="button"

@@ -37,13 +37,6 @@ const PHOTO_SET = [
     rotation: [0, 0.38, 0] as [number, number, number],
   },
   {
-    id: 'power-line',
-    url: mediaUrls.infrastructure.powerTransmission,
-    position: [2.35, 0.75, -1.45] as [number, number, number],
-    baseWidth: 2.2,
-    rotation: [0, -0.18, 0] as [number, number, number],
-  },
-  {
     id: 'pole',
     url: mediaUrls.infrastructure.electricalPole,
     position: [-0.75, 0.7, -1.95] as [number, number, number],
