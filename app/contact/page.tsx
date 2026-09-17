@@ -40,16 +40,29 @@ export default function ContactPage() {
 
           <Reveal delay={70}>
             <ContactCard icon={<Phone className="h-5 w-5" aria-hidden />} label="Telephone">
-              <ul className="space-y-1.5">
+              <ul className="space-y-4">
                 {company.phones.map((phone) => (
-                  <li key={phone}>
+                  <li key={phone.tel} className="space-y-1">
                     <a
-                      href={`tel:${phone.replace(/\s/g, '')}`}
+                      href={`tel:${phone.tel}`}
                       className="link-underline font-medium"
                       style={{ color: 'var(--theme-text)' }}
                     >
-                      {phone}
+                      {phone.display}
                     </a>
+                    <span className="block text-xs" style={{ color: 'var(--theme-text-subtle)' }}>
+                      {phone.whatsapp ? 'Calls & WhatsApp' : 'Calls'}
+                    </span>
+                    {phone.whatsapp && (
+                      <a
+                        href={`https://wa.me/${phone.tel.replace('+', '')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block text-sm font-medium text-accent"
+                      >
+                        Chat on WhatsApp
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
