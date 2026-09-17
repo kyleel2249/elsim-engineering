@@ -10,8 +10,8 @@ export type ThemeId =
 /**
  * Selectable colour themes.
  *
- * `white` is the house theme: Gold on white —
- * pure white ground, charcoal text, and gold accent.
+ * `white` is the house theme: Burgundy on white —
+ * pure white ground, charcoal text, and burgundy accent.
  */
 export interface ThemeOption {
   id: ThemeId;
@@ -23,7 +23,7 @@ export interface ThemeOption {
 }
 
 export const THEMES: ThemeOption[] = [
-  { id: 'white', label: 'White', swatch: '#C9A227', hint: 'Gold on white' },
+  { id: 'white', label: 'White', swatch: '#941A1D', hint: 'Burgundy on white' },
   { id: 'black', label: 'Black', swatch: '#FAB617', hint: 'Gold on dark, low glare on site' },
   { id: 'blue', label: 'Blue', swatch: '#2A5A94', hint: 'Deeper navy, drawing-office blue' },
   { id: 'red', label: 'Red', swatch: '#941A1D', hint: 'Previous house burgundy' },
