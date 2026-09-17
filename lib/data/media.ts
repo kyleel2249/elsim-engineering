@@ -266,11 +266,16 @@ export const media = {
     width: 548,
     height: 640,
   },
+  /**
+   * Open Graph / Twitter Card image.
+   * Must be exactly 1200×630 and under ~300 KB so Facebook, LinkedIn, X and
+   * WhatsApp will render the preview reliably.
+   */
   og: {
     src: '/og-image.png',
     alt: 'ELSIM Engineering — electrical, energy and technical engineering across West Africa',
-    width: 4800,
-    height: 2520,
+    width: 1200,
+    height: 630,
   },
 } as const;
 
