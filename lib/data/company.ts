@@ -4,8 +4,8 @@
  */
 
 export const company = {
-  name: 'ELSIM Engineering',
-  legalName: 'ELSIM Engineering',
+  name: 'ELSIM Engineering Firm',
+  legalName: 'ELSIM Engineering Firm',
   tagline: 'Engineering Precision. Industrial Strength. Safe Execution.',
   description:
     'ELSIM Engineering delivers electrical, energy, industrial and technical solutions designed around safety, reliability and professional execution across Ghana and West Africa.',
@@ -70,25 +70,25 @@ export const company = {
 
   leadership: [
     {
+      id: 'ceo',
       name: 'Ing. Simon Sandy Kununya',
       role: 'Chief Executive Officer',
-      bio: null as string | null, // No separate biography in the company profile beyond the CEO message below
+      bio: null as string | null,
       photo: null as string | null,
       message:
-        'At ELSIM Engineering, our commitment goes beyond delivering electrical solutions—we are passionate about powering progress, reliability, and sustainability across Ghana and beyond. From the beginning, our vision has been to build a company that leads with integrity, delivers excellence, and leaves a lasting impact on every client and community we serve. We understand that engineering is the backbone of development, and we are proud to contribute to that growth through innovation, expert craftsmanship, and a team-first approach. As we look ahead, we remain dedicated to setting new standards and exceeding expectations—project by project, partnership by partnership. Thank you for trusting ELSIM Engineering.' as string | null,
+        'At ELSIM Engineering, our commitment goes beyond delivering electrical solutions—we are passionate about powering progress, reliability, and sustainability across Ghana and beyond. From the beginning, our vision has been to build a company that leads with integrity, delivers excellence, and leaves a lasting impact on every client and community we serve. We understand that engineering is the backbone of development, and we are proud to contribute to that growth through innovation, expert craftsmanship, and a team-first approach. As we look ahead, we remain dedicated to setting new standards and exceeding expectations—project by project, partnership by partnership. Thank you for trusting ELSIM Engineering.',
     },
     {
-      // Corrected from "General Manager" — the official company profile
-      // (Our Team + Message from the Managing Director) lists this role as
-      // Managing Director.
+      id: 'md',
       name: 'Ella Ankah',
       role: 'Managing Director',
       bio: null as string | null,
       photo: null as string | null,
       message:
-        "Every successful project begins with a deep understanding of our clients' needs and a commitment to delivering smart, safe, and scalable solutions. At ELSIM Engineering, I have the privilege of working with a team of skilled professionals who bring passion and precision to every job, big or small. Our strength lies not only in our technical expertise but in our collaborative spirit, proactive service, and attention to detail. As Managing Director, my goal is to ensure seamless project execution and consistent client satisfaction—from consultation to completion. We look forward to being your trusted engineering partner." as string | null,
+        "Every successful project begins with a deep understanding of our clients' needs and a commitment to delivering smart, safe, and scalable solutions. At ELSIM Engineering, I have the privilege of working with a team of skilled professionals who bring passion and precision to every job, big or small. Our strength lies not only in our technical expertise but in our collaborative spirit, proactive service, and attention to detail. As Managing Director, my goal is to ensure seamless project execution and consistent client satisfaction—from consultation to completion. We look forward to being your trusted engineering partner.",
     },
     {
+      id: 'pm',
       name: 'Ing. Teye Amos Agudey',
       role: 'Engineer / Project Manager',
       bio: null as string | null,
@@ -96,6 +96,7 @@ export const company = {
       message: null as string | null,
     },
     {
+      id: 'cao',
       name: 'Stephen Doe Agbo',
       role: 'Chief Accounts Officer',
       bio: null as string | null,
@@ -104,19 +105,16 @@ export const company = {
     },
   ],
 
-  regions: ['Ghana', 'Togo', 'Côte d\'Ivoire', 'Burkina Faso', 'Senegal', 'Niger'],
+  regions: ['Ghana', 'Togo', "Côte d'Ivoire", 'Burkina Faso', 'Senegal', 'Niger'],
 
   /**
    * Certifications & Professional Standards
    * Source: "Our Certifications" section of the official company profile
-   * (Elsim_Company_Profile.pdf, pages 11–17). Transcribed as documented —
-   * registration/certificate numbers, classes and validity dates are as
-   * printed on each certificate.
    */
   certifications: [
     {
       name: 'Certificate of Incorporation',
-      issuingBody: 'Registrar General\'s Department, Republic of Ghana',
+      issuingBody: "Registrar General's Department, Republic of Ghana",
       detail:
         'ELSIM Engineering Firm Ltd, incorporated under the Companies Act, 2019 (Act 992). Reg. No. CS193211124 · TIN C0064839885. Issued at Accra, 26 November 2024.',
     },
@@ -139,7 +137,7 @@ export const company = {
         'Registered to engage in government tenders under Section 3(p) of the Public Procurement Act, 2003 (Act 663) as amended. Supplier No. 734121. Issued 25 April 2025, valid until 24 April 2026.',
     },
     {
-      name: 'Electrical Contractors\' Licence (External Installation)',
+      name: "Electrical Contractors' Licence (External Installation)",
       issuingBody: 'Electricity Company of Ghana Ltd.',
       detail:
         'Licensed to carry out external installation under the Electricity Supply and Distribution (Technical and Operational) Rules, 2005 (LI 1816). Licence No. 23236, held by Kununya Sandy Simon. Issued 21 October 2024, valid until 31 December 2026.',
@@ -157,26 +155,12 @@ export const company = {
     logo?: string;
   }[],
 
-  /**
-   * Our Partners — supplier / technology partners named in the official
-   * company profile (page 10). Not certifications; kept separate.
-   */
   partners: [
-    {
-      name: 'Zhejiang Qiankai Electrical Power Equipment Company Limited',
-    },
-    {
-      name: 'MAM for Engineering Industries',
-    },
-    {
-      name: 'Variable Frequency Drive Company Ltd (Mingch)',
-    },
-    {
-      name: 'CCTv Cameras and Accessories Limited (Hivideo)',
-    },
-    {
-      name: 'Star Trans Transformers Technology',
-    },
+    { name: 'Zhejiang Qiankai Electrical Power Equipment Company Limited' },
+    { name: 'MAM for Engineering Industries' },
+    { name: 'Variable Frequency Drive Company Ltd (Mingch)' },
+    { name: 'CCTv Cameras and Accessories Limited (Hivideo)' },
+    { name: 'Star Trans Transformers Technology' },
   ] as { name: string }[],
 };
 
