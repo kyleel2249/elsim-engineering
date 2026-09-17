@@ -136,8 +136,11 @@ export function HeroSlideshow({
                 fill
                 className="object-cover object-center"
                 sizes="100vw"
-                quality={90}
+                quality={i === 0 ? 82 : 72}
                 priority={i === 0}
+                loading={i === 0 ? 'eager' : 'lazy'}
+                fetchPriority={i === 0 ? 'high' : 'low'}
+                decoding="async"
               />
             </div>
           </div>

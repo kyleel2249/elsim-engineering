@@ -6,8 +6,11 @@
  * guessing, which keeps layout stable and stops small source files from being
  * upscaled into a blur.
  *
- * Assets are optimized JPEG/PNG for Cloudflare static export (images.unoptimized).
- * See performance pass: multi-MB PNGs reduced to web-appropriate JPG.
+ * The supplied photography is low resolution. Per the standing decision, it is
+ * displayed with `object-contain` and never cropped — so images letterbox
+ * against a brand ground instead of being trimmed to fill a box. Replacing a
+ * file with a higher-resolution version only requires updating `width`/`height`
+ * here. See docs/ASSET_INSTALL.md.
  */
 
 export interface MediaAsset {
@@ -266,8 +269,8 @@ export const media = {
   og: {
     src: '/og-image.png',
     alt: 'ELSIM Engineering — electrical, energy and technical engineering across West Africa',
-    width: 1200,
-    height: 630,
+    width: 4800,
+    height: 2520,
   },
 } as const;
 

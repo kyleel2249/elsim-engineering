@@ -183,28 +183,28 @@ export const company = {
   partners: [
     {
       name: 'Zhejiang Qiankai Electrical Power Equipment Company Limited',
-      logo: '/assets/elsim/partners/zhejiang-qiankai.png',
+      logo: '/assets/elsim/partners/zhejiang-qiankai.jpg',
       logoAlt:
         'Logo of Zhejiang Qiankai Electrical Power Equipment Company Limited (FCQK)',
     },
     {
       name: 'MAM for Engineering Industries',
-      logo: '/assets/elsim/partners/mam-engineering.png',
+      logo: '/assets/elsim/partners/mam-engineering.jpg',
       logoAlt: 'Logo of MAM for Engineering Industries (Youssef El Sherif)',
     },
     {
       name: 'Variable Frequency Drive Company Ltd (Mingch)',
-      logo: '/assets/elsim/partners/mingch-vfd.png',
+      logo: '/assets/elsim/partners/mingch-vfd.jpg',
       logoAlt: 'Logo of Mingch Variable Frequency Drive Company Ltd',
     },
     {
       name: 'CCTv Cameras and Accessories Limited (Hivideo)',
-      logo: '/assets/elsim/partners/hivideo.png',
+      logo: '/assets/elsim/partners/hivideo.jpg',
       logoAlt: 'Logo of Hivideo — CCTV Cameras and Accessories Limited',
     },
     {
       name: 'Star Trans Transformers Technology',
-      logo: '/assets/elsim/partners/star-trans.png',
+      logo: '/assets/elsim/partners/star-trans.jpg',
       logoAlt: 'Logo of Star Trans Transformers Technology',
     },
   ] as {
