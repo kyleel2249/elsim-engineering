@@ -106,7 +106,7 @@ export default function HomePage() {
             </div>
 
             <div className="mt-12 grid grid-cols-3 gap-6 border-t border-white/15 pt-8">
-              <StatCounter tone="light" value={projects.length} label="Projects on record" />
+              <StatCounter tone="light" value={company.stats.projectsOnRecord} suffix="+" label="Projects on record" />
               <StatCounter tone="light" value={company.regions.length} label="Countries" />
               <StatCounter tone="light" value={services.length} label="Service lines" />
             </div>
