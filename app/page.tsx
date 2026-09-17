@@ -1,174 +1,135 @@
 import Link from 'next/link';
-import type { Metadata } from 'next';
-import { services } from '@/lib/data/services';
-import { getPublishedProjects } from '@/lib/data/projects';
-import { company } from '@/lib/data/company';
-import { media } from '@/lib/data/media';
-import { HeroSlideshow } from '@/components/hero/HeroSlideshow';
-import { EngineeringLine } from '@/components/brand/EngineeringLine';
-import { PhotoPanel } from '@/components/media/PhotoPanel';
-import { WorkGallery } from '@/components/media/WorkGallery';
+import { ArrowRight, BadgeCheck, Shield, Zap } from 'lucide-react';
+import { Hero } from '@/components/home/Hero';
 import { Reveal } from '@/components/motion/Reveal';
-import { StatCounter } from '@/components/motion/StatCounter';
-import { Marquee } from '@/components/motion/Marquee';
-import { BrandField } from '@/components/3d/BrandField';
+import { BrandField } from '@/components/brand/BrandField';
+import { company } from '@/lib/data/company';
+import { services } from '@/lib/data/services';
+import { projects } from '@/lib/data/projects';
+import { media } from '@/lib/data/media';
 
-export const metadata: Metadata = {
-  alternates: { canonical: '/' },
-};
-
-const SITE_PHOTOS = [
-  { asset: media.photography.engineerPanelInspection, label: 'Panel inspection' },
-  { asset: media.photography.solarTeamReview, label: 'Solar installation' },
-  { asset: media.photography.technicianPanelWork, label: 'Switchgear works' },
-  { asset: media.photography.siteEngineerLaptop, label: 'Site engineering' },
-];
-
-const homeGalleryPhotos = [
-  media.work.transformerKioskInstallation,
-  media.work.linemanPoleTop,
-  media.work.panelWiringTeam,
-  media.work.machineHallOverview,
-  media.work.busbarPanelCloseup,
-  media.work.meterInspection,
-  media.work.steelFrameAssembly01,
-  media.work.siteTeamWalkthrough,
+const highlights = [
+  {
+    icon: Zap,
+    title: 'End-to-end delivery',
+    body: 'Design, supply, install, test and commission — one accountable team from survey to handover.',
+  },
+  {
+    icon: Shield,
+    title: 'Safety first',
+    body: 'Licensed workmanship, documented procedures and a culture that treats every live panel with respect.',
+  },
+  {
+    icon: BadgeCheck,
+    title: 'Regional reach',
+    body: `Operating from Accra across ${company.regions.length} West African markets with local partners where it counts.`,
+  },
 ];
 
 export default function HomePage() {
-  const projects = getPublishedProjects();
-  const featured = projects.slice(0, 6);
-
   return (
     <>
-      <section
-        className="relative min-h-[min(92vh,780px)] overflow-hidden border-b"
-        style={{ borderColor: 'var(--theme-border)' }}
-      >
-        <div className="absolute inset-0 z-0">
-          <HeroSlideshow className="h-full w-full" variant="wallpaper" />
-        </div>
+      <Hero />
 
-        <div
-          className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-navy-950/92 via-navy-950/55 to-navy-950/10"
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-navy-950/60 via-transparent to-navy-950/20"
-          aria-hidden
-        />
-
-        <div className="relative z-[2] flex min-h-[min(92vh,780px)] flex-col justify-center px-4 py-16 sm:px-8 sm:py-20 lg:px-14 lg:py-24">
-          <div className="max-w-xl">
-            <p className="label-technical" style={{ color: 'var(--theme-energy)' }}>
-              Electrical · Energy · Industrial
+      <section className="py-20" style={{ backgroundColor: 'var(--theme-bg)' }}>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl">
+            <p className="label-technical text-accent">What we do</p>
+            <h2
+              className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl"
+              style={{ color: 'var(--theme-text)' }}
+            >
+              Electrical and energy engineering for commercial and industrial clients
+            </h2>
+            <p className="mt-4 text-lg" style={{ color: 'var(--theme-text-muted)' }}>
+              {company.tagline}
             </p>
+          </div>
 
-            <EngineeringLine className="mt-4 max-w-[220px]" nodes={2} />
-
-            <h1 className="mt-6 font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-white text-balance sm:text-5xl lg:text-[3.25rem]">
-              Engineering the power infrastructure that keeps business moving.
-            </h1>
-
-            <ul className="mt-7 flex flex-wrap items-center gap-x-3 gap-y-1.5">
-              {['Design', 'Installation', 'Testing', 'Commissioning', 'Maintenance'].map(
-                (step, i, arr) => (
-                  <li key={step} className="flex items-center gap-3">
-                    <span className="label-technical text-white/80">{step}.</span>
-                    {i < arr.length - 1 && (
-                      <span className="h-1 w-1 rounded-full" style={{ backgroundColor: 'var(--theme-energy)' }} />
-                    )}
-                  </li>
-                )
-              )}
-            </ul>
-
-            <p className="mt-7 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 backdrop-blur-sm">
-              <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: 'var(--theme-energy)' }} />
-              <span className="label-technical text-white">Ghana & West Africa</span>
-            </p>
-
-            <div className="mt-9 flex flex-wrap gap-3">
-              <Link
-                href="/quotation"
-                className="group inline-flex items-center justify-center gap-2 rounded bg-energy px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-on-energy shadow-panel transition-all hover:brightness-105"
-              >
-                Request a project consultation
-                <span className="transition-transform group-hover:translate-x-0.5">→</span>
-              </Link>
-              <Link
-                href="/projects"
-                className="group inline-flex items-center justify-center gap-2 rounded border border-white/30 px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-white backdrop-blur-sm transition-colors hover:border-white hover:bg-white/10"
-              >
-                Explore our projects
-                <span className="transition-transform group-hover:translate-x-0.5">→</span>
-              </Link>
-            </div>
-
-            <div className="mt-12 grid grid-cols-3 gap-6 border-t border-white/15 pt-8">
-              <StatCounter tone="light" value={company.stats.projectsOnRecord} suffix="+" label="Projects on record" />
-              <StatCounter tone="light" value={company.regions.length} label="Countries" />
-              <StatCounter tone="light" value={services.length} label="Service lines" />
-            </div>
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {highlights.map((item, i) => (
+              <Reveal key={item.title} delay={i * 0.08}>
+                <div
+                  className="lift rounded border p-6"
+                  style={{
+                    backgroundColor: 'var(--theme-surface)',
+                    borderColor: 'var(--theme-border)',
+                  }}
+                >
+                  <div
+                    className="flex h-10 w-10 items-center justify-center rounded"
+                    style={{ backgroundColor: 'var(--theme-accent-soft)' }}
+                  >
+                    <item.icon className="h-5 w-5 text-accent" aria-hidden />
+                  </div>
+                  <h3
+                    className="mt-4 font-display text-lg font-semibold"
+                    style={{ color: 'var(--theme-text)' }}
+                  >
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed" style={{ color: 'var(--theme-text-muted)' }}>
+                    {item.body}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
 
       <section
-        className="border-b py-3"
+        className="py-20"
         style={{ backgroundColor: 'var(--theme-bg-muted)', borderColor: 'var(--theme-border)' }}
       >
-        <Marquee items={company.regions} />
-      </section>
-
-      <section
-        className="border-b py-20"
-        style={{ backgroundColor: 'var(--theme-bg)', borderColor: 'var(--theme-border)' }}
-      >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Reveal>
-            <div className="max-w-2xl">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="label-technical text-accent">Services</p>
               <h2
-                className="font-display text-2xl font-bold tracking-tight sm:text-3xl"
+                className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl"
                 style={{ color: 'var(--theme-text)' }}
               >
-                What our teams deliver
+                Capabilities across the power chain
               </h2>
-              <p className="mt-3 leading-relaxed" style={{ color: 'var(--theme-text-muted)' }}>
-                Five service lines, delivered by the same engineers who will maintain the
-                installation afterwards.
-              </p>
             </div>
-          </Reveal>
+            <Link href="/services" className="link-underline text-sm font-semibold text-accent">
+              All services
+            </Link>
+          </div>
 
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {services.map((service, i) => (
-              <Reveal key={service.slug} delay={i * 70}>
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {services.slice(0, 6).map((service, i) => (
+              <Reveal key={service.slug} delay={i * 0.05}>
                 <Link
                   href={`/services/${service.slug}`}
-                  className="lift group flex h-full flex-col rounded border p-6 transition-colors duration-200"
+                  className="lift group flex h-full flex-col rounded border p-5"
                   style={{
-                    borderColor: 'var(--theme-border)',
                     backgroundColor: 'var(--theme-surface)',
+                    borderColor: 'var(--theme-border)',
                   }}
                 >
+                  <span
+                    className="inline-flex h-8 w-8 items-center justify-center rounded text-xs font-bold text-on-accent"
+                    style={{ backgroundColor: 'var(--theme-accent)' }}
+                  >
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
                   <h3
-                    className="font-display text-lg font-semibold transition-colors group-hover:text-accent"
+                    className="mt-4 font-display text-base font-semibold group-hover:text-accent"
                     style={{ color: 'var(--theme-text)' }}
                   >
                     {service.title}
                   </h3>
                   <p
-                    className="mt-2.5 flex-1 text-sm leading-relaxed"
+                    className="mt-2 flex-1 text-sm leading-relaxed"
                     style={{ color: 'var(--theme-text-muted)' }}
                   >
-                    {service.shortDescription}
+                    {service.summary}
                   </p>
-                  <span
-                    className="mt-5 h-px w-10 transition-all duration-300 group-hover:w-20"
-                    style={{ backgroundColor: 'var(--theme-accent)' }}
-                    aria-hidden
-                  />
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent">
+                    Learn more <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+                  </span>
                 </Link>
               </Reveal>
             ))}
@@ -176,143 +137,61 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section
-        className="border-b py-20"
-        style={{ backgroundColor: 'var(--theme-bg-muted)', borderColor: 'var(--theme-border)' }}
-      >
+      <section className="py-20" style={{ backgroundColor: 'var(--theme-bg)' }}>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Reveal>
-            <h2
-              className="font-display text-2xl font-bold tracking-tight sm:text-3xl"
-              style={{ color: 'var(--theme-text)' }}
-            >
-              Engineers and technicians at work
-            </h2>
-          </Reveal>
-
-          <div className="mt-10 grid gap-6 sm:grid-cols-2">
-            {SITE_PHOTOS.map((item, i) => (
-              <Reveal key={item.label} delay={i * 80}>
-                <PhotoPanel
-                  asset={item.asset}
-                  label={item.label}
-                  ratio="16 / 10"
-                  priority={i < 2}
-                />
-              </Reveal>
-            ))}
-          </div>
-
-          <div className="mt-6 grid gap-6">
-            <Reveal>
-              <PhotoPanel
-                asset={media.infrastructure.electricalPole}
-                label="Distribution infrastructure"
-                ratio="16 / 9"
-              />
-            </Reveal>
-          </div>
-
-          <Reveal>
-            <div className="mt-14 flex items-baseline justify-between gap-4">
-              <h3 className="font-display text-xl font-semibold" style={{ color: 'var(--theme-text)' }}>
-                Across our sites
-              </h3>
-              <Link href="/projects" className="link-underline shrink-0 text-sm font-semibold text-accent">
-                See the full gallery
-              </Link>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="label-technical text-accent">Selected work</p>
+              <h2
+                className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl"
+                style={{ color: 'var(--theme-text)' }}
+              >
+                Projects delivered across the region
+              </h2>
             </div>
-            <WorkGallery photos={homeGalleryPhotos} className="mt-6" />
-          </Reveal>
-        </div>
-      </section>
-
-      <section
-        className="border-b py-20"
-        style={{ backgroundColor: 'var(--theme-bg)', borderColor: 'var(--theme-border)' }}
-      >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid items-center gap-12 lg:grid-cols-2">
-            <Reveal>
-              <div>
-                <h2
-                  className="font-display text-2xl font-bold tracking-tight sm:text-3xl"
-                  style={{ color: 'var(--theme-text)' }}
-                >
-                  About ELSIM Engineering
-                </h2>
-                <p className="mt-4 leading-relaxed" style={{ color: 'var(--theme-text-muted)' }}>
-                  {company.description}
-                </p>
-                <Link href="/about" className="link-underline mt-6 inline-block text-sm font-semibold text-accent">
-                  Meet the team
-                </Link>
-              </div>
-            </Reveal>
-
-            <Reveal delay={100}>
-              <div className="grid grid-cols-2 gap-4">
-                {company.values.slice(0, 4).map((value) => (
-                  <div
-                    key={value.id}
-                    className="rounded border p-5"
-                    style={{
-                      borderColor: 'var(--theme-border)',
-                      backgroundColor: 'var(--theme-bg-muted)',
-                    }}
-                  >
-                    <h3 className="font-display text-sm font-semibold text-accent">{value.title}</h3>
-                    <p className="mt-2 text-sm" style={{ color: 'var(--theme-text-muted)' }}>
-                      {value.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </Reveal>
+            <Link href="/projects" className="link-underline text-sm font-semibold text-accent">
+              View projects
+            </Link>
           </div>
-        </div>
-      </section>
 
-      <section
-        className="border-b py-20"
-        style={{ backgroundColor: 'var(--theme-bg-muted)', borderColor: 'var(--theme-border)' }}
-      >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Reveal>
-            <h2
-              className="font-display text-2xl font-bold tracking-tight sm:text-3xl"
-              style={{ color: 'var(--theme-text)' }}
-            >
-              Where our engineers have worked
-            </h2>
-          </Reveal>
-
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {featured.map((project, i) => (
-              <Reveal key={project.slug} delay={i * 60}>
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {projects.slice(0, 3).map((project, i) => (
+              <Reveal key={project.slug} delay={i * 0.08}>
                 <Link
                   href={`/projects/${project.slug}`}
-                  className="lift group flex h-full flex-col rounded border p-5"
+                  className="lift group block overflow-hidden rounded border"
                   style={{
-                    borderColor: 'var(--theme-border)',
                     backgroundColor: 'var(--theme-surface)',
+                    borderColor: 'var(--theme-border)',
                   }}
                 >
-                  <span className="text-[10px] font-semibold uppercase tracking-wider text-accent">
-                    {project.location}
-                  </span>
-                  <h3
-                    className="mt-1.5 font-display text-base font-semibold transition-colors group-hover:text-accent"
-                    style={{ color: 'var(--theme-text)' }}
+                  <div
+                    className="aspect-[16/10] overflow-hidden"
+                    style={{ backgroundColor: 'var(--theme-bg-muted)' }}
                   >
-                    {project.title}
-                  </h3>
-                  <p
-                    className="mt-2 line-clamp-2 text-sm"
-                    style={{ color: 'var(--theme-text-muted)' }}
-                  >
-                    {project.shortDescription}
-                  </p>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={project.image?.src ?? media.photography.solarTeamReview.src}
+                      alt={project.image?.alt ?? project.title}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="p-5">
+                    <p className="label-technical text-accent">{project.sector}</p>
+                    <h3
+                      className="mt-2 font-display text-lg font-semibold group-hover:text-accent"
+                      style={{ color: 'var(--theme-text)' }}
+                    >
+                      {project.title}
+                    </h3>
+                    <p
+                      className="mt-2 line-clamp-2 text-sm"
+                      style={{ color: 'var(--theme-text-muted)' }}
+                    >
+                      {project.shortDescription}
+                    </p>
+                  </div>
                 </Link>
               </Reveal>
             ))}
@@ -324,17 +203,23 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="eng-grid-dark relative overflow-hidden bg-[#111111] py-20">
-        <BrandField className="pointer-events-none absolute inset-0 opacity-70" />
+      <section
+        className="eng-grid relative overflow-hidden py-20"
+        style={{ backgroundColor: 'var(--theme-bg)' }}
+      >
+        <BrandField className="pointer-events-none absolute inset-0 opacity-40" />
 
         <div className="relative mx-auto max-w-3xl px-4 text-center">
           <p className="label-technical" style={{ color: 'var(--theme-energy)' }}>
             Let&rsquo;s build together
           </p>
-          <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-white sm:text-3xl">
+          <h2
+            className="mt-3 font-display text-2xl font-bold tracking-tight sm:text-3xl"
+            style={{ color: 'var(--theme-text)' }}
+          >
             Ready to discuss your next project?
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-white/70">
+          <p className="mx-auto mt-4 max-w-xl" style={{ color: 'var(--theme-text-muted)' }}>
             Tell us the location, the load and your timeline. We will come back with an approach.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
@@ -346,7 +231,11 @@ export default function HomePage() {
             </Link>
             <Link
               href="/contact"
-              className="rounded border border-white/30 px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:border-white hover:bg-white/10"
+              className="rounded border px-6 py-3.5 text-sm font-bold uppercase tracking-wide transition-colors"
+              style={{
+                borderColor: 'var(--theme-border-strong)',
+                color: 'var(--theme-text)',
+              }}
             >
               Contact us
             </Link>
