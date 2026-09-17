@@ -181,12 +181,37 @@ export const company = {
   }[],
 
   partners: [
-    { name: 'Zhejiang Qiankai Electrical Power Equipment Company Limited' },
-    { name: 'MAM for Engineering Industries' },
-    { name: 'Variable Frequency Drive Company Ltd (Mingch)' },
-    { name: 'CCTv Cameras and Accessories Limited (Hivideo)' },
-    { name: 'Star Trans Transformers Technology' },
-  ] as { name: string }[],
+    {
+      name: 'Zhejiang Qiankai Electrical Power Equipment Company Limited',
+      logo: '/assets/elsim/partners/zhejiang-qiankai.png',
+      logoAlt:
+        'Logo of Zhejiang Qiankai Electrical Power Equipment Company Limited (FCQK)',
+    },
+    {
+      name: 'MAM for Engineering Industries',
+      logo: '/assets/elsim/partners/mam-engineering.png',
+      logoAlt: 'Logo of MAM for Engineering Industries (Youssef El Sherif)',
+    },
+    {
+      name: 'Variable Frequency Drive Company Ltd (Mingch)',
+      logo: '/assets/elsim/partners/mingch-vfd.png',
+      logoAlt: 'Logo of Mingch Variable Frequency Drive Company Ltd',
+    },
+    {
+      name: 'CCTv Cameras and Accessories Limited (Hivideo)',
+      logo: '/assets/elsim/partners/hivideo.png',
+      logoAlt: 'Logo of Hivideo — CCTV Cameras and Accessories Limited',
+    },
+    {
+      name: 'Star Trans Transformers Technology',
+      logo: '/assets/elsim/partners/star-trans.png',
+      logoAlt: 'Logo of Star Trans Transformers Technology',
+    },
+  ] as {
+    name: string;
+    logo?: string;
+    logoAlt?: string;
+  }[],
 };
 
 export type Company = typeof company;
