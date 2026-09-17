@@ -50,11 +50,11 @@ export default function HomePage() {
         </div>
 
         <div
-          className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-navy-950/92 via-navy-950/55 to-navy-950/10"
+          className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-elgraphite/85 via-elgraphite/65 to-elgraphite/50 lg:bg-gradient-to-r lg:from-navy-950/92 lg:via-navy-950/55 lg:to-navy-950/10"
           aria-hidden
         />
         <div
-          className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-navy-950/60 via-transparent to-navy-950/20"
+          className="pointer-events-none absolute inset-0 z-[1] hidden lg:block lg:bg-gradient-to-t lg:from-navy-950/60 lg:via-transparent lg:to-navy-950/20"
           aria-hidden
         />
 

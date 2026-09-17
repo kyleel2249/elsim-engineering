@@ -49,6 +49,7 @@ export function HeroSlideshow({
   className?: string;
   variant?: 'carousel' | 'wallpaper';
 }) {
+  const isWallpaper = variant === 'wallpaper';
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -83,6 +84,7 @@ export function HeroSlideshow({
   const prev = useCallback(() => goTo(index - 1), [goTo, index]);
 
   function onKeyDown(event: React.KeyboardEvent) {
+    if (isWallpaper) return;
     if (event.key === 'ArrowRight') {
       event.preventDefault();
       next();
@@ -101,15 +103,20 @@ export function HeroSlideshow({
         'hero-stage-3d relative h-full min-h-[300px] w-full overflow-hidden bg-navy-800',
         className
       )}
-      role="region"
-      aria-roledescription="carousel"
-      aria-label="ELSIM Engineering project photography"
-      tabIndex={0}
+      // A wallpaper background sits behind real interactive content (the
+      // hero copy + CTAs) and is purely decorative — it stays out of the
+      // accessibility tree and tab order. The carousel variant (used on
+      // its own, e.g. on other pages) keeps full region/keyboard semantics.
+      role={isWallpaper ? undefined : 'region'}
+      aria-roledescription={isWallpaper ? undefined : 'carousel'}
+      aria-label={isWallpaper ? undefined : 'ELSIM Engineering project photography'}
+      aria-hidden={isWallpaper || undefined}
+      tabIndex={isWallpaper ? -1 : 0}
       onKeyDown={onKeyDown}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={() => setPaused(false)}
+      onMouseEnter={isWallpaper ? undefined : () => setPaused(true)}
+      onMouseLeave={isWallpaper ? undefined : () => setPaused(false)}
+      onFocus={isWallpaper ? undefined : () => setPaused(true)}
+      onBlur={isWallpaper ? undefined : () => setPaused(false)}
     >
       {SLIDES.map((slide, i) => {
         const current = i === index;
@@ -121,9 +128,9 @@ export function HeroSlideshow({
               current ? 'z-[1] opacity-100' : 'z-0 opacity-0'
             )}
             aria-hidden={!current}
-            role="group"
-            aria-roledescription="slide"
-            aria-label={`${i + 1} of ${SLIDES.length}: ${slide.caption}`}
+            role={isWallpaper ? undefined : 'group'}
+            aria-roledescription={isWallpaper ? undefined : 'slide'}
+            aria-label={isWallpaper ? undefined : `${i + 1} of ${SLIDES.length}: ${slide.caption}`}
           >
             <div
               key={current ? `active-${index}` : 'idle'}
@@ -132,7 +139,7 @@ export function HeroSlideshow({
             >
               <Image
                 src={cdnUrl(slide.src)}
-                alt={slide.alt}
+                alt={isWallpaper ? '' : slide.alt}
                 fill
                 className="object-cover object-center"
                 sizes="100vw"
@@ -148,7 +155,12 @@ export function HeroSlideshow({
       })}
 
       <div
-        className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-navy-950/80 via-navy-950/15 to-navy-950/35"
+        className={clsx(
+          'pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t',
+          isWallpaper
+            ? 'from-elnavy/85 via-elnavy/35 to-elnavy/25'
+            : 'from-navy-950/80 via-navy-950/15 to-navy-950/35'
+        )}
         aria-hidden
       />
 
@@ -218,24 +230,24 @@ export function HeroSlideshow({
           <SlideButton onClick={next} side="right" label="Next slide">
             <ChevronRight className="h-5 w-5" aria-hidden />
           </SlideButton>
+
+          {!reducedMotion && (
+            <button
+              type="button"
+              onClick={() => setPaused((v) => !v)}
+              className="absolute right-3 top-3 z-[2] flex h-9 w-9 items-center justify-center rounded-full bg-navy-950/60 text-white backdrop-blur-sm transition-colors hover:bg-navy-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+              aria-label={paused ? 'Resume slideshow' : 'Pause slideshow'}
+            >
+              {paused ? <Play className="h-4 w-4" aria-hidden /> : <Pause className="h-4 w-4" aria-hidden />}
+            </button>
+          )}
+
+          {autoplaying && (
+            <div className="absolute inset-x-0 top-0 z-[2] h-0.5 bg-white/10" aria-hidden>
+              <div key={index} className="animate-slideshow-progress h-full bg-gold" />
+            </div>
+          )}
         </>
-      )}
-
-      {!reducedMotion && (
-        <button
-          type="button"
-          onClick={() => setPaused((v) => !v)}
-          className="absolute right-3 top-3 z-[2] flex h-9 w-9 items-center justify-center rounded-full bg-navy-950/60 text-white backdrop-blur-sm transition-colors hover:bg-navy-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
-          aria-label={paused ? 'Resume slideshow' : 'Pause slideshow'}
-        >
-          {paused ? <Play className="h-4 w-4" aria-hidden /> : <Pause className="h-4 w-4" aria-hidden />}
-        </button>
-      )}
-
-      {autoplaying && (
-        <div className="absolute inset-x-0 top-0 z-[2] h-0.5 bg-white/10" aria-hidden>
-          <div key={index} className="animate-slideshow-progress h-full bg-gold" />
-        </div>
       )}
     </div>
   );
