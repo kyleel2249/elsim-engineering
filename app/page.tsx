@@ -249,7 +249,7 @@ export default function HomePage() {
           </div>
 
           <Link href="/projects" className="link-underline mt-8 inline-block text-sm font-semibold text-accent">
-            View all {projects.length} projects
+            View Projects here
           </Link>
         </div>
       </section>
