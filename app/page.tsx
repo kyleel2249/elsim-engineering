@@ -1,105 +1,130 @@
 import Link from 'next/link';
-import { ArrowRight, BadgeCheck, Shield, Zap } from 'lucide-react';
-import { Hero } from '@/components/home/Hero';
-import { Reveal } from '@/components/motion/Reveal';
-import { BrandField } from '@/components/brand/BrandField';
-import { company } from '@/lib/data/company';
+import type { Metadata } from 'next';
 import { services } from '@/lib/data/services';
-import { projects } from '@/lib/data/projects';
+import { getPublishedProjects } from '@/lib/data/projects';
+import { company } from '@/lib/data/company';
 import { media } from '@/lib/data/media';
+import { HeroSlideshow } from '@/components/hero/HeroSlideshow';
+import { EngineeringLine } from '@/components/brand/EngineeringLine';
+import { PhotoPanel } from '@/components/media/PhotoPanel';
+import { WorkGallery } from '@/components/media/WorkGallery';
+import { Reveal } from '@/components/motion/Reveal';
+import { StatCounter } from '@/components/motion/StatCounter';
+import { Marquee } from '@/components/motion/Marquee';
+import { BrandField } from '@/components/3d/BrandField';
 
-const highlights = [
-  {
-    icon: Zap,
-    title: 'End-to-end delivery',
-    body: 'Design, supply, install, test and commission — one accountable team from survey to handover.',
-  },
-  {
-    icon: Shield,
-    title: 'Safety first',
-    body: 'Licensed workmanship, documented procedures and a culture that treats every live panel with respect.',
-  },
-  {
-    icon: BadgeCheck,
-    title: 'Regional reach',
-    body: `Operating from Accra across ${company.regions.length} West African markets with local partners where it counts.`,
-  },
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+};
+
+const SITE_PHOTOS = [
+  { asset: media.photography.engineerPanelInspection, label: 'Panel inspection' },
+  { asset: media.photography.solarTeamReview, label: 'Solar installation' },
+  { asset: media.photography.technicianPanelWork, label: 'Switchgear works' },
+  { asset: media.photography.siteEngineerLaptop, label: 'Site engineering' },
+];
+
+const homeGalleryPhotos = [
+  media.work.transformerKioskInstallation,
+  media.work.linemanPoleTop,
+  media.work.panelWiringTeam,
+  media.work.machineHallOverview,
+  media.work.busbarPanelCloseup,
+  media.work.meterInspection,
+  media.work.steelFrameAssembly01,
+  media.work.siteTeamWalkthrough,
 ];
 
 export default function HomePage() {
+  const projects = getPublishedProjects();
+  const featured = projects.slice(0, 6);
+
   return (
     <>
-      <Hero />
+      <section
+        className="relative min-h-[min(92vh,780px)] overflow-hidden border-b"
+        style={{ borderColor: 'var(--theme-border)' }}
+      >
+        <div className="absolute inset-0 z-0">
+          <HeroSlideshow className="h-full w-full" variant="wallpaper" />
+        </div>
 
-      <section className="py-20" style={{ backgroundColor: 'var(--theme-bg)' }}>
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
-            <p className="label-technical text-accent">What we do</p>
-            <h2
-              className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl"
-              style={{ color: 'var(--theme-text)' }}
-            >
-              Electrical and energy engineering for commercial and industrial clients
-            </h2>
-            <p className="mt-4 text-lg" style={{ color: 'var(--theme-text-muted)' }}>
-              {company.tagline}
+        <div
+          className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-navy-950/92 via-navy-950/55 to-navy-950/10"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-navy-950/60 via-transparent to-navy-950/20"
+          aria-hidden
+        />
+
+        <div className="relative z-[2] flex min-h-[min(92vh,780px)] flex-col justify-center px-4 py-16 sm:px-8 sm:py-20 lg:px-14 lg:py-24">
+          <div className="max-w-xl">
+            <p className="label-technical" style={{ color: 'var(--theme-energy)' }}>
+              Electrical · Energy · Technical
             </p>
-          </div>
-
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {highlights.map((item, i) => (
-              <Reveal key={item.title} delay={i * 0.08}>
-                <div
-                  className="lift rounded border p-6"
-                  style={{
-                    backgroundColor: 'var(--theme-surface)',
-                    borderColor: 'var(--theme-border)',
-                  }}
-                >
-                  <div
-                    className="flex h-10 w-10 items-center justify-center rounded"
-                    style={{ backgroundColor: 'var(--theme-accent-soft)' }}
-                  >
-                    <item.icon className="h-5 w-5 text-accent" aria-hidden />
-                  </div>
-                  <h3
-                    className="mt-4 font-display text-lg font-semibold"
-                    style={{ color: 'var(--theme-text)' }}
-                  >
-                    {item.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed" style={{ color: 'var(--theme-text-muted)' }}>
-                    {item.body}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
+            <h1
+              className="mt-4 font-display text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-[3.25rem] lg:leading-[1.1]"
+            >
+              Power systems engineered for West Africa
+            </h1>
+            <p className="mt-5 text-base leading-relaxed text-white/80 sm:text-lg">
+              {company.description}
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/quotation"
+                className="rounded bg-energy px-5 py-3 text-sm font-bold uppercase tracking-wide text-on-energy transition-all hover:brightness-105"
+              >
+                Request a quotation
+              </Link>
+              <Link
+                href="/projects"
+                className="rounded border border-white/30 px-5 py-3 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:border-white hover:bg-white/10"
+              >
+                View projects
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
+      <Marquee />
+
       <section
-        className="py-20"
+        className="border-b py-16 sm:py-20"
         style={{ backgroundColor: 'var(--theme-bg-muted)', borderColor: 'var(--theme-border)' }}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="label-technical text-accent">Services</p>
-              <h2
-                className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl"
-                style={{ color: 'var(--theme-text)' }}
-              >
-                Capabilities across the power chain
-              </h2>
-            </div>
-            <Link href="/services" className="link-underline text-sm font-semibold text-accent">
-              All services
-            </Link>
+          <div
+            className="grid gap-8 rounded border p-6 sm:grid-cols-2 sm:p-8 lg:grid-cols-4"
+            style={{ backgroundColor: 'var(--theme-bg)', borderColor: 'var(--theme-border)' }}
+          >
+            <StatCounter label="Projects on record" value={30} suffix="+" />
+            <StatCounter label="West African markets" value={company.regions.length} />
+            <StatCounter label="Core service lines" value={services.length} />
+            <StatCounter label="Years of delivery" value={company.yearsOfExperience} suffix="+" />
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 sm:py-20" style={{ backgroundColor: 'var(--theme-bg)' }}>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl">
+            <p className="label-technical text-accent">Capabilities</p>
+            <h2
+              className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl"
+              style={{ color: 'var(--theme-text)' }}
+            >
+              Services across the power chain
+            </h2>
+            <p className="mt-4 text-lg" style={{ color: 'var(--theme-text-muted)' }}>
+              From design and installation to inspection, maintenance and consulting — one accountable team.
+            </p>
           </div>
 
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {services.slice(0, 6).map((service, i) => (
+            {services.map((service, i) => (
               <Reveal key={service.slug} delay={i * 0.05}>
                 <Link
                   href={`/services/${service.slug}`}
@@ -116,7 +141,7 @@ export default function HomePage() {
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   <h3
-                    className="mt-4 font-display text-base font-semibold group-hover:text-accent"
+                    className="mt-4 font-display text-base font-semibold transition-colors group-hover:text-accent"
                     style={{ color: 'var(--theme-text)' }}
                   >
                     {service.title}
@@ -127,17 +152,46 @@ export default function HomePage() {
                   >
                     {service.summary}
                   </p>
-                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent">
-                    Learn more <ArrowRight className="h-3.5 w-3.5" aria-hidden />
-                  </span>
                 </Link>
               </Reveal>
             ))}
           </div>
+
+          <Link href="/services" className="link-underline mt-8 inline-block text-sm font-semibold text-accent">
+            Explore all services
+          </Link>
         </div>
       </section>
 
-      <section className="py-20" style={{ backgroundColor: 'var(--theme-bg)' }}>
+      <section
+        className="border-y py-16 sm:py-20"
+        style={{ backgroundColor: 'var(--theme-bg-muted)', borderColor: 'var(--theme-border)' }}
+      >
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid items-center gap-10 lg:grid-cols-2">
+            <div>
+              <p className="label-technical text-accent">On site</p>
+              <h2
+                className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl"
+                style={{ color: 'var(--theme-text)' }}
+              >
+                Engineering that shows up in the field
+              </h2>
+              <p className="mt-4 text-lg" style={{ color: 'var(--theme-text-muted)' }}>
+                Panel rooms, overhead lines, solar arrays and industrial plant — photographed on active ELSIM sites.
+              </p>
+              <EngineeringLine className="mt-8" />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              {SITE_PHOTOS.map(({ asset, label }) => (
+                <PhotoPanel key={asset.src} asset={asset} label={label} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 sm:py-20" style={{ backgroundColor: 'var(--theme-bg)' }}>
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -155,8 +209,8 @@ export default function HomePage() {
           </div>
 
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {projects.slice(0, 3).map((project, i) => (
-              <Reveal key={project.slug} delay={i * 0.08}>
+            {featured.map((project, i) => (
+              <Reveal key={project.slug} delay={i * 0.06}>
                 <Link
                   href={`/projects/${project.slug}`}
                   className="lift group block overflow-hidden rounded border"
@@ -171,16 +225,16 @@ export default function HomePage() {
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={project.image?.src ?? media.photography.solarTeamReview.src}
-                      alt={project.image?.alt ?? project.title}
+                      src={project.cover?.src ?? media.photography.solarTeamReview.src}
+                      alt={project.cover?.alt ?? project.title}
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       loading="lazy"
                     />
                   </div>
                   <div className="p-5">
-                    <p className="label-technical text-accent">{project.sector}</p>
+                    <span className="label-technical text-accent">{project.location}</span>
                     <h3
-                      className="mt-2 font-display text-lg font-semibold group-hover:text-accent"
+                      className="mt-1.5 font-display text-base font-semibold transition-colors group-hover:text-accent"
                       style={{ color: 'var(--theme-text)' }}
                     >
                       {project.title}
@@ -200,6 +254,24 @@ export default function HomePage() {
           <Link href="/projects" className="link-underline mt-8 inline-block text-sm font-semibold text-accent">
             View all {projects.length} projects
           </Link>
+        </div>
+      </section>
+
+      <section
+        className="border-y py-16 sm:py-20"
+        style={{ backgroundColor: 'var(--theme-bg-muted)', borderColor: 'var(--theme-border)' }}
+      >
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <p className="label-technical text-accent">Gallery</p>
+          <h2
+            className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl"
+            style={{ color: 'var(--theme-text)' }}
+          >
+            Work in progress, captured on site
+          </h2>
+          <div className="mt-10">
+            <WorkGallery photos={homeGalleryPhotos} />
+          </div>
         </div>
       </section>
 
