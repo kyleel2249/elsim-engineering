@@ -1,5 +1,7 @@
 import { company } from '@/lib/data/company';
 
+export const legalLastUpdated = '2026-09-17';
+
 export const privacySections = [
   {
     heading: 'Who we are',
