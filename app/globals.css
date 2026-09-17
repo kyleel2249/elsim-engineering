@@ -16,43 +16,38 @@
 [data-theme='white'] {
   color-scheme: light;
 
-  /* "Technical Premium" — ELSIM Engineering's primary design system.
-     Deep Engineering Navy + Industrial Blue + Electrical Cyan + Controlled
-     Amber on a Technical Off-White ground. Target mix: ~60% white/off-white,
-     ~25% navy/graphite, ~10% blue/cyan, ~5% amber. */
-  --theme-bg: #f5f7f9;
-  --theme-bg-muted: #eef2f5;
+  /* White + Burgundy — ELSIM house theme.
+     Pure white / off-white ground, charcoal text, burgundy accent. */
+  --theme-bg: #ffffff;
+  --theme-bg-muted: #f7f5f5;
   --theme-surface: #ffffff;
   --theme-surface-raised: #ffffff;
-  --theme-border: #dde4e9;
-  --theme-border-strong: #c1ccd4;
-  --theme-text: #263746;
-  --theme-text-muted: #56697a;
-  --theme-text-subtle: #7c8fa0;
+  --theme-border: #e8e2e2;
+  --theme-border-strong: #d0c8c8;
+  --theme-text: #1a1a1a;
+  --theme-text-muted: #5c5555;
+  --theme-text-subtle: #8a8282;
 
-  /* Primary — Deep Engineering Navy. Trust, authority, precision. */
-  --theme-accent: #082b45;
-  --theme-accent-hover: #0b5a82;
-  --theme-accent-soft: rgba(8, 43, 69, 0.08);
-  --theme-accent-ring: rgba(8, 43, 69, 0.35);
+  /* Primary — Burgundy. Brand authority, engineering precision. */
+  --theme-accent: #941a1d;
+  --theme-accent-hover: #7a1518;
+  --theme-accent-soft: rgba(148, 26, 29, 0.1);
+  --theme-accent-ring: rgba(148, 26, 29, 0.4);
   --theme-accent-contrast: #ffffff;
 
-  /* Secondary/tech accent — Electrical Cyan. Technology, electrical
-     engineering, modernity. `text-accent-2-ink` is the text-safe darkened
-     form for use on light surfaces. */
-  --theme-accent-2: #00a9d6;
-  --theme-accent-2-ink: #066e8c;
-  --theme-accent-2-soft: rgba(0, 169, 214, 0.14);
+  /* Secondary — Deep charcoal navy support tone. */
+  --theme-accent-2: #263746;
+  --theme-accent-2-ink: #1a252f;
+  --theme-accent-2-soft: rgba(38, 55, 70, 0.1);
 
-  /* Energy accent — Controlled Amber. Used sparingly (~5% of the palette):
-     primary CTAs, energy/power motifs. Not a general highlight colour. */
-  --theme-energy: #f5a623;
-  --theme-energy-ink: #7a4e0f;
-  --theme-energy-soft: rgba(245, 166, 35, 0.16);
-  --theme-energy-contrast: #111c24;
+  /* Energy / CTA — Burgundy (aligned with house accent). */
+  --theme-energy: #941a1d;
+  --theme-energy-ink: #5e1013;
+  --theme-energy-soft: rgba(148, 26, 29, 0.12);
+  --theme-energy-contrast: #ffffff;
 
-  --theme-grid: rgba(8, 43, 69, 0.05);
-  --theme-shadow: rgba(8, 43, 69, 0.16);
+  --theme-grid: rgba(148, 26, 29, 0.05);
+  --theme-shadow: rgba(26, 26, 26, 0.12);
 }
 
 [data-theme='black'] {
@@ -320,8 +315,7 @@ body {
     color: var(--theme-accent-contrast);
   }
 
-  /* Secondary brand tone (gold in the house theme). `text-accent-2-ink` is the
-     text-safe darkened form — plain gold fails contrast on light surfaces. */
+  /* Secondary brand tone */
   .text-accent-2 {
     color: var(--theme-accent-2);
   }
@@ -338,9 +332,7 @@ body {
     border-color: var(--theme-accent-2);
   }
 
-  /* Energy accent — Controlled Amber. Reserve for CTAs and power/energy
-     motifs; this is the ~5% colour in the Technical Premium system, not a
-     general-purpose highlight. */
+  /* Energy / CTA — aligned with house accent on white theme */
   .text-energy {
     color: var(--theme-energy);
   }
@@ -360,8 +352,7 @@ body {
     color: var(--theme-energy-contrast);
   }
 
-  /* Technical label — uppercase, small, letter-spaced. Used for eyebrows,
-     section kickers and the "ELECTRICAL • ENERGY • INDUSTRIAL" hero label. */
+  /* Technical label — uppercase, small, letter-spaced. */
   .label-technical {
     text-transform: uppercase;
     font-size: 0.6875rem;
@@ -386,7 +377,6 @@ body {
     text-wrap: pretty;
   }
 
-  /* Hide scrollbars on horizontal rails without losing scrollability */
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -418,13 +408,11 @@ body {
   background-size: 16px 16px;
 }
 
-/* Drawing-sheet title block used by technical panels */
 .title-block {
   border: 1px solid var(--theme-border-strong);
   background: var(--theme-bg-muted);
 }
 
-/* Hairline rule that reads as a measurement datum */
 .datum-rule {
   height: 1px;
   background: linear-gradient(
@@ -457,10 +445,6 @@ body {
   }
 }
 
-/* Hero background — full-bleed photography wallpaper with a 3D Ken Burns
-   drift. Kept as pure CSS (no WebGL) to preserve the Cloudflare Pages
-   performance budget; perspective + rotateX/rotateY/translateZ on the
-   GPU-composited layer gives real depth without the render cost. */
 .hero-stage-3d {
   perspective: 1800px;
   perspective-origin: 50% 40%;
@@ -488,7 +472,6 @@ body {
   }
 }
 
-/* Skeleton shimmer used by loading states */
 .skeleton {
   background: linear-gradient(
     90deg,
@@ -509,7 +492,6 @@ body {
   }
 }
 
-/* Animated conductor path for the circuit motifs */
 .current-path {
   stroke-dasharray: 8 6;
   animation: current-flow 3s linear infinite;
@@ -524,7 +506,6 @@ body {
   }
 }
 
-/* Underline that draws in on hover — used on nav links */
 .link-underline {
   position: relative;
 }
@@ -548,7 +529,6 @@ body {
   transform-origin: left;
 }
 
-/* Card lift used on interactive panels */
 .lift {
   transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 320ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -561,7 +541,6 @@ body {
   box-shadow: 0 18px 40px -24px var(--theme-shadow);
 }
 
-/* Scroll-reveal primitive (driven by hooks/useReveal.ts) */
 .reveal {
   opacity: 0;
   transform: translateY(18px);
@@ -573,10 +552,6 @@ body {
   opacity: 1;
   transform: none;
 }
-
-/* ==========================================================================
-   Reduced motion — nothing above is essential to comprehension
-   ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -607,7 +582,6 @@ body {
   }
 }
 
-/* Print: drop chrome, keep the document */
 @media print {
   header,
   footer,
@@ -621,8 +595,6 @@ body {
   }
 }
 
-/* Offline font fallback classes — applied when the build runs with
-   OFFLINE_FONTS=1 and lib/fonts.offline.ts is aliased in. */
 .font-display-offline {
   --font-display: ui-sans-serif, system-ui, 'Segoe UI', Roboto, Arial, sans-serif;
 }

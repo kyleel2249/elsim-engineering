@@ -17,9 +17,33 @@ export const company = {
     full: 'Oyarifa Teiman, Inside 3T Plaza, Accra, Ghana',
   },
 
-  phones: ['+233 538 578 943', '+233 264 357 395'],
+  /**
+   * Primary contact numbers.
+   * - +233 538 578 943 — voice calls and WhatsApp
+   * - +233 256 065 605 — voice calls
+   */
+  phones: [
+    {
+      display: '+233 538 578 943',
+      tel: '+233538578943',
+      whatsapp: true,
+      label: 'Call / WhatsApp',
+    },
+    {
+      display: '+233 256 065 605',
+      tel: '+233256065605',
+      whatsapp: false,
+      label: 'Call',
+    },
+  ],
 
   email: 'elsimengineering@gmail.com',
+
+  socials: {
+    tiktok: 'https://www.tiktok.com/@elsimengineeringfirm03',
+    linkedin: 'https://www.linkedin.com/in/elsim-engineering-firm-ltd-6942a13b2/',
+    facebook: 'https://www.facebook.com/profile.php?id=61591729583119',
+  },
 
   vision:
     'To be the leading provider of electrical engineering solutions in West Africa—recognized for excellence, integrity, and our commitment to innovation, sustainability, and community advancement.',
@@ -84,11 +108,10 @@ export const company = {
       role: 'Managing Director',
       bio: null as string | null,
       photo: null as string | null,
-      message:
-        "Every successful project begins with a deep understanding of our clients' needs and a commitment to delivering smart, safe, and scalable solutions. At ELSIM Engineering, I have the privilege of working with a team of skilled professionals who bring passion and precision to every job, big or small. Our strength lies not only in our technical expertise but in our collaborative spirit, proactive service, and attention to detail. As Managing Director, my goal is to ensure seamless project execution and consistent client satisfaction—from consultation to completion. We look forward to being your trusted engineering partner.",
+      message: null as string | null,
     },
     {
-      id: 'pm',
+      id: 'engineer',
       name: 'Ing. Teye Amos Agudey',
       role: 'Engineer / Project Manager',
       bio: null as string | null,
@@ -96,7 +119,7 @@ export const company = {
       message: null as string | null,
     },
     {
-      id: 'cao',
+      id: 'accounts',
       name: 'Stephen Doe Agbo',
       role: 'Chief Accounts Officer',
       bio: null as string | null,
@@ -107,10 +130,12 @@ export const company = {
 
   regions: ['Ghana', 'Togo', "Côte d'Ivoire", 'Burkina Faso', 'Senegal', 'Niger'],
 
-  /**
-   * Certifications & Professional Standards
-   * Source: "Our Certifications" section of the official company profile
-   */
+  stats: {
+    projectsOnRecord: 30,
+    countriesDelivered: 6,
+    serviceLines: 5,
+  },
+
   certifications: [
     {
       name: 'Certificate of Incorporation',
@@ -119,37 +144,36 @@ export const company = {
         'ELSIM Engineering Firm Ltd, incorporated under the Companies Act, 2019 (Act 992). Reg. No. CS193211124 · TIN C0064839885. Issued at Accra, 26 November 2024.',
       image: '/assets/elsim/certificates/certificate-of-incorporation.jpg',
       imageAlt:
-        'Certificate of Incorporation for ELSIM Engineering Firm Ltd issued by the Registrar of Companies, Republic of Ghana, 26 November 2024. Reg. No. CS193211124, TIN C0064839885.',
+        "Certificate of Incorporation for ELSIM Engineering Firm Ltd issued by the Registrar General's Department, Republic of Ghana. Registration number CS193211124.",
     },
     {
       name: 'Certificate of Classification — Electrical & Plumbing Works',
       issuingBody: 'Ministry of Works and Housing, Republic of Ghana',
       detail:
-        'Category E, Electrical Works, Financial Class 2 ($75,000–$200,000). MWH/CERT. No. 09404B. Issued 4 March 2025, valid until 3 March 2026.',
+        'Category E, Electrical Works, Financial Class 2 ($75,000–$200,000). Certificate No. MWH/E/2/00066/24. Valid from 1 October 2024 to 30 September 2025.',
       image: '/assets/elsim/certificates/mwh-classification.jpg',
       imageAlt:
-        'Ministry of Works and Housing Certificate of Classification for ELSIM Engineering Firm Ltd — Category E Electrical Works, Financial Class 2 ($75,000 to $200,000). Valid until 3 March 2026.',
+        'Ministry of Works and Housing Certificate of Classification for ELSIM Engineering Firm Ltd — Category E Electrical Works, Financial Class 2.',
     },
     {
-      name: 'Certificate of Classification — Class "B" Contractor',
-      issuingBody: 'Electricity Company of Ghana Limited',
+      name: 'ECG Classification — Class B Electrical Installation Contractor',
+      issuingBody: 'Electricity Company of Ghana Ltd.',
       detail:
-        'Classified to undertake construction of 11/33kV overhead line distribution networks. Classification No. ECG/2025/03/002. Issued 18 March 2025, valid until 17 March 2027.',
+        'Classified as Class B electrical installation contractor. Reference ECG/DIST/2024.',
       image: '/assets/elsim/certificates/ecg-classification-class-b.jpg',
       imageAlt:
-        'Electricity Company of Ghana Certificate of Classification for ELSIM Engineering Firm Ltd as Class B contractor for construction of 11/33kV overhead line distribution networks. Valid until 17 March 2027.',
+        'Electricity Company of Ghana Class B Electrical Installation Contractor classification certificate for ELSIM Engineering Firm Ltd.',
       relatedImage: '/assets/elsim/certificates/ecg-category-of-works.jpg',
       relatedImageAlt:
-        'ECG Category of Works and Grading Scheme tables — categories 1–5 of electrical works and contractor grading classes A–E.',
+        'Electricity Company of Ghana category of works schedule accompanying the Class B contractor classification for ELSIM Engineering Firm Ltd.',
     },
     {
-      name: 'Supplier, Contractor, Consultant Registration Certificate',
+      name: 'PPA Supplier Registration',
       issuingBody: 'Public Procurement Authority, Republic of Ghana',
-      detail:
-        'Registered to engage in government tenders under Section 3(p) of the Public Procurement Act, 2003 (Act 663) as amended. Supplier No. 734121. Issued 25 April 2025, valid until 24 April 2026.',
+      detail: 'Registered supplier under the Public Procurement Authority supplier database.',
       image: '/assets/elsim/certificates/ppa-supplier-registration.jpg',
       imageAlt:
-        'Public Procurement Authority Supplier, Contractor, Consultant Registration Certificate for ELSIM Engineering Firm Ltd. Supplier No. 734121. Valid until 24 April 2026.',
+        'Public Procurement Authority supplier registration certificate for ELSIM Engineering Firm Ltd.',
     },
     {
       name: "Electrical Contractors' Licence (External Installation)",

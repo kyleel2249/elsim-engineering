@@ -6,13 +6,14 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { CornerDownLeft, Search } from 'lucide-react';
 import { services } from '@/lib/data/services';
 import { getPublishedProjects } from '@/lib/data/projects';
+import { getPublishedPosts } from '@/lib/data/blog';
 import { cn } from '@/lib/utils';
 
 interface Entry {
   id: string;
   title: string;
   subtitle: string;
-  group: 'Pages' | 'Services' | 'Projects';
+  group: 'Pages' | 'Services' | 'Projects' | 'Blog';
   href: string;
   /** Extra text matched against the query but not displayed. */
   keywords: string;
@@ -24,6 +25,7 @@ const PAGES: Entry[] = [
   { id: 'p-impact', title: 'Our Impact', subtitle: 'Power, people, progress', group: 'Pages', href: '/our-impact', keywords: 'impact stats regions countries' },
   { id: 'p-services', title: 'Services', subtitle: 'What our teams deliver', group: 'Pages', href: '/services', keywords: 'capabilities offering' },
   { id: 'p-projects', title: 'Projects', subtitle: 'Delivered across West Africa', group: 'Pages', href: '/projects', keywords: 'portfolio work case study' },
+  { id: 'p-blog', title: 'Blog', subtitle: 'Insights and field notes', group: 'Pages', href: '/blog', keywords: 'articles news insights posts' },
   { id: 'p-safety', title: 'Safety & Quality', subtitle: 'How we work safely', group: 'Pages', href: '/safety', keywords: 'hse standards compliance risk' },
   { id: 'p-maintenance', title: 'Maintenance Support', subtitle: 'Planned and reactive cover', group: 'Pages', href: '/maintenance', keywords: 'servicing contract callout' },
   { id: 'p-quotation', title: 'Request a quotation', subtitle: 'Start a project enquiry', group: 'Pages', href: '/quotation', keywords: 'quote enquiry estimate price consultation' },
@@ -65,7 +67,16 @@ export function CommandPalette() {
       keywords: [p.slug, p.category, p.sector, p.client ?? ''].join(' '),
     }));
 
-    return [...PAGES, ...serviceEntries, ...projectEntries];
+    const blogEntries: Entry[] = getPublishedPosts().map((post) => ({
+      id: `b-${post.slug}`,
+      title: post.title,
+      subtitle: post.category,
+      group: 'Blog',
+      href: `/blog/${post.slug}`,
+      keywords: [post.slug, post.excerpt, post.category].join(' '),
+    }));
+
+    return [...PAGES, ...serviceEntries, ...projectEntries, ...blogEntries];
   }, []);
 
   const results = useMemo(() => {
@@ -170,12 +181,6 @@ export function CommandPalette() {
       >
         <Search className="h-4 w-4" aria-hidden />
         <span className="hidden lg:inline text-xs">Search</span>
-        <kbd
-          className="hidden lg:inline rounded border px-1.5 py-0.5 font-mono text-[10px]"
-          style={{ borderColor: 'var(--theme-border)' }}
-        >
-          ⌘K
-        </kbd>
       </button>
 
       <AnimatePresence>
@@ -220,8 +225,8 @@ export function CommandPalette() {
                     setActive(0);
                   }}
                   onKeyDown={onInputKeyDown}
-                  placeholder="Search services, projects and pages"
-                  aria-label="Search services, projects and pages"
+                  placeholder="Search services, projects, blog and pages"
+                  aria-label="Search services, projects, blog and pages"
                   aria-controls="command-results"
                   aria-activedescendant={results[active]?.id}
                   className="w-full bg-transparent py-4 text-sm outline-none"

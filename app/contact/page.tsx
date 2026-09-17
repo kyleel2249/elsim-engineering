@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Linkedin, Facebook } from 'lucide-react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Reveal } from '@/components/motion/Reveal';
 import { company } from '@/lib/data/company';
@@ -40,16 +40,29 @@ export default function ContactPage() {
 
           <Reveal delay={70}>
             <ContactCard icon={<Phone className="h-5 w-5" aria-hidden />} label="Telephone">
-              <ul className="space-y-1.5">
+              <ul className="space-y-4">
                 {company.phones.map((phone) => (
-                  <li key={phone}>
+                  <li key={phone.tel} className="space-y-1">
                     <a
-                      href={`tel:${phone.replace(/\s/g, '')}`}
+                      href={`tel:${phone.tel}`}
                       className="link-underline font-medium"
                       style={{ color: 'var(--theme-text)' }}
                     >
-                      {phone}
+                      {phone.display}
                     </a>
+                    <span className="block text-xs" style={{ color: 'var(--theme-text-subtle)' }}>
+                      {phone.whatsapp ? 'Calls & WhatsApp' : 'Calls'}
+                    </span>
+                    {phone.whatsapp && (
+                      <a
+                        href={`https://wa.me/${phone.tel.replace('+', '')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block text-sm font-medium text-accent"
+                      >
+                        Chat on WhatsApp
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -83,6 +96,51 @@ export default function ContactPage() {
               </p>
             </ContactCard>
           </Reveal>
+
+          <Reveal delay={280} className="sm:col-span-2">
+            <ContactCard icon={<Linkedin className="h-5 w-5" aria-hidden />} label="Social">
+              <ul className="flex flex-wrap gap-3">
+                <li>
+                  <a
+                    href={company.socials.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded border px-3 py-2 text-sm font-medium transition-colors hover:border-accent"
+                    style={{ borderColor: 'var(--theme-border)', color: 'var(--theme-text)' }}
+                  >
+                    <Linkedin className="h-4 w-4" aria-hidden />
+                    LinkedIn
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={company.socials.facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded border px-3 py-2 text-sm font-medium transition-colors hover:border-accent"
+                    style={{ borderColor: 'var(--theme-border)', color: 'var(--theme-text)' }}
+                  >
+                    <Facebook className="h-4 w-4" aria-hidden />
+                    Facebook
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href={company.socials.tiktok}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded border px-3 py-2 text-sm font-medium transition-colors hover:border-accent"
+                    style={{ borderColor: 'var(--theme-border)', color: 'var(--theme-text)' }}
+                  >
+                    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .56.04.82.12V9.01a6.27 6.27 0 0 0-.82-.05A6.34 6.34 0 0 0 3.16 15.3a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.73a8.19 8.19 0 0 0 4.76 1.52V6.79a4.85 4.85 0 0 1-1.01-.1z" />
+                    </svg>
+                    TikTok
+                  </a>
+                </li>
+              </ul>
+            </ContactCard>
+          </Reveal>
         </div>
 
         <Reveal>
@@ -99,9 +157,10 @@ export default function ContactPage() {
             </p>
             <Link
               href="/quotation"
-              className="mt-5 inline-flex items-center rounded bg-accent px-5 py-2.5 text-sm font-semibold text-on-accent transition-all hover:brightness-110"
+              className="mt-5 inline-flex items-center justify-center gap-1.5 rounded bg-energy px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-on-energy transition-all hover:brightness-105"
             >
               Request a quotation
+              <span>→</span>
             </Link>
           </section>
         </Reveal>
@@ -121,14 +180,16 @@ function ContactCard({
 }) {
   return (
     <div
-      className="lift h-full rounded border p-6"
+      className="rounded border p-5"
       style={{ borderColor: 'var(--theme-border)', backgroundColor: 'var(--theme-surface)' }}
     >
-      <div className="flex items-center gap-2.5 text-accent">
-        {icon}
-        <h2 className="text-xs font-semibold uppercase tracking-widest">{label}</h2>
+      <div className="mb-3 flex items-center gap-2">
+        <span className="text-accent" aria-hidden>
+          {icon}
+        </span>
+        <h2 className="label-technical text-accent">{label}</h2>
       </div>
-      <div className="mt-3">{children}</div>
+      {children}
     </div>
   );
 }

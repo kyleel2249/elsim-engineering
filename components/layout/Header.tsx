@@ -7,7 +7,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ElsimLogo } from '@/components/brand/ElsimLogo';
-import { ThemeSwitcher } from '@/components/theme/ThemeSwitcher';
 import { CommandPalette } from '@/components/search/CommandPalette';
 import { ScrollProgress } from '@/components/motion/ScrollProgress';
 
@@ -15,6 +14,7 @@ const NAV = [
   { href: '/about', label: 'About' },
   { href: '/services', label: 'Services' },
   { href: '/projects', label: 'Projects' },
+  { href: '/blog', label: 'Blog' },
   { href: '/safety', label: 'Safety' },
   { href: '/our-impact', label: 'Our Impact' },
   { href: '/contact', label: 'Contact' },
@@ -96,7 +96,6 @@ export function Header() {
 
         <div className="flex items-center gap-2">
           <CommandPalette />
-          <ThemeSwitcher />
 
           <Link
             href="/quotation"

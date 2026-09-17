@@ -81,21 +81,24 @@ export function QuotationForm() {
       form.serviceRequired,
       form.projectLocation,
       form.projectDescription,
-      form.consent ? 'y' : '',
+      form.consent ? 'yes' : '',
     ];
-    const done = required.filter((v) => String(v).trim().length > 0).length;
-    return Math.round((done / required.length) * 100);
+    const filled = required.filter(Boolean).length;
+    return Math.round((filled / required.length) * 100);
   }, [form]);
 
-  function update(field: keyof FormState, value: string | boolean) {
-    setForm((prev) => ({ ...prev, [field]: value }));
-    if (errors[field]) setErrors((prev) => ({ ...prev, [field]: undefined }));
+  function update<K extends keyof FormState>(key: K, value: FormState[K]) {
+    setForm((prev) => ({ ...prev, [key]: value }));
+    if (errors[key]) setErrors((prev) => ({ ...prev, [key]: undefined }));
   }
 
-  /** Validate only the fields belonging to a given step, using the shared schema. */
-  function validateStep(target: number): boolean {
-    const result = quotationSchema.safeParse(form);
-    if (result.success) return true;
+  function validateStep(target: number) {
+    const payload = { ...form, website: form.website || undefined };
+    const result = quotationSchema.safeParse(payload);
+    if (result.success) {
+      setErrors({});
+      return true;
+    }
 
     const fields = STEP_FIELDS[target] ?? [];
     const next: Partial<Record<keyof FormState, string>> = {};
@@ -108,7 +111,6 @@ export function QuotationForm() {
     setErrors(next);
 
     if (Object.keys(next).length) {
-      // Move focus to the first thing that needs attention.
       const firstField = fields.find((f) => next[f]);
       if (firstField) document.getElementById(firstField)?.focus();
       return false;
@@ -116,61 +118,11 @@ export function QuotationForm() {
     return true;
   }
 
-  async function handleSubmit(event: FormEvent) {
-    event.preventDefault();
-    if (!validateStep(3)) return;
-
-    setStatus('submitting');
-    setServerMessage(null);
-
-    try {
-      const response = await fetch('/api/quotation', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      });
-
-      // A static export has no route handlers; the request 404s or returns HTML.
-      const contentType = response.headers.get('content-type') ?? '';
-      if (!contentType.includes('application/json')) {
-        throw new Error('no-endpoint');
-      }
-
-      const data = (await response.json()) as QuotationResponse;
-
-      if (!response.ok || !data.ok) {
-        if (data.fieldErrors) {
-          setErrors(data.fieldErrors as Partial<Record<keyof FormState, string>>);
-          // Jump back to the earliest step that has a problem.
-          const bad = Object.keys(data.fieldErrors)[0] as keyof FormState;
-          const owningStep = Number(
-            Object.entries(STEP_FIELDS).find(([, fields]) => fields.includes(bad))?.[0] ?? 1
-          );
-          setStep(owningStep);
-        }
-        setServerMessage(data.message);
-        setStatus('error');
-        return;
-      }
-
-      setReference(data.reference ?? null);
-      setStatus('success');
-      setForm(initialState);
-      setStep(1);
-    } catch {
-      // Endpoint unavailable (static hosting, offline, blocked). Offer a
-      // direct handoff rather than losing the enquiry.
-      setStatus('error');
-      setServerMessage(
-        'We could not reach the enquiry service. Call us on ' +
-          company.phones[0] +
-          ', or use the email handoff below and your details will be prefilled.'
-      );
-    }
-  }
-
-  function mailtoHref() {
-    const lines = [
+  /** Build the enquiry body shared by WhatsApp (and email fallback). */
+  function enquiryMessage() {
+    return [
+      'ELSIM Engineering — project enquiry',
+      '',
       `Name: ${form.name}`,
       `Company: ${form.company || '—'}`,
       `Email: ${form.email}`,
@@ -184,10 +136,44 @@ export function QuotationForm() {
       'Project description:',
       form.projectDescription,
     ].join('\n');
+  }
 
+  /** Primary handoff: open WhatsApp to the ELSIM business number with the form prefilled. */
+  function whatsappHref() {
+    const phone = company.phones.find((p) => p.whatsapp)?.tel.replace('+', '') ?? '233538578943';
+    return `https://wa.me/${phone}?text=${encodeURIComponent(enquiryMessage())}`;
+  }
+
+  function mailtoHref() {
     return `mailto:?subject=${encodeURIComponent(
       'ELSIM Engineering — project enquiry'
-    )}&body=${encodeURIComponent(lines)}`;
+    )}&body=${encodeURIComponent(enquiryMessage())}`;
+  }
+
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    if (!validateStep(3)) return;
+
+    setStatus('submitting');
+    setServerMessage(null);
+
+    // Primary path: send the enquiry to WhatsApp (+233 538 578 943).
+    // This works on static hosting and on mobile/desktop WhatsApp apps.
+    try {
+      const href = whatsappHref();
+      window.open(href, '_blank', 'noopener,noreferrer');
+      setStatus('success');
+      setReference(null);
+      setForm(initialState);
+      setStep(1);
+    } catch {
+      setStatus('error');
+      setServerMessage(
+        'We could not open WhatsApp automatically. Use the link below to send your enquiry, or call ' +
+          (company.phones.find((p) => p.whatsapp)?.display ?? '+233 538 578 943') +
+          '.'
+      );
+    }
   }
 
   async function copyReference() {
@@ -203,108 +189,87 @@ export function QuotationForm() {
 
   if (status === 'success') {
     return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.98 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+      <div
         className="rounded border p-8 text-center"
         style={{ borderColor: 'var(--theme-accent)', backgroundColor: 'var(--theme-accent-soft)' }}
         role="status"
       >
         <CheckCircle2 className="mx-auto h-10 w-10 text-accent" aria-hidden />
         <h3 className="mt-4 font-display text-xl font-semibold" style={{ color: 'var(--theme-text)' }}>
-          Request received
+          Opening WhatsApp
         </h3>
         <p className="mt-2 text-sm" style={{ color: 'var(--theme-text-muted)' }}>
-          The ELSIM team will review your project and respond with next steps.
+          Your project details have been prepared for WhatsApp. Complete the send in the chat that
+          opened — the ELSIM team will reply on +233 538 578 943.
         </p>
-
+        <a
+          href="https://wa.me/233538578943"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 inline-block text-sm font-semibold text-accent underline"
+        >
+          Open WhatsApp again if the chat did not appear
+        </a>
         {reference && (
-          <div className="mt-6">
-            <p className="text-xs" style={{ color: 'var(--theme-text-subtle)' }}>
-              Quote your reference when you call
+          <div className="mt-6 flex flex-col items-center gap-2">
+            <p className="text-xs uppercase tracking-wide" style={{ color: 'var(--theme-text-subtle)' }}>
+              Reference
             </p>
             <button
               type="button"
               onClick={copyReference}
-              className="mt-2 inline-flex items-center gap-2 rounded border px-4 py-2 font-mono text-base font-semibold"
-              style={{ borderColor: 'var(--theme-border)', backgroundColor: 'var(--theme-surface)' }}
+              className="inline-flex items-center gap-2 rounded border px-3 py-1.5 font-mono text-sm"
+              style={{ borderColor: 'var(--theme-border)', color: 'var(--theme-text)' }}
             >
               {reference}
               <Copy className="h-3.5 w-3.5" aria-hidden />
-              <span className="sr-only">Copy reference</span>
+              <span className="sr-only">{copied ? 'Copied' : 'Copy reference'}</span>
             </button>
-            {copied && (
-              <p className="mt-2 text-xs text-accent" role="status">
-                Copied
-              </p>
-            )}
           </div>
         )}
-
-        <button
-          type="button"
-          onClick={() => {
-            setStatus('idle');
-            setReference(null);
-          }}
-          className="mt-6 text-sm font-medium text-accent"
-        >
-          Submit another request
-        </button>
-      </motion.div>
+      </div>
     );
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-      {/* Step indicator */}
-      <div>
-        <ol className="flex gap-2" aria-label="Form progress">
+      <div className="flex items-center justify-between gap-4">
+        <ol className="flex flex-wrap gap-2" aria-label="Form steps">
           {STEPS.map((s) => (
-            <li key={s.id} className="flex-1">
-              <span className="sr-only">
-                {`Step ${s.id} of ${STEPS.length}: ${s.label}`}
-                {s.id === step ? ' (current)' : ''}
-              </span>
-              <span
-                aria-hidden
+            <li key={s.id}>
+              <button
+                type="button"
+                onClick={() => {
+                  if (s.id < step || validateStep(step)) setStep(s.id);
+                }}
                 className={cn(
-                  'block h-1 rounded-full transition-colors duration-300',
-                  s.id <= step ? 'bg-accent' : ''
+                  'rounded-full px-3 py-1 text-xs font-semibold transition-colors',
+                  s.id === step ? 'bg-accent text-on-accent' : 'border'
                 )}
-                style={s.id <= step ? undefined : { backgroundColor: 'var(--theme-border)' }}
-              />
+                style={
+                  s.id === step
+                    ? undefined
+                    : { borderColor: 'var(--theme-border)', color: 'var(--theme-text-muted)' }
+                }
+                aria-current={s.id === step ? 'step' : undefined}
+              >
+                {s.id}. {s.label}
+              </button>
             </li>
           ))}
         </ol>
-        <div className="mt-2 flex items-center justify-between text-xs" style={{ color: 'var(--theme-text-subtle)' }}>
-          <span>{STEPS[step - 1].label}</span>
-          <span aria-hidden>{completion}% complete</span>
-        </div>
+        <p className="text-xs tabular-nums" style={{ color: 'var(--theme-text-subtle)' }} aria-live="polite">
+          {completion}% complete
+        </p>
       </div>
 
-      {/* Honeypot — visually hidden, never announced, never focusable */}
-      <div className="hidden" aria-hidden>
-        <label htmlFor="website">Leave this field empty</label>
-        <input
-          id="website"
-          name="website"
-          type="text"
-          tabIndex={-1}
-          autoComplete="off"
-          value={form.website}
-          onChange={(e) => update('website', e.target.value)}
-        />
-      </div>
-
-      <AnimatePresence mode="wait" initial={false}>
+      <AnimatePresence mode="wait">
         <motion.div
           key={step}
           initial={{ opacity: 0, x: 12 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -12 }}
-          transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.2 }}
           className="space-y-4"
         >
           {step === 1 && (
@@ -312,57 +277,47 @@ export function QuotationForm() {
               <Field id="name" label="Full name" required error={errors.name}>
                 <input
                   id="name"
-                  type="text"
+                  name="name"
+                  autoComplete="name"
                   value={form.name}
                   onChange={(e) => update('name', e.target.value)}
                   className={inputClass}
                   style={fieldStyle(Boolean(errors.name))}
-                  autoComplete="name"
-                  aria-invalid={Boolean(errors.name)}
-                  aria-describedby={errors.name ? 'name-error' : undefined}
                 />
               </Field>
-
-              <Field id="company" label="Company">
+              <Field id="company" label="Company / organisation" error={errors.company}>
                 <input
                   id="company"
-                  type="text"
+                  name="company"
+                  autoComplete="organization"
                   value={form.company}
                   onChange={(e) => update('company', e.target.value)}
                   className={inputClass}
-                  style={fieldStyle(false)}
-                  autoComplete="organization"
+                  style={fieldStyle(Boolean(errors.company))}
                 />
               </Field>
-
               <Field id="email" label="Email" required error={errors.email}>
                 <input
                   id="email"
+                  name="email"
                   type="email"
-                  inputMode="email"
+                  autoComplete="email"
                   value={form.email}
                   onChange={(e) => update('email', e.target.value)}
                   className={inputClass}
                   style={fieldStyle(Boolean(errors.email))}
-                  autoComplete="email"
-                  aria-invalid={Boolean(errors.email)}
-                  aria-describedby={errors.email ? 'email-error' : undefined}
                 />
               </Field>
-
               <Field id="telephone" label="Telephone" required error={errors.telephone}>
                 <input
                   id="telephone"
+                  name="telephone"
                   type="tel"
-                  inputMode="tel"
+                  autoComplete="tel"
                   value={form.telephone}
                   onChange={(e) => update('telephone', e.target.value)}
-                  placeholder="+233 …"
                   className={inputClass}
                   style={fieldStyle(Boolean(errors.telephone))}
-                  autoComplete="tel"
-                  aria-invalid={Boolean(errors.telephone)}
-                  aria-describedby={errors.telephone ? 'telephone-error' : undefined}
                 />
               </Field>
             </>
@@ -373,69 +328,57 @@ export function QuotationForm() {
               <Field id="serviceRequired" label="Service required" required error={errors.serviceRequired}>
                 <select
                   id="serviceRequired"
+                  name="serviceRequired"
                   value={form.serviceRequired}
                   onChange={(e) => update('serviceRequired', e.target.value)}
                   className={inputClass}
                   style={fieldStyle(Boolean(errors.serviceRequired))}
-                  aria-invalid={Boolean(errors.serviceRequired)}
                 >
                   <option value="">Select a service</option>
                   {services.map((s) => (
-                    <option key={s.slug} value={s.slug}>
+                    <option key={s.slug} value={s.title}>
                       {s.title}
                     </option>
                   ))}
-                  <option value="other">Other / not sure</option>
                 </select>
               </Field>
-
-              <Field id="projectType" label="Project type">
-                <select
+              <Field id="projectType" label="Project type" error={errors.projectType}>
+                <input
                   id="projectType"
+                  name="projectType"
                   value={form.projectType}
                   onChange={(e) => update('projectType', e.target.value)}
                   className={inputClass}
-                  style={fieldStyle(false)}
-                >
-                  <option value="">Select type</option>
-                  <option value="new-installation">New installation</option>
-                  <option value="upgrade">Upgrade or expansion</option>
-                  <option value="maintenance">Maintenance</option>
-                  <option value="consulting">Consulting or audit</option>
-                  <option value="other">Other</option>
-                </select>
+                  style={fieldStyle(Boolean(errors.projectType))}
+                  placeholder="e.g. new build, retrofit, maintenance"
+                />
               </Field>
-
               <Field id="projectLocation" label="Project location" required error={errors.projectLocation}>
                 <input
                   id="projectLocation"
-                  type="text"
+                  name="projectLocation"
                   value={form.projectLocation}
                   onChange={(e) => update('projectLocation', e.target.value)}
-                  placeholder="City and country"
                   className={inputClass}
                   style={fieldStyle(Boolean(errors.projectLocation))}
-                  aria-invalid={Boolean(errors.projectLocation)}
+                  placeholder="City / site address"
                 />
               </Field>
-
               <Field
                 id="projectDescription"
                 label="Project description"
                 required
                 error={errors.projectDescription}
-                hint={`${form.projectDescription.trim().length}/4000`}
+                hint="Scope, load, any drawings or constraints"
               >
                 <textarea
                   id="projectDescription"
+                  name="projectDescription"
                   rows={5}
-                  maxLength={4000}
                   value={form.projectDescription}
                   onChange={(e) => update('projectDescription', e.target.value)}
-                  placeholder="Scope, current situation, and what you need from us"
                   className={inputClass}
                   style={fieldStyle(Boolean(errors.projectDescription))}
-                  aria-invalid={Boolean(errors.projectDescription)}
                 />
               </Field>
             </>
@@ -443,101 +386,78 @@ export function QuotationForm() {
 
           {step === 3 && (
             <>
-              <Field id="estimatedTimeline" label="Estimated timeline">
-                <select
+              <Field id="estimatedTimeline" label="Estimated timeline" error={errors.estimatedTimeline}>
+                <input
                   id="estimatedTimeline"
+                  name="estimatedTimeline"
                   value={form.estimatedTimeline}
                   onChange={(e) => update('estimatedTimeline', e.target.value)}
                   className={inputClass}
-                  style={fieldStyle(false)}
-                >
-                  <option value="">Select</option>
-                  <option value="urgent">Urgent — within weeks</option>
-                  <option value="1-3months">1 to 3 months</option>
-                  <option value="3-6months">3 to 6 months</option>
-                  <option value="6plus">6 months or more</option>
-                  <option value="planning">Still planning</option>
-                </select>
+                  style={fieldStyle(Boolean(errors.estimatedTimeline))}
+                  placeholder="e.g. 8–12 weeks"
+                />
               </Field>
-
-              <Field id="budgetRange" label="Budget range (optional)">
-                <select
+              <Field id="budgetRange" label="Budget range" error={errors.budgetRange}>
+                <input
                   id="budgetRange"
+                  name="budgetRange"
                   value={form.budgetRange}
                   onChange={(e) => update('budgetRange', e.target.value)}
                   className={inputClass}
-                  style={fieldStyle(false)}
-                >
-                  <option value="">Prefer not to say</option>
-                  <option value="under-50k">Under GHS 50,000</option>
-                  <option value="50-200k">GHS 50,000 to 200,000</option>
-                  <option value="200k-1m">GHS 200,000 to 1M</option>
-                  <option value="over-1m">Over GHS 1M</option>
-                </select>
+                  style={fieldStyle(Boolean(errors.budgetRange))}
+                  placeholder="Optional"
+                />
               </Field>
-
-              {/* Review summary so people can check before sending */}
-              <div
-                className="rounded border p-4 text-sm"
-                style={{ borderColor: 'var(--theme-border)', backgroundColor: 'var(--theme-surface)' }}
-              >
-                <p className="mb-2 font-medium" style={{ color: 'var(--theme-text)' }}>
-                  Check before you send
-                </p>
-                <dl className="grid gap-1.5" style={{ color: 'var(--theme-text-muted)' }}>
-                  <Row label="Name" value={form.name} />
-                  <Row label="Email" value={form.email} />
-                  <Row label="Telephone" value={form.telephone} />
-                  <Row
-                    label="Service"
-                    value={
-                      services.find((s) => s.slug === form.serviceRequired)?.title ||
-                      form.serviceRequired
-                    }
-                  />
-                  <Row label="Location" value={form.projectLocation} />
-                </dl>
-              </div>
-
               <div className="flex items-start gap-3">
                 <input
                   id="consent"
+                  name="consent"
                   type="checkbox"
                   checked={form.consent}
                   onChange={(e) => update('consent', e.target.checked)}
-                  className="mt-1 h-4 w-4 accent-[var(--theme-accent)]"
-                  aria-invalid={Boolean(errors.consent)}
+                  className="mt-1 h-4 w-4 rounded border"
+                  style={{ borderColor: errors.consent ? '#B23034' : 'var(--theme-border)' }}
                 />
                 <label htmlFor="consent" className="text-sm" style={{ color: 'var(--theme-text-muted)' }}>
-                  I consent to ELSIM Engineering contacting me about this enquiry.
+                  I agree that ELSIM Engineering may contact me about this enquiry using the details
+                  provided.
+                  {errors.consent && (
+                    <span className="mt-1 block text-xs" style={{ color: '#B23034' }}>
+                      {errors.consent}
+                    </span>
+                  )}
                 </label>
               </div>
-              {errors.consent && (
-                <p className="text-sm" style={{ color: '#B23034' }} role="alert">
-                  {errors.consent}
-                </p>
-              )}
+              {/* Honeypot — leave empty */}
+              <div className="hidden" aria-hidden>
+                <label htmlFor="website">Website</label>
+                <input
+                  id="website"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={form.website}
+                  onChange={(e) => update('website', e.target.value)}
+                />
+              </div>
             </>
           )}
         </motion.div>
       </AnimatePresence>
 
-      {/* Navigation */}
-      <div className="flex flex-wrap items-center gap-3 pt-2">
-        {step > 1 && (
+      <div className="flex items-center justify-between gap-3 border-t pt-4" style={{ borderColor: 'var(--theme-border)' }}>
+        {step > 1 ? (
           <button
             type="button"
             onClick={() => setStep((s) => s - 1)}
-            className="inline-flex items-center gap-2 rounded border px-4 py-2.5 text-sm transition-colors"
-            style={{
-              borderColor: 'var(--theme-border)',
-              color: 'var(--theme-text-muted)',
-              backgroundColor: 'var(--theme-surface)',
-            }}
+            className="inline-flex items-center gap-2 rounded border px-4 py-2.5 text-sm font-medium transition-colors"
+            style={{ borderColor: 'var(--theme-border)', color: 'var(--theme-text)' }}
           >
             <ArrowLeft className="h-4 w-4" aria-hidden />
             Back
           </button>
+        ) : (
+          <span />
         )}
 
         {step < 3 ? (
@@ -556,7 +476,7 @@ export function QuotationForm() {
             className="inline-flex items-center gap-2 rounded bg-accent px-5 py-2.5 text-sm font-semibold text-on-accent transition-all hover:brightness-110 disabled:opacity-60"
           >
             {status === 'submitting' && <Loader2 className="h-4 w-4 animate-spin" aria-hidden />}
-            {status === 'submitting' ? 'Sending' : 'Send request'}
+            {status === 'submitting' ? 'Opening WhatsApp' : 'Send via WhatsApp'}
           </button>
         )}
       </div>
@@ -570,8 +490,19 @@ export function QuotationForm() {
           <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" style={{ color: '#B23034' }} aria-hidden />
           <div style={{ color: 'var(--theme-text)' }}>
             <p>{serverMessage}</p>
-            <a href={mailtoHref()} className="mt-2 inline-block font-medium text-accent underline">
-              Open this enquiry in your email app
+            <a
+              href={whatsappHref()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 inline-block font-medium text-accent underline"
+            >
+              Send this enquiry on WhatsApp
+            </a>
+            <span className="mx-2 text-xs" style={{ color: 'var(--theme-text-subtle)' }}>
+              or
+            </span>
+            <a href={mailtoHref()} className="inline-block font-medium text-accent underline">
+              open in email
             </a>
           </div>
         </div>
@@ -600,37 +531,20 @@ function Field({
       <div className="mb-1 flex items-baseline justify-between gap-3">
         <label htmlFor={id} className="text-sm font-medium" style={{ color: 'var(--theme-text)' }}>
           {label}
-          {required && (
-            <span className="text-accent" aria-hidden>
-              {' '}
-              *
-            </span>
-          )}
-          {required && <span className="sr-only"> (required)</span>}
+          {required && <span className="text-accent"> *</span>}
         </label>
         {hint && (
-          <span className="text-[11px] tabular-nums" style={{ color: 'var(--theme-text-subtle)' }}>
+          <span className="text-xs" style={{ color: 'var(--theme-text-subtle)' }}>
             {hint}
           </span>
         )}
       </div>
       {children}
       {error && (
-        <p id={`${id}-error`} className="mt-1 text-sm" style={{ color: '#B23034' }} role="alert">
+        <p className="mt-1 text-xs" style={{ color: '#B23034' }} role="alert">
           {error}
         </p>
       )}
-    </div>
-  );
-}
-
-function Row({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex gap-2">
-      <dt className="w-24 shrink-0">{label}</dt>
-      <dd className="min-w-0 flex-1 truncate" style={{ color: 'var(--theme-text)' }}>
-        {value || '—'}
-      </dd>
     </div>
   );
 }

@@ -7,20 +7,28 @@ import { PageTransition } from '@/components/motion/PageTransition';
 import { BackToTop } from '@/components/motion/BackToTop';
 import { fontVariables } from '@/lib/fonts';
 import { company } from '@/lib/data/company';
-import { media } from '@/lib/data/media';
+import { media, getRandomSocialImage } from '@/lib/data/media';
 import { siteUrl, isIndexable, GA_MEASUREMENT_ID } from '@/lib/site';
 import './globals.css';
+
+const siteTitle = 'ELSIM Engineering — Electrical, Energy & Technical Services in Ghana';
+const siteDescription =
+  'ELSIM Engineering designs, installs, tests and maintains electrical, solar and power-distribution systems for commercial and industrial clients across Ghana and West Africa.';
+const ogDescription =
+  'Electrical, solar, power-distribution and consulting engineering across Ghana and West Africa.';
+
+/** Random site photo for link previews — chosen once per build (static export). */
+const socialImage = getRandomSocialImage();
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   manifest: '/manifest.webmanifest',
   applicationName: 'ELSIM Engineering',
   title: {
-    default: 'ELSIM Engineering — Electrical, Energy & Technical Services in Ghana',
+    default: siteTitle,
     template: '%s · ELSIM Engineering',
   },
-  description:
-    'ELSIM Engineering designs, installs, tests and maintains electrical, solar and power-distribution systems for commercial and industrial clients across Ghana and West Africa.',
+  description: siteDescription,
   keywords: [
     'electrical engineering Ghana',
     'solar installation Accra',
@@ -42,20 +50,34 @@ export const metadata: Metadata = {
     apple: '/apple-touch-icon.png',
   },
   openGraph: {
-    title: 'ELSIM Engineering',
-    description:
-      'Electrical, solar, power-distribution and consulting engineering across Ghana and West Africa.',
+    title: siteTitle,
+    description: ogDescription,
     url: siteUrl,
     siteName: company.name,
     locale: 'en_GH',
     type: 'website',
-    images: [{ url: media.og.src, width: 1200, height: 630, alt: media.og.alt }],
+    images: [
+      {
+        url: socialImage.src,
+        width: socialImage.width,
+        height: socialImage.height,
+        alt: socialImage.alt,
+        type: 'image/jpeg',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'ELSIM Engineering',
-    description: 'Electrical, solar and power-distribution engineering across West Africa.',
-    images: [media.og.src],
+    title: siteTitle,
+    description: ogDescription,
+    images: [
+      {
+        url: socialImage.src,
+        width: socialImage.width,
+        height: socialImage.height,
+        alt: socialImage.alt,
+      },
+    ],
   },
   formatDetection: { telephone: true, address: true, email: true },
   robots: isIndexable
@@ -82,8 +104,8 @@ const organisationJsonLd = {
   description: company.description,
   url: siteUrl,
   logo: `${siteUrl}${media.logo.src}`,
-  image: `${siteUrl}${media.og.src}`,
-  telephone: company.phones,
+  image: `${siteUrl}${socialImage.src}`,
+  telephone: company.phones.map((p) => p.display),
   slogan: company.tagline,
   address: {
     '@type': 'PostalAddress',
@@ -92,6 +114,11 @@ const organisationJsonLd = {
     addressCountry: 'GH',
   },
   areaServed: company.regions.map((name) => ({ '@type': 'Country', name })),
+  sameAs: [
+    company.socials.linkedin,
+    company.socials.facebook,
+    company.socials.tiktok,
+  ],
   knowsAbout: [
     'Electrical installations',
     'Solar photovoltaic systems',

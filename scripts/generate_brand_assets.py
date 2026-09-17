@@ -2,7 +2,7 @@
 """
 ELSIM Engineering — brand asset derivation.
 
-Takes the supplied master logo (public/assets/elsim/logo.png) and derives every
+Takes the supplied master logo (public/assets/elsim/logo.jpg) and derives every
 other brand file the site needs:
 
   logo-mark.png      transparent background, for placement on any theme
@@ -11,7 +11,7 @@ other brand file the site needs:
   icon-192.png       PWA icon
   icon-512.png       PWA icon
   apple-touch-icon.png
-  og-image.png       1200x630 social card
+  og-image.png       1200x630 social card (kept under ~300 KB for Facebook/X/LinkedIn)
 
 Run after replacing the master logo:
 
@@ -29,7 +29,15 @@ from PIL import Image, ImageDraw, ImageFont
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PUBLIC = os.path.join(ROOT, "public")
 ASSETS = os.path.join(PUBLIC, "assets", "elsim")
-MASTER = os.path.join(ASSETS, "logo.png")
+# Supplied master may be .jpg or .png — prefer jpg (what ships in the repo).
+MASTER = next(
+    (
+        os.path.join(ASSETS, name)
+        for name in ("logo.jpg", "logo.png")
+        if os.path.exists(os.path.join(ASSETS, name))
+    ),
+    os.path.join(ASSETS, "logo.jpg"),
+)
 
 # Sampled from the master logo — these are the authoritative brand colours.
 NAVY = (15, 49, 86)          # #0F3156
@@ -136,7 +144,11 @@ def square(img: Image.Image, size: int, background: tuple | None = None) -> Imag
 
 
 def og_card(mark: Image.Image, path: str) -> None:
-    """1200x630 social card in the ELSIM navy, with the gold as the accent."""
+    """1200x630 social card in the ELSIM navy, with the gold as the accent.
+
+    Written as an optimised PNG and kept well under 300 KB so Facebook,
+    LinkedIn, X and WhatsApp will fetch and render the preview reliably.
+    """
     w, h = 1200, 630
     img = Image.new("RGB", (w, h), NAVY)
     d = ImageDraw.Draw(img)
@@ -171,7 +183,17 @@ def og_card(mark: Image.Image, path: str) -> None:
     d.text((72, 466), "Oyarifa Teiman, Inside 3T Plaza, Accra",
            font=font(20), fill=INK_MUTED)
 
-    img.save(path, optimize=True)
+    # Always write exact 1200×630 — never a retina multiple. Social scrapers
+    # expect this size and often fail on multi-megabyte files.
+    assert img.size == (1200, 630)
+    img.save(path, format="PNG", optimize=True)
+    size_kb = os.path.getsize(path) / 1024
+    if size_kb > 300:
+        # Fall back to progressive JPEG if PNG is still large.
+        jpg_path = path.rsplit(".", 1)[0] + ".jpg"
+        img.save(jpg_path, format="JPEG", quality=85, optimize=True, progressive=True)
+        print(f"  OG PNG was {size_kb:.0f} KB — also wrote JPEG at {os.path.getsize(jpg_path)/1024:.0f} KB")
+    print(f"  OG card {img.size[0]}×{img.size[1]} → {size_kb:.0f} KB")
 
 
 def main() -> None:
