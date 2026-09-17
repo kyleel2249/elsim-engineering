@@ -8,7 +8,6 @@ import { media } from '@/lib/data/media';
 import { cdnUrl } from '@/lib/cdn';
 
 const SLIDES = [
-  { ...media.photography.engineerPanelInspection, caption: 'Panel inspection under load' },
   { ...media.photography.solarTeamReview, caption: 'Solar installation review' },
   { ...media.work.linemanPoleTop, caption: 'Working live at height' },
   { ...media.photography.technicianPanelWork, caption: 'Switchgear and control panel works' },
@@ -155,7 +154,7 @@ export function HeroSlideshow({
       {variant === 'carousel' && (
         <>
           <div className="absolute inset-x-0 bottom-0 z-[2] bg-gradient-to-t from-navy-950/95 to-transparent px-5 pb-14 pt-16">
-            <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">
+            <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-burgundy">
               ELSIM on site
             </p>
             <p className="text-sm font-medium text-white sm:text-base" aria-live="polite">
@@ -178,8 +177,8 @@ export function HeroSlideshow({
                   aria-label={`Slide ${i + 1}: ${slide.caption}`}
                   onClick={() => goTo(i)}
                   className={clsx(
-                    'h-1.5 rounded-full transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold',
-                    i === index ? 'w-7 bg-gold' : 'w-1.5 bg-white/40 hover:bg-white/70'
+                    'h-1.5 rounded-full transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-burgundy',
+                    i === index ? 'w-7 bg-burgundy' : 'w-1.5 bg-white/40 hover:bg-white/70'
                   )}
                 />
               ))}
@@ -200,8 +199,8 @@ export function HeroSlideshow({
                     aria-label={`Slide ${i + 1} of ${SLIDES.length}: ${slide.caption}`}
                     onClick={() => goTo(i)}
                     className={clsx(
-                      'h-1 shrink-0 rounded-full transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold',
-                      i === index ? 'w-6 bg-gold' : 'w-3 bg-white/35 hover:bg-white/60'
+                      'h-1 shrink-0 rounded-full transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-burgundy',
+                      i === index ? 'w-6 bg-burgundy' : 'w-3 bg-white/35 hover:bg-white/60'
                     )}
                   />
                 ))}
@@ -225,7 +224,7 @@ export function HeroSlideshow({
         <button
           type="button"
           onClick={() => setPaused((v) => !v)}
-          className="absolute right-3 top-3 z-[2] flex h-9 w-9 items-center justify-center rounded-full bg-navy-950/60 text-white backdrop-blur-sm transition-colors hover:bg-navy-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+          className="absolute right-3 top-3 z-[2] flex h-9 w-9 items-center justify-center rounded-full bg-navy-950/60 text-white backdrop-blur-sm transition-colors hover:bg-navy-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-burgundy"
           aria-label={paused ? 'Resume slideshow' : 'Pause slideshow'}
         >
           {paused ? <Play className="h-4 w-4" aria-hidden /> : <Pause className="h-4 w-4" aria-hidden />}
@@ -234,7 +233,7 @@ export function HeroSlideshow({
 
       {autoplaying && (
         <div className="absolute inset-x-0 top-0 z-[2] h-0.5 bg-white/10" aria-hidden>
-          <div key={index} className="animate-slideshow-progress h-full bg-gold" />
+          <div key={index} className="animate-slideshow-progress h-full bg-burgundy" />
         </div>
       )}
     </div>
@@ -258,7 +257,7 @@ function SlideButton({
       onClick={onClick}
       aria-label={label}
       className={clsx(
-        'absolute top-1/2 z-[2] flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-navy-950/55 text-white backdrop-blur-sm transition-colors hover:bg-navy-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold',
+        'absolute top-1/2 z-[2] flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-navy-950/55 text-white backdrop-blur-sm transition-colors hover:bg-navy-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-burgundy',
         side === 'left' ? 'left-3' : 'right-3'
       )}
     >
