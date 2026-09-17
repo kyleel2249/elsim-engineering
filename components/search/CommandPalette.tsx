@@ -181,12 +181,6 @@ export function CommandPalette() {
       >
         <Search className="h-4 w-4" aria-hidden />
         <span className="hidden lg:inline text-xs">Search</span>
-        <kbd
-          className="hidden lg:inline rounded border px-1.5 py-0.5 font-mono text-[10px]"
-          style={{ borderColor: 'var(--theme-border)' }}
-        >
-          ⌘K
-        </kbd>
       </button>
 
       <AnimatePresence>
