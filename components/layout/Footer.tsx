@@ -83,7 +83,10 @@ export function Footer() {
             <ul className="space-y-2 text-sm">
               {COMPANY_LINKS.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-white/70 transition-colors hover:text-[#C9A227]">
+                  <Link
+                    href={link.href}
+                    className="text-white/70 transition-colors hover:text-[#C9A227]"
+                  >
                     {link.label}
                   </Link>
                 </li>
@@ -133,6 +136,16 @@ export function Footer() {
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row">
           <p className="text-xs text-white/50">
             © {currentYear} {company.legalName}. All rights reserved.
+            {' '}
+            Developed and managed by{' '}
+            <a
+              href="https://cintex.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/60 transition-colors hover:text-[#C9A227] underline-offset-2 hover:underline"
+            >
+              cintexa.com
+            </a>
           </p>
           <div className="flex gap-6 text-xs">
             <Link href="/privacy" className="text-white/50 transition-colors hover:text-[#C9A227]">
