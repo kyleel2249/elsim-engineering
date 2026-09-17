@@ -209,25 +209,73 @@ export default function AboutPage() {
         {company.certifications.length > 0 && (
           <section className="mt-16">
             <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--theme-text)' }}>
-              Certifications &amp; professional standards
+              Certifications & professional standards
             </h2>
-            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <p className="mt-2 text-sm" style={{ color: 'var(--theme-text-subtle)' }}>
+              Official certificates and licences held by ELSIM Engineering Firm Ltd. Images are
+              scans of the issued documents.
+            </p>
+            <div className="mt-6 grid gap-6 sm:grid-cols-2">
               {company.certifications.map((cert, i) => (
                 <Reveal key={cert.name} delay={i * 60}>
-                  <div
-                    className="h-full rounded border p-5"
+                  <article
+                    className="flex h-full flex-col overflow-hidden rounded border"
                     style={{ borderColor: 'var(--theme-border)', backgroundColor: 'var(--theme-surface)' }}
                   >
-                    <h3 className="font-display text-sm font-semibold" style={{ color: 'var(--theme-text)' }}>
-                      {cert.name}
-                    </h3>
-                    <p className="mt-1 text-xs text-accent">{cert.issuingBody}</p>
-                    {cert.detail && (
-                      <p className="mt-2 text-sm" style={{ color: 'var(--theme-text-muted)' }}>
-                        {cert.detail}
-                      </p>
+                    {cert.image && (
+                      <div
+                        className="relative flex items-center justify-center border-b p-3"
+                        style={{
+                          borderColor: 'var(--theme-border)',
+                          backgroundColor: 'var(--theme-bg-muted)',
+                          minHeight: '220px',
+                        }}
+                      >
+                        <SiteImage
+                          src={cert.image}
+                          alt={cert.imageAlt ?? cert.name}
+                          width={640}
+                          height={900}
+                          className="h-auto max-h-[320px] w-full object-contain"
+                          sizes="(max-width: 640px) 100vw, 50vw"
+                          fallbackLabel={cert.name}
+                        />
+                      </div>
                     )}
-                  </div>
+                    <div className="flex flex-1 flex-col p-5">
+                      <h3 className="font-display text-sm font-semibold" style={{ color: 'var(--theme-text)' }}>
+                        {cert.name}
+                      </h3>
+                      <p className="mt-1 text-xs text-accent">{cert.issuingBody}</p>
+                      {cert.detail && (
+                        <p className="mt-2 text-sm" style={{ color: 'var(--theme-text-muted)' }}>
+                          {cert.detail}
+                        </p>
+                      )}
+                      {cert.relatedImage && (
+                        <div
+                          className="mt-4 overflow-hidden rounded border p-2"
+                          style={{
+                            borderColor: 'var(--theme-border)',
+                            backgroundColor: 'var(--theme-bg-muted)',
+                          }}
+                        >
+                          <p className="mb-2 text-xs font-medium" style={{ color: 'var(--theme-text-subtle)' }}>
+                            Related: ECG category of works & grading scheme
+                          </p>
+                          <SiteImage
+                            src={cert.relatedImage}
+                            alt={cert.relatedImageAlt ?? 'ECG category of works and grading scheme'}
+                            width={484}
+                            height={686}
+                            className="h-auto max-h-[240px] w-full object-contain"
+                            sizes="(max-width: 640px) 100vw, 50vw"
+                            fallbackLabel="Category of works"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </article>
                 </Reveal>
               ))}
             </div>
