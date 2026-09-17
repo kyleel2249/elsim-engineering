@@ -83,7 +83,7 @@ const organisationJsonLd = {
   url: siteUrl,
   logo: `${siteUrl}${media.logo.src}`,
   image: `${siteUrl}${media.og.src}`,
-  telephone: company.phones,
+  telephone: company.phones.map((p) => p.display),
   slogan: company.tagline,
   address: {
     '@type': 'PostalAddress',
