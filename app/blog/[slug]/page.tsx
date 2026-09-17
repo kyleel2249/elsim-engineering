@@ -1,10 +1,16 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { getPostBySlug, getAllPostSlugs, getPublishedPosts } from '@/lib/data/blog';
+import {
+  getPostBySlug,
+  getAllPostSlugs,
+  getPublishedPosts,
+  postImageAbsoluteUrl,
+} from '@/lib/data/blog';
 import { formatDate } from '@/lib/utils';
 import { siteUrl } from '@/lib/site';
 import { Reveal } from '@/components/motion/Reveal';
+import { SiteImage } from '@/components/media/SiteImage';
 
 interface Props {
   params: { slug: string };
@@ -16,18 +22,61 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = getPostBySlug(params.slug);
-  if (!post) return { title: 'Article not found' };
+  if (!post) return { title: 'Article not found', robots: { index: false, follow: false } };
+
+  const url = `${siteUrl}/blog/${post.slug}`;
+  const imageUrl = postImageAbsoluteUrl(post, siteUrl);
 
   return {
     title: post.title,
     description: post.excerpt,
+    keywords: post.keywords,
+    authors: [{ name: post.author }],
     alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
       title: post.title,
       description: post.excerpt,
-      url: `${siteUrl}/blog/${post.slug}`,
+      url,
+      siteName: 'ELSIM Engineering',
+      locale: 'en_GH',
       type: 'article',
       publishedTime: post.publishedAt,
+      modifiedTime: post.updatedAt ?? post.publishedAt,
+      authors: [post.author],
+      tags: post.keywords,
+      images: [
+        {
+          url: imageUrl,
+          width: post.image.width,
+          height: post.image.height,
+          alt: post.image.alt,
+          type: 'image/jpeg',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+      images: [
+        {
+          url: imageUrl,
+          width: post.image.width,
+          height: post.image.height,
+          alt: post.image.alt,
+        },
+      ],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+        'max-video-preview': -1,
+      },
     },
   };
 }
@@ -40,15 +89,48 @@ export default function BlogPostPage({ params }: Props) {
     .filter((p) => p.slug !== post.slug)
     .slice(0, 3);
 
+  const imageUrl = postImageAbsoluteUrl(post, siteUrl);
+  const pageUrl = `${siteUrl}/blog/${post.slug}`;
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.excerpt,
+    image: [imageUrl],
     datePublished: post.publishedAt,
-    author: { '@type': 'Organization', name: post.author },
-    publisher: { '@type': 'Organization', name: 'ELSIM Engineering' },
-    mainEntityOfPage: `${siteUrl}/blog/${post.slug}`,
+    dateModified: post.updatedAt ?? post.publishedAt,
+    author: {
+      '@type': 'Organization',
+      name: post.author,
+      url: siteUrl,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'ELSIM Engineering',
+      url: siteUrl,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${siteUrl}/icon-512.png`,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': pageUrl,
+    },
+    keywords: post.keywords.join(', '),
+    articleSection: post.category,
+    inLanguage: 'en-GH',
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${siteUrl}/blog` },
+      { '@type': 'ListItem', position: 3, name: post.title, item: pageUrl },
+    ],
   };
 
   return (
@@ -56,6 +138,10 @@ export default function BlogPostPage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
       <article className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
@@ -87,6 +173,11 @@ export default function BlogPostPage({ params }: Props) {
             <time dateTime={post.publishedAt} style={{ color: 'var(--theme-text-subtle)' }}>
               {formatDate(post.publishedAt)}
             </time>
+            {post.updatedAt && post.updatedAt !== post.publishedAt && (
+              <span style={{ color: 'var(--theme-text-subtle)' }}>
+                Updated {formatDate(post.updatedAt)}
+              </span>
+            )}
             <span style={{ color: 'var(--theme-text-subtle)' }}>{post.author}</span>
           </div>
           <h1
@@ -99,6 +190,23 @@ export default function BlogPostPage({ params }: Props) {
             {post.excerpt}
           </p>
         </header>
+
+        <figure
+          className="relative mt-10 overflow-hidden rounded border"
+          style={{ borderColor: 'var(--theme-border)', backgroundColor: 'var(--theme-bg-muted)' }}
+        >
+          <SiteImage
+            src={post.image.src}
+            alt={post.image.alt}
+            width={post.image.width}
+            height={post.image.height}
+            className="h-auto w-full object-cover"
+            sizes="(max-width: 768px) 100vw, 768px"
+            priority
+            fallbackLabel={post.category}
+          />
+          <figcaption className="sr-only">{post.image.alt}</figcaption>
+        </figure>
 
         <div className="datum-rule mt-10" aria-hidden />
 
@@ -138,19 +246,35 @@ export default function BlogPostPage({ params }: Props) {
                   <li key={item.slug}>
                     <Link
                       href={`/blog/${item.slug}`}
-                      className="lift block h-full rounded border p-4"
+                      className="lift block h-full overflow-hidden rounded border"
                       style={{
                         borderColor: 'var(--theme-border)',
                         backgroundColor: 'var(--theme-bg-muted)',
                       }}
                     >
-                      <span className="text-[11px] font-semibold text-accent">{item.category}</span>
-                      <h3
-                        className="mt-1 font-display text-sm font-semibold"
-                        style={{ color: 'var(--theme-text)' }}
+                      <div
+                        className="relative aspect-[16/10] overflow-hidden"
+                        style={{ backgroundColor: 'var(--theme-surface)' }}
                       >
-                        {item.title}
-                      </h3>
+                        <SiteImage
+                          src={item.image.src}
+                          alt={item.image.alt}
+                          width={item.image.width}
+                          height={item.image.height}
+                          className="h-full w-full object-cover"
+                          sizes="(max-width: 640px) 100vw, 33vw"
+                          fallbackLabel={item.category}
+                        />
+                      </div>
+                      <div className="p-4">
+                        <span className="text-[11px] font-semibold text-accent">{item.category}</span>
+                        <h3
+                          className="mt-1 font-display text-sm font-semibold"
+                          style={{ color: 'var(--theme-text)' }}
+                        >
+                          {item.title}
+                        </h3>
+                      </div>
                     </Link>
                   </li>
                 ))}
