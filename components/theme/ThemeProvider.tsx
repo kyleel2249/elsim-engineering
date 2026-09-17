@@ -48,13 +48,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       const stored = localStorage.getItem(THEME_STORAGE_KEY);
       if (isThemeId(stored)) {
         initial = stored;
-      } else if (
-        typeof window !== 'undefined' &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches
-      ) {
-        // No stored choice: honour the OS preference on first visit.
-        initial = 'black';
       }
+      // Always default to white — do not follow OS dark mode for first visits.
     } catch {
       /* storage unavailable (private mode, blocked cookies) — use the default */
     }
@@ -119,6 +114,7 @@ export function useTheme(): ThemeContextValue {
 /**
  * Inline script injected before paint so the stored theme is applied on the
  * very first frame. Without this the page flashes the default theme on load.
+ * Defaults to white — never auto-switches to black for OS dark mode.
  */
 export const themeNoFlashScript = `
 (function(){
@@ -127,9 +123,7 @@ export const themeNoFlashScript = `
     var stored = localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});
     var theme = ids.indexOf(stored) !== -1
       ? stored
-      : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'black' : ${JSON.stringify(
-        DEFAULT_THEME
-      )});
+      : ${JSON.stringify(DEFAULT_THEME)};
     document.documentElement.setAttribute('data-theme', theme);
   } catch (e) {
     document.documentElement.setAttribute('data-theme', ${JSON.stringify(DEFAULT_THEME)});
