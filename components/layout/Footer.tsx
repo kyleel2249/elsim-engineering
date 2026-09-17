@@ -9,6 +9,7 @@ import { Linkedin, Facebook } from 'lucide-react';
 const COMPANY_LINKS = [
   { href: '/about', label: 'About ELSIM' },
   { href: '/projects', label: 'Projects' },
+  { href: '/blog', label: 'Blog' },
   { href: '/our-impact', label: 'Our Impact' },
   { href: '/safety', label: 'Safety & quality' },
   { href: '/maintenance', label: 'Maintenance support' },
