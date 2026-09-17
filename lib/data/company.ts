@@ -37,7 +37,8 @@ export const company = {
     },
   ],
 
-  email: 'elsimengineering@gmail.com',
+  /** Public contact address. Mailbox forwarding is configured at the domain host. */
+  email: 'support@elsimengineering.com',
 
   socials: {
     tiktok: 'https://www.tiktok.com/@elsimengineeringfirm03',
