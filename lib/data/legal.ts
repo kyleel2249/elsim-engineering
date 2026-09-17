@@ -1,94 +1,59 @@
 import { company } from '@/lib/data/company';
 
-/**
- * Legal page content.
- *
- * Kept as data rather than JSX so the wording can be reviewed and replaced by
- * ELSIM's own counsel without touching component code. Every clause here is a
- * reasonable default for a corporate brochure site, not legal advice — have it
- * reviewed before relying on it.
- */
-
-export const legalLastUpdated = '2026-09-16';
-
 export const privacySections = [
   {
-    heading: 'What this policy covers',
-    body: `This policy explains what ${company.name} does with information collected through this website. It does not cover information you give us in person, by telephone, or under a separate contract.`,
+    heading: 'Who we are',
+    body: `${company.name} (\"we\", \"us\") is an electrical and energy engineering firm based in Accra, Ghana. This notice explains how we handle information when you use our website or contact us about projects.`,
   },
   {
-    heading: 'Information we collect',
-    body: 'We collect the details you submit through the quotation and contact forms: your name, company, email address, telephone number, project location, and the description of the work you need. We also collect anonymous usage statistics through Google Analytics, including pages viewed and approximate region. IP addresses are anonymised before storage.',
+    heading: 'What we collect',
+    body: 'When you submit a quotation or contact form we collect the details you provide — typically name, organisation, email, telephone, project location and a description of the work. Server logs may record IP address and basic browser information for security and diagnostics.',
   },
   {
-    heading: 'Why we use it',
-    body: 'Enquiry details are used to respond to your request, prepare a quotation, and maintain a record of the enquiry. Usage statistics are used to understand which parts of the site are useful and where visitors have difficulty.',
+    heading: 'How we use it',
+    body: 'We use enquiry details to respond to your request, prepare quotations and, where relevant, deliver contracted work. We do not sell personal data. We do not use enquiry data for unrelated marketing without a clear basis to do so.',
   },
   {
-    heading: 'Consent',
-    body: 'The quotation form asks you to confirm that we may contact you about your enquiry. You can withdraw that consent at any time by contacting us, and we will stop using your details for follow-up.',
+    heading: 'Sharing',
+    body: 'We may share information with trusted service providers who help us operate the website or deliver projects (for example hosting or professional advisors), and with authorities where the law requires it. Partners only receive what they need to perform their role.',
   },
   {
-    heading: 'Who we share it with',
-    body: 'We do not sell your information. Enquiry details are visible to the ELSIM staff handling your request and to the hosting and analytics providers that operate this site on our behalf. Where a project requires it, we may share details with a named subcontractor, and we will tell you when that applies.',
-  },
-  {
-    heading: 'How long we keep it',
-    body: 'Enquiry records are kept for as long as needed to respond and for a reasonable period afterwards to support any resulting contract. Analytics data is retained according to the default retention settings of the analytics provider.',
+    heading: 'Retention',
+    body: 'Enquiry records are kept for as long as needed to handle the request and any follow-on work, and then for a limited period for legitimate business and legal purposes. You can ask us about the retention period that applies to your enquiry.',
   },
   {
     heading: 'Your rights',
-    body: `You can ask us what information we hold about you, ask for it to be corrected, or ask for it to be deleted. Write to us at the address below or call ${company.phones[0]}.`,
+    body: `You can ask us what information we hold about you, ask for it to be corrected, or ask for it to be deleted. Write to us at the address below or call ${company.phones[0].display}.`,
   },
   {
-    heading: 'Cookies and analytics',
-    body: 'This site uses Google Analytics to measure usage. Your browser can be configured to block these cookies, and the site remains fully usable if you do. A theme preference is stored locally in your browser so the site remembers how you like it to look; that preference never leaves your device.',
-  },
-  {
-    heading: 'Changes',
-    body: 'If this policy changes we will update the date shown on this page. Material changes will be highlighted on the page for a reasonable period.',
+    heading: 'Security',
+    body: 'We take reasonable technical and organisational steps to protect information in transit and at rest. No method of transmission over the internet is completely secure; please use secure channels for highly sensitive material.',
   },
   {
     heading: 'Contact',
-    body: `${company.name}, ${company.address.full}. Telephone ${company.phones.join(' or ')}.`,
+    body: `${company.name}, ${company.address.full}. Telephone ${company.phones.map((p) => p.display).join(' or ')}.`,
   },
 ];
 
 export const termsSections = [
   {
-    heading: 'About these terms',
-    body: `These terms govern your use of this website. They do not replace or vary the terms of any contract between you and ${company.name} for engineering services; where the two differ, the signed contract governs.`,
+    heading: 'Website use',
+    body: 'This website provides information about ELSIM Engineering services and projects. Content is for general guidance and does not form a contract until we agree scope, price and terms in writing.',
   },
   {
-    heading: 'Use of the site',
-    body: 'You may read, print and share the content here for your own business purposes. You may not republish it as your own, use it to imply an association with ELSIM that does not exist, or attempt to interfere with the operation or security of the site.',
-  },
-  {
-    heading: 'Accuracy of content',
-    body: 'Service descriptions, project records and capability statements on this site are published in good faith and reviewed against company records. They are indicative, not a technical specification, and should not be relied on as an engineering instruction. Project details marked as pending verification are exactly that.',
-  },
-  {
-    heading: 'Quotations and enquiries',
-    body: 'Submitting the quotation form starts a conversation; it does not create a contract, reserve resources, or constitute an offer capable of acceptance. Pricing, scope and programme are only binding once issued in a written quotation signed by an authorised ELSIM representative.',
+    heading: 'Quotations',
+    body: 'Quotations are estimates based on the information you supply. Final pricing and programme depend on site conditions, client decisions and any variations agreed in writing.',
   },
   {
     heading: 'Intellectual property',
-    body: `The ELSIM name, the gear-and-circuit mark, and the text and images on this site belong to ${company.name} unless otherwise credited. They may not be used without written permission.`,
-  },
-  {
-    heading: 'Third-party links',
-    body: 'Where this site links to another organisation, that link is provided for convenience. We do not control those sites and are not responsible for their content or their handling of your information.',
-  },
-  {
-    heading: 'Availability',
-    body: 'We aim to keep the site available, but we do not guarantee uninterrupted access. We may change, suspend or withdraw any part of it without notice.',
+    body: 'Text, images and branding on this site belong to ELSIM Engineering or our licensors. You may not copy or reuse them for commercial purposes without permission.',
   },
   {
     heading: 'Liability',
-    body: 'Nothing in these terms limits liability for death or personal injury caused by negligence, or for fraud. Subject to that, we are not liable for loss arising from reliance on website content in place of a written engineering instruction or a signed contract.',
+    body: 'We take care to keep site information accurate but do not warrant that it is complete or error-free. Nothing on this site limits liability that cannot be limited under Ghanaian law.',
   },
   {
     heading: 'Governing law',
-    body: 'These terms are governed by the laws of the Republic of Ghana, and disputes are subject to the jurisdiction of the Ghanaian courts.',
+    body: 'These terms are governed by the laws of the Republic of Ghana. Courts in Ghana have exclusive jurisdiction over disputes arising from use of this website.',
   },
 ];
