@@ -78,9 +78,11 @@ export function SiteImage({
         {...rest}
         src={cdnUrl(src)}
         alt={alt}
+        loading={rest.priority ? 'eager' : (rest.loading ?? 'lazy')}
+        decoding={rest.decoding ?? 'async'}
         className={cn(
           className,
-          'transition-opacity duration-500',
+          'transition-opacity duration-300',
           state === 'ready' ? 'opacity-100' : 'opacity-0'
         )}
         onLoad={() => setState('ready')}
