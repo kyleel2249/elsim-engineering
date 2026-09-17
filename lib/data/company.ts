@@ -17,7 +17,25 @@ export const company = {
     full: 'Oyarifa Teiman, Inside 3T Plaza, Accra, Ghana',
   },
 
-  phones: ['+233 538 578 943', '+233 264 357 395'],
+  /**
+   * Primary contact numbers.
+   * - +233 538 578 943 — voice calls and WhatsApp
+   * - +233 256 065 605 — voice calls
+   */
+  phones: [
+    {
+      display: '+233 538 578 943',
+      tel: '+233538578943',
+      whatsapp: true,
+      label: 'Call / WhatsApp',
+    },
+    {
+      display: '+233 256 065 605',
+      tel: '+233256065605',
+      whatsapp: false,
+      label: 'Call',
+    },
+  ],
 
   email: 'elsimengineering@gmail.com',
 
@@ -113,7 +131,7 @@ export const company = {
   regions: ['Ghana', 'Togo', "Côte d'Ivoire", 'Burkina Faso', 'Senegal', 'Niger'],
 
   stats: {
-    projectsOnRecord: 48,
+    projectsOnRecord: 30,
     countriesDelivered: 6,
     serviceLines: 5,
   },
