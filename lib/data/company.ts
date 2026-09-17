@@ -117,42 +117,67 @@ export const company = {
       issuingBody: "Registrar General's Department, Republic of Ghana",
       detail:
         'ELSIM Engineering Firm Ltd, incorporated under the Companies Act, 2019 (Act 992). Reg. No. CS193211124 · TIN C0064839885. Issued at Accra, 26 November 2024.',
+      image: '/assets/elsim/certificates/certificate-of-incorporation.jpg',
+      imageAlt:
+        'Certificate of Incorporation for ELSIM Engineering Firm Ltd issued by the Registrar of Companies, Republic of Ghana, 26 November 2024. Reg. No. CS193211124, TIN C0064839885.',
     },
     {
       name: 'Certificate of Classification — Electrical & Plumbing Works',
       issuingBody: 'Ministry of Works and Housing, Republic of Ghana',
       detail:
         'Category E, Electrical Works, Financial Class 2 ($75,000–$200,000). MWH/CERT. No. 09404B. Issued 4 March 2025, valid until 3 March 2026.',
+      image: '/assets/elsim/certificates/mwh-classification.jpg',
+      imageAlt:
+        'Ministry of Works and Housing Certificate of Classification for ELSIM Engineering Firm Ltd — Category E Electrical Works, Financial Class 2 ($75,000 to $200,000). Valid until 3 March 2026.',
     },
     {
       name: 'Certificate of Classification — Class "B" Contractor',
       issuingBody: 'Electricity Company of Ghana Limited',
       detail:
         'Classified to undertake construction of 11/33kV overhead line distribution networks. Classification No. ECG/2025/03/002. Issued 18 March 2025, valid until 17 March 2027.',
+      image: '/assets/elsim/certificates/ecg-classification-class-b.jpg',
+      imageAlt:
+        'Electricity Company of Ghana Certificate of Classification for ELSIM Engineering Firm Ltd as Class B contractor for construction of 11/33kV overhead line distribution networks. Valid until 17 March 2027.',
+      relatedImage: '/assets/elsim/certificates/ecg-category-of-works.jpg',
+      relatedImageAlt:
+        'ECG Category of Works and Grading Scheme tables — categories 1–5 of electrical works and contractor grading classes A–E.',
     },
     {
       name: 'Supplier, Contractor, Consultant Registration Certificate',
       issuingBody: 'Public Procurement Authority, Republic of Ghana',
       detail:
         'Registered to engage in government tenders under Section 3(p) of the Public Procurement Act, 2003 (Act 663) as amended. Supplier No. 734121. Issued 25 April 2025, valid until 24 April 2026.',
+      image: '/assets/elsim/certificates/ppa-supplier-registration.jpg',
+      imageAlt:
+        'Public Procurement Authority Supplier, Contractor, Consultant Registration Certificate for ELSIM Engineering Firm Ltd. Supplier No. 734121. Valid until 24 April 2026.',
     },
     {
       name: "Electrical Contractors' Licence (External Installation)",
       issuingBody: 'Electricity Company of Ghana Ltd.',
       detail:
         'Licensed to carry out external installation under the Electricity Supply and Distribution (Technical and Operational) Rules, 2005 (LI 1816). Licence No. 23236, held by Kununya Sandy Simon. Issued 21 October 2024, valid until 31 December 2026.',
+      image: '/assets/elsim/certificates/ecg-contractors-licence.jpg',
+      imageAlt:
+        "Electricity Company of Ghana Electrical Contractors' Licence (External Installation) No. 23236 for ELSIM Engineering Firm Ltd, held by Kununya Sandy Simon. Valid until 31 December 2026.",
     },
     {
       name: 'Certificate of Corporate Membership',
       issuingBody: 'Ghana Electrical Contractors Association (established 1948)',
       detail:
         'Duly enrolled corporate member. Membership No. GECA/CM/097. Issued 8 August 2025, valid until 8 August 2027.',
+      image: '/assets/elsim/certificates/geca-corporate-membership.jpg',
+      imageAlt:
+        'Ghana Electrical Contractors Association Certificate of Corporate Membership for ELSIM Engineering Firm Limited. Membership No. GECA/CM/097. Valid until 8 August 2027.',
     },
   ] as {
     name: string;
     issuingBody: string;
     detail?: string;
     logo?: string;
+    image?: string;
+    imageAlt?: string;
+    relatedImage?: string;
+    relatedImageAlt?: string;
   }[],
 
   partners: [
