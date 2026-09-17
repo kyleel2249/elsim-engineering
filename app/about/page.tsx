@@ -290,18 +290,39 @@ export default function AboutPage() {
             <p className="mt-2 text-sm" style={{ color: 'var(--theme-text-subtle)' }}>
               Supplier and technology partners named in ELSIM&rsquo;s company profile.
             </p>
-            <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+            <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {company.partners.map((partner, i) => (
                 <Reveal key={partner.name} delay={i * 60} as="li">
                   <div
-                    className="rounded border px-4 py-3.5 text-sm font-medium"
+                    className="flex h-full flex-col overflow-hidden rounded border"
                     style={{
                       borderColor: 'var(--theme-border)',
                       backgroundColor: 'var(--theme-surface)',
-                      color: 'var(--theme-text)',
                     }}
                   >
-                    {partner.name}
+                    {partner.logo && (
+                      <div
+                        className="relative flex items-center justify-center border-b p-4"
+                        style={{
+                          borderColor: 'var(--theme-border)',
+                          backgroundColor: 'var(--theme-bg-muted)',
+                          minHeight: '120px',
+                        }}
+                      >
+                        <SiteImage
+                          src={partner.logo}
+                          alt={partner.logoAlt ?? partner.name}
+                          width={320}
+                          height={160}
+                          className="h-auto max-h-[88px] w-full object-contain"
+                          sizes="(max-width: 640px) 100vw, 33vw"
+                          fallbackLabel={partner.name}
+                        />
+                      </div>
+                    )}
+                    <div className="px-4 py-3.5 text-sm font-medium" style={{ color: 'var(--theme-text)' }}>
+                      {partner.name}
+                    </div>
                   </div>
                 </Reveal>
               ))}
