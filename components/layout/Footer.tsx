@@ -4,6 +4,7 @@ import { company } from '@/lib/data/company';
 import { media } from '@/lib/data/media';
 import { cdnUrl } from '@/lib/cdn';
 import { services } from '@/lib/data/services';
+import { Linkedin, Facebook } from 'lucide-react';
 
 const COMPANY_LINKS = [
   { href: '/about', label: 'About ELSIM' },
@@ -118,6 +119,38 @@ export function Footer() {
                 </li>
               )}
             </ul>
+
+            <div className="mt-5 flex items-center gap-3">
+              <a
+                href={company.socials.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-9 w-9 items-center justify-center rounded border border-white/15 text-white/70 transition-colors hover:border-[#941A1D] hover:text-[#941A1D]"
+                aria-label="ELSIM Engineering on LinkedIn"
+              >
+                <Linkedin className="h-4 w-4" aria-hidden />
+              </a>
+              <a
+                href={company.socials.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-9 w-9 items-center justify-center rounded border border-white/15 text-white/70 transition-colors hover:border-[#941A1D] hover:text-[#941A1D]"
+                aria-label="ELSIM Engineering on Facebook"
+              >
+                <Facebook className="h-4 w-4" aria-hidden />
+              </a>
+              <a
+                href={company.socials.tiktok}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-9 w-9 items-center justify-center rounded border border-white/15 text-white/70 transition-colors hover:border-[#941A1D] hover:text-[#941A1D]"
+                aria-label="ELSIM Engineering on TikTok"
+              >
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .56.04.82.12V9.01a6.27 6.27 0 0 0-.82-.05A6.34 6.34 0 0 0 3.16 15.3a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.73a8.19 8.19 0 0 0 4.76 1.52V6.79a4.85 4.85 0 0 1-1.01-.1z" />
+                </svg>
+              </a>
+            </div>
 
             <p className="mt-4 text-xs leading-relaxed text-white/50">
               Regions served: {company.regions.join(', ')}.
