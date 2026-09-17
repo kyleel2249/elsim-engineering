@@ -59,6 +59,12 @@ export const media = {
       width: 463,
       height: 168,
     },
+    powerTransmission: {
+      src: '/assets/elsim/infrastructure/power-transmission.jpg',
+      alt: 'Silhouette of a high-voltage transmission insulator string and lattice tower against a bright sky',
+      width: 1844,
+      height: 576,
+    },
   },
   leadership: {
     ourTeam: {
@@ -290,6 +296,7 @@ export const mediaUrls = {
   },
   infrastructure: {
     electricalPole: media.infrastructure.electricalPole.src,
+    powerTransmission: media.infrastructure.powerTransmission.src,
   },
   leadership: {
     ourTeam: media.leadership.ourTeam.src,
