@@ -7,7 +7,7 @@ import { PageTransition } from '@/components/motion/PageTransition';
 import { BackToTop } from '@/components/motion/BackToTop';
 import { fontVariables } from '@/lib/fonts';
 import { company } from '@/lib/data/company';
-import { media } from '@/lib/data/media';
+import { media, getRandomSocialImage } from '@/lib/data/media';
 import { siteUrl, isIndexable, GA_MEASUREMENT_ID } from '@/lib/site';
 import './globals.css';
 
@@ -16,6 +16,9 @@ const siteDescription =
   'ELSIM Engineering designs, installs, tests and maintains electrical, solar and power-distribution systems for commercial and industrial clients across Ghana and West Africa.';
 const ogDescription =
   'Electrical, solar, power-distribution and consulting engineering across Ghana and West Africa.';
+
+/** Random site photo for link previews — chosen once per build (static export). */
+const socialImage = getRandomSocialImage();
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -55,11 +58,11 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: media.og.src,
-        width: media.og.width,
-        height: media.og.height,
-        alt: media.og.alt,
-        type: 'image/png',
+        url: socialImage.src,
+        width: socialImage.width,
+        height: socialImage.height,
+        alt: socialImage.alt,
+        type: 'image/jpeg',
       },
     ],
   },
@@ -69,10 +72,10 @@ export const metadata: Metadata = {
     description: ogDescription,
     images: [
       {
-        url: media.og.src,
-        width: media.og.width,
-        height: media.og.height,
-        alt: media.og.alt,
+        url: socialImage.src,
+        width: socialImage.width,
+        height: socialImage.height,
+        alt: socialImage.alt,
       },
     ],
   },
@@ -101,7 +104,7 @@ const organisationJsonLd = {
   description: company.description,
   url: siteUrl,
   logo: `${siteUrl}${media.logo.src}`,
-  image: `${siteUrl}${media.og.src}`,
+  image: `${siteUrl}${socialImage.src}`,
   telephone: company.phones.map((p) => p.display),
   slogan: company.tagline,
   address: {
