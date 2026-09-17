@@ -59,14 +59,14 @@ export default function OurImpactPage() {
               style={{ backgroundColor: 'var(--theme-surface)' }}
             >
               <SiteImage
-                src={media.infrastructure.powerTransmission.src}
-                alt={media.infrastructure.powerTransmission.alt}
+                src={media.infrastructure.electricalPole.src}
+                alt={media.infrastructure.electricalPole.alt}
                 width={1200}
                 height={800}
                 className="h-auto w-full max-h-[70vh] object-contain"
                 sizes="(max-width: 768px) 100vw, 896px"
                 quality={85}
-                fallbackLabel="Power transmission infrastructure"
+                fallbackLabel="Distribution infrastructure"
                 showSkeleton={false}
               />
             </div>
