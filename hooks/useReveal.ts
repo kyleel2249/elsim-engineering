@@ -63,13 +63,18 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>({
 /**
  * Counts up to `value` once the element enters the viewport.
  * Returns the current display value and the ref to attach.
+ *
+ * Initial display is the final value so SSR / first paint never show a
+ * misleading 0 (e.g. "0 Projects").
  */
 export function useCountUp(value: number, durationMs = 1400) {
   const { ref, revealed } = useReveal<HTMLSpanElement>({ threshold: 0.4 });
-  const [display, setDisplay] = useState(0);
+  // Start at the final value so SSR / first paint never show a misleading 0.
+  const [display, setDisplay] = useState(value);
+  const animated = useRef(false);
 
   useEffect(() => {
-    if (!revealed) return;
+    if (!revealed || animated.current) return;
 
     const prefersReduced =
       typeof window !== 'undefined' &&
@@ -77,9 +82,12 @@ export function useCountUp(value: number, durationMs = 1400) {
 
     if (prefersReduced) {
       setDisplay(value);
+      animated.current = true;
       return;
     }
 
+    animated.current = true;
+    setDisplay(0);
     let frame = 0;
     const start = performance.now();
 
