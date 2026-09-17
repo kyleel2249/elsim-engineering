@@ -12,7 +12,6 @@ import { Reveal } from '@/components/motion/Reveal';
 import { StatCounter } from '@/components/motion/StatCounter';
 import { Marquee } from '@/components/motion/Marquee';
 import { BrandField } from '@/components/3d/BrandField';
-import { workPhotos } from '@/lib/data/media';
 
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
@@ -25,7 +24,6 @@ const SITE_PHOTOS = [
   { asset: media.photography.siteEngineerLaptop, label: 'Site engineering' },
 ];
 
-/** Curated cross-section for the homepage teaser; the full set lives on /projects. */
 const homeGalleryPhotos = [
   media.work.transformerKioskInstallation,
   media.work.linemanPoleTop,
@@ -43,22 +41,14 @@ export default function HomePage() {
 
   return (
     <>
-      {/* ---------------------------------------------------------------- Hero
-          Full-bleed hero: authentic ELSIM field photography runs as a 3D,
-          fully responsive animated wallpaper behind the whole section, with
-          the message set in a legibility panel that rides on top of it. */}
       <section
         className="relative min-h-[min(92vh,780px)] overflow-hidden border-b"
         style={{ borderColor: 'var(--theme-border)' }}
       >
-        {/* Background layer — the slideshow, spanning the entire section */}
         <div className="absolute inset-0 z-0">
           <HeroSlideshow className="h-full w-full" variant="wallpaper" />
         </div>
 
-        {/* Legibility scrim — strong navy on the left where copy sits,
-            easing to nearly transparent on the right so the photography
-            still reads as the section's wallpaper. */}
         <div
           className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-navy-950/92 via-navy-950/55 to-navy-950/10"
           aria-hidden
@@ -68,25 +58,13 @@ export default function HomePage() {
           aria-hidden
         />
 
-        {/* Subtle blueprint grid + single-line motif, never a literal schematic */}
-        <div
-          className="pointer-events-none absolute inset-0 z-[1] opacity-[0.06]"
-          style={{
-            backgroundImage:
-              'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
-            backgroundSize: '56px 56px',
-          }}
-        />
-
-        {/* Foreground — the message, floating over the wallpaper */}
         <div className="relative z-[2] flex min-h-[min(92vh,780px)] flex-col justify-center px-4 py-16 sm:px-8 sm:py-20 lg:px-14 lg:py-24">
           <div className="max-w-xl">
-            <p className="label-technical text-elcyan">
-              Electrical <span className="text-elamber">•</span> Energy{' '}
-              <span className="text-elamber">•</span> Industrial
+            <p className="label-technical" style={{ color: 'var(--theme-energy)' }}>
+              Electrical · Energy · Industrial
             </p>
 
-            <EngineeringLine className="mt-4 max-w-[220px] text-elcyan" nodes={2} />
+            <EngineeringLine className="mt-4 max-w-[220px]" nodes={2} />
 
             <h1 className="mt-6 font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-white text-balance sm:text-5xl lg:text-[3.25rem]">
               Engineering the power infrastructure that keeps business moving.
@@ -97,28 +75,30 @@ export default function HomePage() {
                 (step, i, arr) => (
                   <li key={step} className="flex items-center gap-3">
                     <span className="label-technical text-white/80">{step}.</span>
-                    {i < arr.length - 1 && <span className="h-1 w-1 rounded-full bg-elamber" />}
+                    {i < arr.length - 1 && (
+                      <span className="h-1 w-1 rounded-full" style={{ backgroundColor: 'var(--theme-energy)' }} />
+                    )}
                   </li>
                 )
               )}
             </ul>
 
             <p className="mt-7 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 backdrop-blur-sm">
-              <span className="h-1.5 w-1.5 rounded-full bg-elamber" />
-              <span className="label-technical text-white">Ghana &amp; West Africa</span>
+              <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: 'var(--theme-energy)' }} />
+              <span className="label-technical text-white">Ghana & West Africa</span>
             </p>
 
             <div className="mt-9 flex flex-wrap gap-3">
               <Link
                 href="/quotation"
-                className="group inline-flex items-center justify-center gap-2 rounded bg-elamber px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-elgraphite shadow-panel transition-all hover:brightness-105"
+                className="group inline-flex items-center justify-center gap-2 rounded bg-energy px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-on-energy shadow-panel transition-all hover:brightness-105"
               >
                 Request a project consultation
                 <span className="transition-transform group-hover:translate-x-0.5">→</span>
               </Link>
               <Link
                 href="/projects"
-                className="group inline-flex items-center justify-center gap-2 rounded border border-white/30 px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-white backdrop-blur-sm transition-colors hover:border-elcyan hover:text-elcyan"
+                className="group inline-flex items-center justify-center gap-2 rounded border border-white/30 px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-white backdrop-blur-sm transition-colors hover:border-white hover:bg-white/10"
               >
                 Explore our projects
                 <span className="transition-transform group-hover:translate-x-0.5">→</span>
@@ -134,7 +114,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* -------------------------------------------------------- Regions rail */}
       <section
         className="border-b py-3"
         style={{ backgroundColor: 'var(--theme-bg-muted)', borderColor: 'var(--theme-border)' }}
@@ -142,7 +121,6 @@ export default function HomePage() {
         <Marquee items={company.regions} />
       </section>
 
-      {/* --------------------------------------------------------- Capabilities */}
       <section
         className="border-b py-20"
         style={{ backgroundColor: 'var(--theme-bg)', borderColor: 'var(--theme-border)' }}
@@ -168,7 +146,7 @@ export default function HomePage() {
               <Reveal key={service.slug} delay={i * 70}>
                 <Link
                   href={`/services/${service.slug}`}
-                  className="lift group flex h-full flex-col rounded border p-6 transition-colors duration-200 hover:border-elcyan/60"
+                  className="lift group flex h-full flex-col rounded border p-6 transition-colors duration-200"
                   style={{
                     borderColor: 'var(--theme-border)',
                     backgroundColor: 'var(--theme-surface)',
@@ -188,7 +166,7 @@ export default function HomePage() {
                   </p>
                   <span
                     className="mt-5 h-px w-10 transition-all duration-300 group-hover:w-20"
-                    style={{ backgroundColor: 'var(--theme-accent-2)' }}
+                    style={{ backgroundColor: 'var(--theme-accent)' }}
                     aria-hidden
                   />
                 </Link>
@@ -198,7 +176,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ------------------------------------------------------ People on site */}
       <section
         className="border-b py-20"
         style={{ backgroundColor: 'var(--theme-bg-muted)', borderColor: 'var(--theme-border)' }}
@@ -226,19 +203,12 @@ export default function HomePage() {
             ))}
           </div>
 
-          <div className="mt-6 grid gap-6 sm:grid-cols-5">
-            <Reveal className="sm:col-span-3">
+          <div className="mt-6 grid gap-6">
+            <Reveal>
               <PhotoPanel
                 asset={media.infrastructure.electricalPole}
                 label="Distribution infrastructure"
                 ratio="16 / 9"
-              />
-            </Reveal>
-            <Reveal delay={80} className="sm:col-span-2">
-              <PhotoPanel
-                asset={media.infrastructure.powerTransmission}
-                label="Transmission works"
-                ratio="3 / 4"
               />
             </Reveal>
           </div>
@@ -257,7 +227,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ------------------------------------------------------------- Company */}
       <section
         className="border-b py-20"
         style={{ backgroundColor: 'var(--theme-bg)', borderColor: 'var(--theme-border)' }}
@@ -304,7 +273,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ------------------------------------------------------------ Projects */}
       <section
         className="border-b py-20"
         style={{ backgroundColor: 'var(--theme-bg-muted)', borderColor: 'var(--theme-border)' }}
@@ -356,14 +324,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ----------------------------------------------------------------- CTA */}
-      <section className="eng-grid-dark relative overflow-hidden bg-elgraphite py-20">
-        {/* WebGL accent: lazy, viewport-gated, and skipped entirely on
-            low-power devices or under reduced motion. See BrandField. */}
+      <section className="eng-grid-dark relative overflow-hidden bg-[#111111] py-20">
         <BrandField className="pointer-events-none absolute inset-0 opacity-70" />
 
         <div className="relative mx-auto max-w-3xl px-4 text-center">
-          <p className="label-technical text-elcyan">Let&rsquo;s build together</p>
+          <p className="label-technical" style={{ color: 'var(--theme-energy)' }}>
+            Let&rsquo;s build together
+          </p>
           <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-white sm:text-3xl">
             Ready to discuss your next project?
           </h2>
@@ -373,13 +340,13 @@ export default function HomePage() {
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
               href="/quotation"
-              className="rounded bg-elamber px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-elgraphite transition-all hover:brightness-105"
+              className="rounded bg-energy px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-on-energy transition-all hover:brightness-105"
             >
               Request a Project Consultation →
             </Link>
             <Link
               href="/contact"
-              className="rounded border border-white/30 px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:border-elcyan hover:text-elcyan"
+              className="rounded border border-white/30 px-6 py-3.5 text-sm font-bold uppercase tracking-wide text-white transition-colors hover:border-white hover:bg-white/10"
             >
               Contact us
             </Link>
