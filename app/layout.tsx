@@ -92,6 +92,11 @@ const organisationJsonLd = {
     addressCountry: 'GH',
   },
   areaServed: company.regions.map((name) => ({ '@type': 'Country', name })),
+  sameAs: [
+    company.socials.linkedin,
+    company.socials.facebook,
+    company.socials.tiktok,
+  ],
   knowsAbout: [
     'Electrical installations',
     'Solar photovoltaic systems',
