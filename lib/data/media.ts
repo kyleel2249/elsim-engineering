@@ -267,9 +267,8 @@ export const media = {
     height: 640,
   },
   /**
-   * Open Graph / Twitter Card image.
-   * Must be exactly 1200×630 and under ~300 KB so Facebook, LinkedIn, X and
-   * WhatsApp will render the preview reliably.
+   * Branded Open Graph fallback (1200×630).
+   * Prefer `getRandomSocialImage()` for link previews so shares show real site work.
    */
   og: {
     src: '/og-image.png',
@@ -289,6 +288,31 @@ export const workPhotos: WorkPhoto[] = Object.values(media.work);
  */
 export function getWorkByCategory(category: string): WorkPhoto[] {
   return workPhotos.filter((photo) => photo.categories.includes(category));
+}
+
+/**
+ * Pool of site images suitable for Open Graph / Twitter Card previews.
+ * Excludes logos and extreme portrait shots that crop poorly in a ~1.91:1 card.
+ */
+export const socialCardImages: MediaAsset[] = [
+  media.photography.engineerPanelInspection,
+  media.photography.solarTeamReview,
+  media.photography.technicianPanelWork,
+  media.infrastructure.electricalPole,
+  media.infrastructure.powerTransmission,
+  ...workPhotos.filter((photo) => photo.width >= photo.height * 0.85),
+];
+
+/**
+ * Pick a random site photo for social link previews.
+ *
+ * With a static export the choice is fixed at build time (social crawlers do not
+ * run client JS). Each deploy therefore gets a different image from the pool.
+ */
+export function getRandomSocialImage(): MediaAsset {
+  const pool = socialCardImages;
+  const index = Math.floor(Math.random() * pool.length);
+  return pool[index] ?? media.photography.solarTeamReview;
 }
 
 /** URL strings for 3D TextureLoader and similar. */
