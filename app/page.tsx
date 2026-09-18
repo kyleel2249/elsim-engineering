@@ -60,7 +60,7 @@ export default function HomePage() {
 
         <div className="relative z-[2] flex min-h-[min(92vh,780px)] flex-col justify-center px-4 py-16 sm:px-8 sm:py-20 lg:px-14 lg:py-24">
           <div className="max-w-xl">
-            <p className="label-technical" style={{ color: 'var(--theme-energy)' }}>
+            <p className="ml-3 text-lg font-bold uppercase tracking-[0.14em] text-elcyan sm:ml-4 sm:text-xl">
               Electrical · Energy · Technical
             </p>
             <h1 className="mt-4 font-display text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-[3.25rem] lg:leading-[1.1]">
