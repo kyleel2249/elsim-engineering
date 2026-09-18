@@ -3,11 +3,20 @@ import type { Metadata } from 'next';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Reveal } from '@/components/motion/Reveal';
 import { services } from '@/lib/data/services';
+import { media } from '@/lib/data/media';
+import { pageOpenGraph } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Services',
   description:
     'Electrical installations, solar power, inspection and maintenance, power distribution and consulting from ELSIM Engineering in Ghana and West Africa.',
+  ...pageOpenGraph({
+    title: 'Services — ELSIM Engineering',
+    description:
+      'Electrical installations, solar power, inspection and maintenance, power distribution and consulting across Ghana and West Africa.',
+    path: '/services',
+    image: media.work.panelWiringTeam,
+  }),
 };
 
 export default function ServicesPage() {

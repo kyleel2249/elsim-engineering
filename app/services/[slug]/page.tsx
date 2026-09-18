@@ -5,8 +5,8 @@ import { getServiceBySlug, getAllServiceSlugs } from '@/lib/data/services';
 import { getProjectsByCategory } from '@/lib/data/projects';
 import { Reveal } from '@/components/motion/Reveal';
 import { WorkGallery } from '@/components/media/WorkGallery';
-import { getWorkByCategory } from '@/lib/data/media';
-import { siteUrl } from '@/lib/site';
+import { getWorkByCategory, media } from '@/lib/data/media';
+import { pageOpenGraph } from '@/lib/seo';
 
 interface Props {
   params: { slug: string };
@@ -20,16 +20,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const service = getServiceBySlug(params.slug);
   if (!service) return { title: 'Service not found' };
 
+  const categoryPhotos = getWorkByCategory(service.slug);
+  const image = categoryPhotos[0] ?? media.work.panelWiringTeam;
+
   return {
     title: service.title,
     description: service.shortDescription,
     alternates: { canonical: `/services/${service.slug}` },
-    openGraph: {
-      title: service.title,
+    ...pageOpenGraph({
+      title: `${service.title} — ELSIM Engineering`,
       description: service.shortDescription,
-      url: `${siteUrl}/services/${service.slug}`,
+      path: `/services/${service.slug}`,
+      image,
       type: 'article',
-    },
+    }),
   };
 }
 

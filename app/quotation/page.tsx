@@ -2,11 +2,20 @@ import type { Metadata } from 'next';
 import { QuotationForm } from '@/components/forms/QuotationForm';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { company } from '@/lib/data/company';
+import { media } from '@/lib/data/media';
+import { pageOpenGraph } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Request a quotation',
   description:
     'Request a project quotation from ELSIM Engineering for electrical, solar, maintenance or consulting work in Ghana.',
+  ...pageOpenGraph({
+    title: 'Request a Quotation — ELSIM Engineering',
+    description:
+      'Request a project quotation for electrical, solar, maintenance or consulting work in Ghana and West Africa.',
+    path: '/quotation',
+    image: media.photography.solarTeamReview,
+  }),
 };
 
 export default function QuotationPage() {

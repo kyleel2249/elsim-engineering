@@ -7,7 +7,7 @@ import { PageTransition } from '@/components/motion/PageTransition';
 import { BackToTop } from '@/components/motion/BackToTop';
 import { fontVariables } from '@/lib/fonts';
 import { company } from '@/lib/data/company';
-import { media, getRandomSocialImage } from '@/lib/data/media';
+import { media } from '@/lib/data/media';
 import { siteUrl, isIndexable, GA_MEASUREMENT_ID } from '@/lib/site';
 import './globals.css';
 
@@ -17,8 +17,8 @@ const siteDescription =
 const ogDescription =
   'Electrical, solar, power-distribution and consulting engineering across Ghana and West Africa.';
 
-/** Random site photo for link previews — chosen once per build (static export). */
-const socialImage = getRandomSocialImage();
+/** Fixed, branded card for link previews — see the comment on media.og. */
+const socialImage = media.og;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

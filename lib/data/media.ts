@@ -69,7 +69,7 @@ export const media = {
   leadership: {
     ourTeam: {
       src: '/assets/elsim/leadership/our-team.jpg',
-      alt: 'ELSIM Engineering leadership: Ing. Simon Sandy Kununya, Chief Executive Officer; Ella Ankah, General Manager; Ing. Teye Amos Agudey, Engineer and Project Manager; Stephen Doe Agbo, Chief Accounts Officer',
+      alt: 'ELSIM Engineering leadership: Ing. Simon Sandy Kununya, Chief Executive Officer; Ella Ankah, Managing Director; Ing. Teye Amos Agudey, Engineer and Project Manager; Stephen Doe Agbo, Chief Accounts Officer',
       width: 1149,
       height: 1599,
     },
@@ -267,11 +267,15 @@ export const media = {
     height: 640,
   },
   /**
-   * Branded Open Graph fallback (1200×630).
-   * Prefer `getRandomSocialImage()` for link previews so shares show real site work.
+   * Branded Open Graph card (1200×630, optimized JPG ~90KB). This is the
+   * site-wide default used by the root layout — a fixed, on-brand card
+   * reads more professionally in a link preview than a random photo, and a
+   * fixed image means the size stays under WhatsApp's practical og:image
+   * limit. `getRandomSocialImage()` below is kept available for pages that
+   * would rather show real project photography.
    */
   og: {
-    src: '/og-image.png',
+    src: '/og-image.jpg',
     alt: 'ELSIM Engineering — electrical, energy and technical engineering across West Africa',
     width: 1200,
     height: 630,

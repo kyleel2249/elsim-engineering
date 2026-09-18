@@ -9,11 +9,19 @@ import { company } from '@/lib/data/company';
 import { media, workPhotos } from '@/lib/data/media';
 import { getPublishedProjects } from '@/lib/data/projects';
 import { services } from '@/lib/data/services';
+import { pageOpenGraph } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'About ELSIM Engineering',
   description:
     'ELSIM Engineering — vision, mission, values and leadership. Electrical engineering solutions across Ghana and West Africa.',
+  ...pageOpenGraph({
+    title: 'About ELSIM Engineering',
+    description:
+      'Vision, mission, values and leadership behind ELSIM Engineering — electrical engineering solutions across Ghana and West Africa.',
+    path: '/about',
+    image: media.work.siteTeamWalkthrough,
+  }),
 };
 
 export default function AboutPage() {

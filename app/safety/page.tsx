@@ -2,11 +2,20 @@ import type { Metadata } from 'next';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Reveal } from '@/components/motion/Reveal';
 import { company } from '@/lib/data/company';
+import { media } from '@/lib/data/media';
+import { pageOpenGraph } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Safety',
   description:
     'How ELSIM Engineering manages electrical safety on site — isolation, PPE, method statements and incident reporting.',
+  ...pageOpenGraph({
+    title: 'Safety — ELSIM Engineering',
+    description:
+      'How ELSIM Engineering manages electrical safety on site — isolation, PPE, method statements and incident reporting.',
+    path: '/safety',
+    image: media.work.breakerPanelInspection,
+  }),
 };
 
 const pillars = [

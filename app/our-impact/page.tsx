@@ -8,11 +8,19 @@ import { company } from '@/lib/data/company';
 import { media } from '@/lib/data/media';
 import { getPublishedProjects } from '@/lib/data/projects';
 import { services } from '@/lib/data/services';
+import { pageOpenGraph } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Our Impact',
   description:
     'Verified engineering experience across Ghana and West Africa — projects delivered, countries served and the standards behind the work.',
+  ...pageOpenGraph({
+    title: 'Our Impact — ELSIM Engineering',
+    description:
+      'Verified engineering experience across Ghana and West Africa — projects delivered, countries served and the standards behind the work.',
+    path: '/our-impact',
+    image: media.work.machineHallOverview,
+  }),
 };
 
 export default function OurImpactPage() {

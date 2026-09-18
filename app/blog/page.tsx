@@ -6,6 +6,8 @@ import { SiteImage } from '@/components/media/SiteImage';
 import { getPublishedPosts } from '@/lib/data/blog';
 import { formatDate } from '@/lib/utils';
 import { siteUrl } from '@/lib/site';
+import { media } from '@/lib/data/media';
+import { pageOpenGraph } from '@/lib/seo';
 
 const blogTitle = 'Blog — Electrical & energy engineering insights';
 const blogDescription =
@@ -23,19 +25,12 @@ export const metadata: Metadata = {
     'ELSIM Engineering',
   ],
   alternates: { canonical: '/blog' },
-  openGraph: {
+  ...pageOpenGraph({
     title: blogTitle,
     description: blogDescription,
-    url: `${siteUrl}/blog`,
-    siteName: 'ELSIM Engineering',
-    type: 'website',
-    locale: 'en_GH',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: blogTitle,
-    description: blogDescription,
-  },
+    path: '/blog',
+    image: media.work.transformerKioskInstallation,
+  }),
   robots: {
     index: true,
     follow: true,

@@ -6,8 +6,8 @@ import { getProjectBySlug, getPublishedProjects } from '@/lib/data/projects';
 import { getServiceBySlug } from '@/lib/data/services';
 import { Reveal } from '@/components/motion/Reveal';
 import { WorkGallery } from '@/components/media/WorkGallery';
-import { getWorkByCategory } from '@/lib/data/media';
-import { siteUrl } from '@/lib/site';
+import { getWorkByCategory, media } from '@/lib/data/media';
+import { pageOpenGraph } from '@/lib/seo';
 
 interface Props {
   params: { slug: string };
@@ -21,16 +21,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const project = getProjectBySlug(params.slug);
   if (!project) return { title: 'Project not found' };
 
+  const categoryPhotos = getWorkByCategory(project.category);
+  const image = categoryPhotos[0] ?? media.work.transformerKioskInstallation;
+
   return {
     title: project.title,
     description: project.shortDescription,
     alternates: { canonical: `/projects/${project.slug}` },
-    openGraph: {
+    ...pageOpenGraph({
       title: `${project.title} — ${project.location}`,
       description: project.shortDescription,
-      url: `${siteUrl}/projects/${project.slug}`,
+      path: `/projects/${project.slug}`,
+      image,
       type: 'article',
-    },
+    }),
   };
 }
 

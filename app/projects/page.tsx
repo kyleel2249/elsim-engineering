@@ -4,12 +4,20 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { ProjectExplorer } from '@/components/projects/ProjectExplorer';
 import { WorkGallery } from '@/components/media/WorkGallery';
 import { getPublishedProjects } from '@/lib/data/projects';
-import { workPhotos } from '@/lib/data/media';
+import { media, workPhotos } from '@/lib/data/media';
+import { pageOpenGraph } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Projects',
   description:
     "Electrical, solar, transformer and infrastructure projects delivered by ELSIM Engineering across Ghana, Togo, Côte d'Ivoire, Burkina Faso, Senegal and Niger.",
+  ...pageOpenGraph({
+    title: 'Projects — ELSIM Engineering',
+    description:
+      "Electrical, solar, transformer and infrastructure projects delivered across Ghana, Togo, Côte d'Ivoire, Burkina Faso, Senegal and Niger.",
+    path: '/projects',
+    image: media.work.transformerKioskInstallation,
+  }),
 };
 
 export default function ProjectsPage() {

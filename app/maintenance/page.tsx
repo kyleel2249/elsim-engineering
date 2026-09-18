@@ -3,11 +3,20 @@ import Link from 'next/link';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Reveal } from '@/components/motion/Reveal';
 import { company } from '@/lib/data/company';
+import { media } from '@/lib/data/media';
+import { pageOpenGraph } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Maintenance',
   description:
     'ELSIM Engineering planned and emergency electrical maintenance for commercial and industrial sites in Ghana.',
+  ...pageOpenGraph({
+    title: 'Maintenance — ELSIM Engineering',
+    description:
+      'Planned and emergency electrical maintenance for commercial and industrial sites in Ghana.',
+    path: '/maintenance',
+    image: media.work.cableCoilTransport,
+  }),
 };
 
 const points = [

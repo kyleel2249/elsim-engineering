@@ -4,11 +4,20 @@ import { MapPin, Phone, Mail, Clock, Linkedin, Facebook, MessageCircle } from 'l
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Reveal } from '@/components/motion/Reveal';
 import { company } from '@/lib/data/company';
+import { media } from '@/lib/data/media';
+import { pageOpenGraph } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: 'Contact',
   description:
     'Contact ELSIM Engineering — Oyarifa Teiman, Accra, Ghana. Electrical, solar, maintenance and consulting enquiries.',
+  ...pageOpenGraph({
+    title: 'Contact ELSIM Engineering',
+    description:
+      'Reach ELSIM Engineering for project consultations, quotations and technical enquiries — Oyarifa Teiman, Accra, Ghana.',
+    path: '/contact',
+    image: media.photography.technicianPanelWork,
+  }),
 };
 
 export default function ContactPage() {
