@@ -20,9 +20,11 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative overflow-hidden bg-[#111111] text-white">
-      <div className="h-1 bg-[#941A1D]" aria-hidden />
+    <footer className="relative overflow-hidden bg-elgraphite text-white">
+      {/* Energy datum edge — cyan to amber, matching the hero panel's accent pair */}
+      <div className="h-1 bg-gradient-to-r from-elcyan via-elblue to-elamber" aria-hidden />
 
+      {/* Subtle engineering line-art background, matching the hero/CTA section treatment */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.05]"
         style={{
@@ -50,7 +52,7 @@ export function Footer() {
                 <span className="font-display text-2xl font-bold tracking-tight text-white">
                   ELSIM ENGINEERING FIRM
                 </span>
-                <span className="mt-2 text-sm font-medium uppercase tracking-[0.14em] text-[#941A1D]">
+                <span className="mt-2 text-sm font-medium uppercase tracking-[0.14em] text-elcyan">
                   Electrical &middot; Energy &middot; Industrial
                 </span>
               </span>
@@ -61,7 +63,7 @@ export function Footer() {
           </div>
 
           <nav aria-labelledby="footer-services">
-            <h2 id="footer-services" className="mb-4 label-technical text-[#941A1D]">
+            <h2 id="footer-services" className="mb-4 label-technical text-elcyan">
               Services
             </h2>
             <ul className="space-y-2 text-sm">
@@ -69,7 +71,7 @@ export function Footer() {
                 <li key={service.slug}>
                   <Link
                     href={`/services/${service.slug}`}
-                    className="text-white/70 transition-colors hover:text-[#941A1D]"
+                    className="text-white/70 transition-colors hover:text-elcyan"
                   >
                     {service.title}
                   </Link>
@@ -79,16 +81,13 @@ export function Footer() {
           </nav>
 
           <nav aria-labelledby="footer-company">
-            <h2 id="footer-company" className="mb-4 label-technical text-[#941A1D]">
+            <h2 id="footer-company" className="mb-4 label-technical text-elcyan">
               Company
             </h2>
             <ul className="space-y-2 text-sm">
               {COMPANY_LINKS.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-white/70 transition-colors hover:text-[#941A1D]"
-                  >
+                  <Link href={link.href} className="text-white/70 transition-colors hover:text-elcyan">
                     {link.label}
                   </Link>
                 </li>
@@ -97,13 +96,13 @@ export function Footer() {
           </nav>
 
           <div>
-            <h2 className="mb-4 label-technical text-[#941A1D]">Contact</h2>
+            <h2 className="mb-4 label-technical text-elcyan">Contact</h2>
             <ul className="space-y-3 text-sm">
               {company.phones.map((phone) => (
                 <li key={phone.tel} className="space-y-1">
                   <a
                     href={`tel:${phone.tel}`}
-                    className="inline-flex items-center gap-2 text-white/70 transition-colors hover:text-[#941A1D]"
+                    className="inline-flex items-center gap-2 text-white/70 transition-colors hover:text-elcyan"
                   >
                     <Phone className="h-3.5 w-3.5 shrink-0" aria-hidden />
                     {phone.display}
@@ -116,7 +115,7 @@ export function Footer() {
                       href={`https://wa.me/${phone.tel.replace('+', '')}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-0.5 inline-flex items-center gap-1.5 text-xs text-white/55 transition-colors hover:text-[#941A1D]"
+                      className="mt-0.5 inline-flex items-center gap-1.5 text-xs text-white/55 transition-colors hover:text-elcyan"
                     >
                       <MessageCircle className="h-3.5 w-3.5 shrink-0" aria-hidden />
                       Open WhatsApp
@@ -128,7 +127,7 @@ export function Footer() {
                 <li>
                   <a
                     href={`mailto:${company.email}`}
-                    className="inline-flex items-center gap-2 text-white/70 transition-colors hover:text-[#941A1D]"
+                    className="inline-flex items-center gap-2 text-white/70 transition-colors hover:text-elcyan"
                   >
                     <Mail className="h-3.5 w-3.5 shrink-0" aria-hidden />
                     {company.email}
@@ -142,7 +141,7 @@ export function Footer() {
                 href={company.socials.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-9 w-9 items-center justify-center rounded border border-white/15 text-white/70 transition-colors hover:border-[#941A1D] hover:text-[#941A1D]"
+                className="inline-flex h-9 w-9 items-center justify-center rounded border border-white/15 text-white/70 transition-colors hover:border-elcyan hover:text-elcyan"
                 aria-label="ELSIM Engineering on LinkedIn"
               >
                 <Linkedin className="h-4 w-4" aria-hidden />
@@ -151,7 +150,7 @@ export function Footer() {
                 href={company.socials.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-9 w-9 items-center justify-center rounded border border-white/15 text-white/70 transition-colors hover:border-[#941A1D] hover:text-[#941A1D]"
+                className="inline-flex h-9 w-9 items-center justify-center rounded border border-white/15 text-white/70 transition-colors hover:border-elcyan hover:text-elcyan"
                 aria-label="ELSIM Engineering on Facebook"
               >
                 <Facebook className="h-4 w-4" aria-hidden />
@@ -160,7 +159,7 @@ export function Footer() {
                 href={company.socials.tiktok}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-9 w-9 items-center justify-center rounded border border-white/15 text-white/70 transition-colors hover:border-[#941A1D] hover:text-[#941A1D]"
+                className="inline-flex h-9 w-9 items-center justify-center rounded border border-white/15 text-white/70 transition-colors hover:border-elcyan hover:text-elcyan"
                 aria-label="ELSIM Engineering on TikTok"
               >
                 <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
@@ -175,10 +174,10 @@ export function Footer() {
 
             <Link
               href="/quotation"
-              className="mt-5 inline-flex items-center justify-center gap-1.5 rounded bg-[#941A1D] px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-white transition-all hover:brightness-110"
+              className="group mt-5 inline-flex items-center justify-center gap-1.5 rounded bg-elamber px-4 py-2.5 text-sm font-bold uppercase tracking-wide text-elgraphite transition-all hover:brightness-105"
             >
               Request a consultation
-              <span>→</span>
+              <span className="transition-transform group-hover:translate-x-0.5">→</span>
             </Link>
           </div>
         </div>
@@ -192,16 +191,16 @@ export function Footer() {
               href="https://cintex.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white/60 transition-colors hover:text-[#941A1D] underline-offset-2 hover:underline"
+              className="text-white/60 underline-offset-2 transition-colors hover:text-elcyan hover:underline"
             >
               cintexa.com
             </a>
           </p>
           <div className="flex gap-6 text-xs">
-            <Link href="/privacy" className="text-white/50 transition-colors hover:text-[#941A1D]">
+            <Link href="/privacy" className="text-white/50 transition-colors hover:text-elcyan">
               Privacy policy
             </Link>
-            <Link href="/terms" className="text-white/50 transition-colors hover:text-[#941A1D]">
+            <Link href="/terms" className="text-white/50 transition-colors hover:text-elcyan">
               Terms of use
             </Link>
           </div>
