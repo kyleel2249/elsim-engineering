@@ -188,7 +188,7 @@ export function Footer() {
             {' '}
             Developed and managed by{' '}
             <a
-              href="https://cintex.com"
+              href="https://cintexa.com"
               target="_blank"
               rel="noopener noreferrer"
               className="text-white/60 underline-offset-2 transition-colors hover:text-elcyan hover:underline"
